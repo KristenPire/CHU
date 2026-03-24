@@ -29,7 +29,8 @@ const codeBlockStyle = {
   overflowX: "auto",
   fontSize: 13,
   lineHeight: 1.55,
-  fontFamily: "'Courier New', Consolas, monospace",
+  fontFamily: "'Victor Mono', Consolas, monospace",
+  fontFeatureSettings: "'liga' 1, 'calt' 1",
 };
 
 const inlineCodeStyle = {
@@ -39,7 +40,8 @@ const inlineCodeStyle = {
   padding: "1px 5px",
   fontSize: "0.92em",
   color: "#00d4ff",
-  fontFamily: "'Courier New', Consolas, monospace",
+  fontFamily: "'Victor Mono', Consolas, monospace",
+  fontFeatureSettings: "'liga' 1, 'calt' 1",
 };
 
 // ── Helpers ──

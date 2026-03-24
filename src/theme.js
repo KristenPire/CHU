@@ -16,7 +16,7 @@ export const C = {
 };
 
 export const gradeColor = (pct) =>
-  pct >= 70 ? C.green : pct >= 50 ? C.yellow : C.red;
+  pct >= 60 ? C.green : C.yellow;
 
 // Motion presets
 export const fadeSlide = {

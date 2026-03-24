@@ -11,7 +11,7 @@ export function ExamDetailScreen({ examId, studentId, onBack }) {
   const exam = EXAMS.find((e) => e.id === examId);
   const student = STUDENTS[examId][studentId];
   const pct = (student.grade / exam.totalPoints) * 100;
-  const label = pct >= 90 ? "EXCELLENT" : pct >= 70 ? "GOOD" : pct >= 50 ? "PASS" : "FAIL";
+  const label = pct >= 90 ? "EXCELLENT" : pct >= 70 ? "GOOD" : "";
 
   const wrong = student.wrong || {};
   const wrongCount = Object.keys(wrong).length;
@@ -38,9 +38,9 @@ export function ExamDetailScreen({ examId, studentId, onBack }) {
             <span className="text-tm-white text-[13px]">
               Student: <span className="text-tm-cyan">{student.name}</span>
             </span>
-            <span className="text-[13px] font-bold" style={{ color: gradeColor(pct) }}>
+            {label && <span className="text-[13px] font-bold" style={{ color: gradeColor(pct) }}>
               [{label}]
-            </span>
+            </span>}
           </div>
 
           <div className="mb-3">

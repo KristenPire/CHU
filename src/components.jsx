@@ -78,7 +78,7 @@ const TAG_CLASSES = {
 export function Tag({ type, children }) {
   return (
     <span
-      className={`inline-block px-1.5 py-px text-[11px] font-bold tracking-wider ${TAG_CLASSES[type] || TAG_CLASSES.info}`}
+      className={`inline-block px-1.5 py-px text-[11px] font-bold font-mono tracking-wider ${TAG_CLASSES[type] || TAG_CLASSES.info}`}
     >
       {children}
     </span>
@@ -220,7 +220,7 @@ function OptionRow({ letter, text, isCorrect, isPicked, isWrong }) {
     bg = "rgba(255,51,51,0.08)";
     color = C.red;
     prefix = "» ";
-    suffix = " [FAIL]";
+    suffix = " [✗]";
   } else if (isCorrect && !isPicked) {
     color = C.greenDim;
     suffix = " [✓]";
@@ -262,7 +262,7 @@ export function QuestionCard({ question, wrongAnswer, index }) {
               Q{String(index + 1).padStart(2, "0")}
             </span>
             <Tag type={isWrongQuestion ? "fail" : "ok"}>
-              {isWrongQuestion ? "FAIL" : "OK"}
+              {isWrongQuestion ? "WRONG" : "OK"}
             </Tag>
             {question.mode === "all" && <Tag type="info">SELECT ALL</Tag>}
           </div>
