@@ -1,0 +1,6 @@
+[
+  { "id": "net", "label": "Net", "fullName": "Networking" },
+  { "id": "os", "label": "OS", "fullName": "Operating Systems" },
+  { "id": "fp", "label": "FP", "fullName": "Functional Programming" },
+  { "id": "cpp", "label": "C++", "fullName": "C++" }
+]

@@ -1,0 +1,32 @@
+/*
+ * Tailwind config + terminal color palette.
+ *
+ * Colors follow the "tm-" prefix to avoid collision with
+ * Tailwind's directional prefixes (t = top, b = bottom).
+ *
+ * Usage: text-tm-cyan, bg-tm-green, border-tm-border, etc.
+ */
+@import "tailwindcss";
+
+@theme {
+  --color-tm-bg: #0a0a1a;
+  --color-tm-card: #0f0f2a;
+  --color-tm-border: #2a2a4a;
+  --color-tm-text: #d4d4d4;
+  --color-tm-dim: #666680;
+  --color-tm-white: #f0f0f0;
+  --color-tm-cyan: #00d4ff;
+  --color-tm-cyandim: #0099bb;
+  --color-tm-green: #00ff41;
+  --color-tm-greendim: #00aa2a;
+  --color-tm-red: #ff3333;
+  --color-tm-reddim: #aa2222;
+  --color-tm-yellow: #ffd700;
+  --font-mono: 'Courier New', 'Consolas', 'Liberation Mono', monospace;
+}
+
+::selection { background: #00d4ff; color: #0a0a1a; }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0a0a1a; }
+::-webkit-scrollbar-thumb { background: #2a2a4a; }
+input::placeholder { color: #666680; }

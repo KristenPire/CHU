@@ -1,0 +1,91 @@
+/*
+ * highlight.js theme — matches terminal palette from index.css.
+ */
+
+.hljs {
+  color: #d4d4d4;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-literal,
+.hljs-section,
+.hljs-link {
+  color: #cc78e0;
+}
+
+.hljs-function .hljs-keyword {
+  color: #cc78e0;
+}
+
+.hljs-string,
+.hljs-meta .hljs-string {
+  color: #00ff41;
+}
+
+.hljs-number,
+.hljs-symbol,
+.hljs-bullet {
+  color: #ffd700;
+}
+
+.hljs-title,
+.hljs-title.function_,
+.hljs-title.class_ {
+  color: #00d4ff;
+}
+
+.hljs-type,
+.hljs-built_in,
+.hljs-params {
+  color: #4ec9b0;
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: #666680;
+  font-style: italic;
+}
+
+.hljs-doctag,
+.hljs-formula {
+  color: #00d4ff;
+}
+
+.hljs-meta,
+.hljs-meta .hljs-keyword,
+.hljs-tag {
+  color: #ff8844;
+}
+
+.hljs-variable,
+.hljs-template-variable {
+  color: #e06c75;
+}
+
+.hljs-attr,
+.hljs-attribute {
+  color: #ffd700;
+}
+
+.hljs-selector-id,
+.hljs-selector-class {
+  color: #00d4ff;
+}
+
+.hljs-regexp,
+.hljs-deletion {
+  color: #ff3333;
+}
+
+.hljs-addition {
+  color: #00ff41;
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: bold;
+}

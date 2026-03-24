@@ -1,0 +1,10 @@
+{
+  "bodyType": "mcq",
+  "questions": [
+    { "id": 1, "text": "Which of the following is a pure function?", "options": { "A": "A function that prints to console", "B": "A function that reads a global variable", "C": "A function whose output depends only on its arguments", "D": "A function that modifies its input" }, "correct": ["C"], "mode": "any", "explanation": "A pure function has no side effects and depends solely on its arguments." },
+    { "id": 2, "text": "What is a higher-order function?", "options": { "A": "A function defined inside a class", "B": "A function that takes or returns other functions", "C": "A function with more than 3 parameters", "D": "A recursive function" }, "correct": ["B"], "mode": "any", "explanation": "Higher-order functions accept or return functions. Examples: map, filter, reduce." },
+    { "id": 3, "text": "Which concepts are core to functional programming?", "options": { "A": "Immutability", "B": "Inheritance", "C": "Recursion", "D": "Encapsulation" }, "correct": ["A", "C"], "mode": "all", "explanation": "Immutability and recursion are fundamental to FP. Inheritance and encapsulation are OOP." },
+    { "id": 4, "text": "What does map do on a list?", "options": { "A": "Filters elements by a predicate", "B": "Reduces the list to a single value", "C": "Applies a function to each element and returns a new list", "D": "Sorts the list" }, "correct": ["C"], "mode": "any", "explanation": "map transforms each element, returning a new list of the same length." },
+    { "id": 5, "text": "What is tail recursion?", "options": { "A": "Recursion that calls itself twice", "B": "Recursion where the recursive call is the last operation", "C": "Recursion with a base case", "D": "Recursion that uses a stack" }, "correct": ["B"], "mode": "any", "explanation": "In tail recursion, the recursive call is the final operation, enabling loop optimization." }
+  ]
+}

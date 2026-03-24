@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(xargs cat:*)",
+      "Bash(find /Users/kristen/china/exam-results/src -type f \\\\\\( -name \"*.jsx\" -o -name \"*.js\" -o -name \"*.ts\" \\\\\\) ! -path \"*/node_modules/*\" -exec wc -l {} +)",
+      "Bash(npm install:*)",
+      "Bash(npm run:*)",
+      "Bash(git init:*)",
+      "Bash(git add:*)"
+    ]
+  }
+}

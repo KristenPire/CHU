@@ -1,0 +1,10 @@
+{
+  "bodyType": "mcq",
+  "questions": [
+    { "id": 1, "text": "Which layer of the OSI model is responsible for routing packets between networks?", "options": { "A": "Physical", "B": "Data Link", "C": "Network", "D": "Transport" }, "correct": ["C"], "mode": "any", "explanation": "The Network layer (Layer 3) handles logical addressing (IP) and determines the best path for data across networks." },
+    { "id": 2, "text": "What is the default port number for HTTPS?", "options": { "A": "80", "B": "443", "C": "8080", "D": "22" }, "correct": ["B"], "mode": "any", "explanation": "Port 443 is the standard port for HTTPS (HTTP over TLS/SSL)." },
+    { "id": 3, "text": "Which of the following are transport-layer protocols?", "options": { "A": "TCP", "B": "UDP", "C": "ICMP", "D": "ARP" }, "correct": ["A", "B"], "mode": "all", "explanation": "TCP and UDP both operate at Layer 4 (Transport). ICMP is Layer 3, ARP is Layer 2." },
+    { "id": 4, "text": "In TCP, what mechanism ensures reliable delivery of segments?", "options": { "A": "Hop count", "B": "Acknowledgments and retransmission", "C": "TTL field", "D": "MAC filtering" }, "correct": ["B"], "mode": "any", "explanation": "TCP uses sequence numbers and acknowledgments. Missing ACKs trigger retransmission." },
+    { "id": 5, "text": "Which DNS record types are used for mail delivery?", "options": { "A": "A", "B": "MX", "C": "CNAME", "D": "TXT" }, "correct": ["B"], "mode": "any", "explanation": "MX (Mail Exchange) records specify the mail server for a domain." }
+  ]
+}

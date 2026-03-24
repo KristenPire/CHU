@@ -1,0 +1,395 @@
+{
+  "bodyType": "mcq",
+  "questions": [
+    {
+      "id": 1,
+      "text": "Which command compiles `program.cpp` and names the output `run`?",
+      "options": {
+        "A": "`g++ -o run program.cpp`",
+        "B": "`g++ program.cpp run`",
+        "C": "`g++ program.cpp --output run`",
+        "D": "`g++ run program.cpp -compile`"
+      },
+      "correct": ["A"],
+      "mode": "any",
+      "explanation": "The `-o` flag (short for \"output\") tells `g++` where to write the compiled executable. The syntax is `g++ -o <output_name> <source_file>`. Without `-o`, the compiler defaults to producing a file called `a.out` on Linux/macOS.\n\n```cpp\ng++ -o run program.cpp   // compiles program.cpp → executable named 'run'\n./run                    // runs it\n```\n\nOptions B, C, and D use invalid flag syntax — `g++` does not recognize `--output` or `-compile`."
+    },
+    {
+      "id": 2,
+      "text": "What is the output?\n```cpp\nint a = 5, b = 8;\nif (a > 6 && b > 6) std::cout << \"X\";\nelse if (a < 6 && b > 6) std::cout << \"Y\";\nelse std::cout << \"Z\";\n```",
+      "options": {
+        "A": "Z",
+        "B": "Y",
+        "C": "X",
+        "D": "Compilation error"
+      },
+      "correct": ["B"],
+      "mode": "any",
+      "explanation": "Trace through with `a=5` and `b=8`:\n\n1. `a > 6 && b > 6` → `5 > 6` is `false`. Because `&&` short-circuits, the whole condition is `false` — `b > 6` is not even evaluated.\n2. `a < 6 && b > 6` → `5 < 6` is `true` AND `8 > 6` is `true`, so the condition is `true` → prints `\"Y\"`.\n\nThe `&&` (logical AND) operator requires **both** operands to be `true`, while `||` (logical OR) requires only one. Both operators short-circuit: `&&` stops on `false`, `||` stops on `true`."
+    },
+    {
+      "id": 3,
+      "text": "What is the output?\n```cpp\nint x = 5;\nvoid foo() { int x = 10; std::cout << x; }\nint main() { foo(); std::cout << x; }\n```",
+      "options": {
+        "A": "55",
+        "B": "1010",
+        "C": "105",
+        "D": "Compilation error"
+      },
+      "correct": ["C"],
+      "mode": "any",
+      "explanation": "C++ uses **lexical scoping** — a local variable with the same name as a global one *shadows* (hides) the global within that scope.\n\n1. `foo()` declares its own local `int x = 10`, which shadows the global `x = 5`. So `std::cout << x` inside `foo()` prints `10`.\n2. `main()` has no local `x`, so `std::cout << x` resolves to the global `x = 5`, printing `5`.\n\nOutput: `105`. If `foo()` needed the global, it could use the scope resolution operator `::x`."
+    },
+    {
+      "id": 4,
+      "text": "Which type should you use to store `true` or `false`?",
+      "options": {
+        "A": "`int`",
+        "B": "`float`",
+        "C": "`char`",
+        "D": "`bool`"
+      },
+      "correct": ["D"],
+      "mode": "any",
+      "explanation": "The `bool` type is the dedicated boolean type in C++, storing either `true` (1) or `false` (0). While `int`, `char`, and other types can technically represent truthy/falsy values (any nonzero value is truthy in C++), using `bool` makes your intent clear and communicates to other programmers that the variable is a flag or condition.\n\n```cpp\nbool passed = true;\nbool isEven = (n % 2 == 0);  // expression evaluates to true or false\n```\n\nA `bool` occupies at least 1 byte of memory, even though it only needs 1 bit."
+    },
+    {
+      "id": 5,
+      "text": "What is the output?\n```cpp\nint x = 4, y = 4;\nif (x == 4 && y == 5) std::cout << \"A\";\nelse if (x == 4 || y == 5) std::cout << \"B\";\nelse std::cout << \"C\";\n```",
+      "options": {
+        "A": "B",
+        "B": "A",
+        "C": "C",
+        "D": "Compilation error"
+      },
+      "correct": ["A"],
+      "mode": "any",
+      "explanation": "Trace through with `x=4` and `y=4`:\n\n1. `x == 4 && y == 5` → `true && false` → `false`. The `&&` operator requires both sides to be `true`.\n2. `x == 4 || y == 5` → `true || false` → `true`. The `||` operator only needs one side to be `true`.\n\nSo the second branch executes and prints `\"B\"`. Note that the printed string `\"B\"` corresponds to **option A** in this question — don't confuse the output text with the answer choice!"
+    },
+    {
+      "id": 6,
+      "text": "What is the output?\n```cpp\nvoid triple(int x) { x = x * 3; }\nint main() {\n    int n = 4;\n    triple(n);\n    std::cout << n;\n}\n```",
+      "options": {
+        "A": "12",
+        "B": "4",
+        "C": "Compilation error",
+        "D": "Undefined behavior"
+      },
+      "correct": ["B"],
+      "mode": "any",
+      "explanation": "The function `triple` takes its parameter **by value** — it receives a copy, not the original. Modifying the copy inside the function has no effect on `n` in `main()`, so `n` remains `4`.\n\nTo actually modify the caller's variable, pass by reference:\n```cpp\nvoid triple(int& x) { x = x * 3; }\n// now triple(n) would change n to 12\n```\n\nThis is a fundamental distinction in C++: **pass-by-value** copies the argument, while **pass-by-reference** (`&`) gives the function direct access to the original variable."
+    },
+    {
+      "id": 7,
+      "text": "How many times is \"ok\" printed?\n```cpp\nint i = 0;\nwhile (i < 4) {\n    std::cout << \"ok\\n\";\n    i++;\n}\n```",
+      "options": {
+        "A": "3",
+        "B": "5",
+        "C": "4",
+        "D": "0"
+      },
+      "correct": ["C"],
+      "mode": "any",
+      "explanation": "The `while` loop checks its condition **before** each iteration. Starting with `i = 0`, it runs as long as `i < 4`:\n\n| Iteration | `i` at start | `i < 4`? | Action | `i` after `i++` |\n|-----------|-------------|----------|--------|------------------|\n| 1 | 0 | yes | print | 1 |\n| 2 | 1 | yes | print | 2 |\n| 3 | 2 | yes | print | 3 |\n| 4 | 3 | yes | print | 4 |\n| — | 4 | no | stop | — |\n\nThe loop executes **4 times**. A useful pattern: a `while (i < N)` loop starting from `i = 0` always runs exactly `N` times."
+    },
+    {
+      "id": 8,
+      "text": "What is the output?\n```cpp\nnamespace Config { int version = 2; }\nint version = 5;\nint main() {\n    int version = 8;\n    std::cout << version << \" \" << ::version << \" \" << Config::version;\n}\n```",
+      "options": {
+        "A": "5 8 2",
+        "B": "2 5 8",
+        "C": "8 2 5",
+        "D": "8 5 2"
+      },
+      "correct": ["D"],
+      "mode": "any",
+      "explanation": "C++ has three distinct scopes at play here, each with its own `version`:\n\n1. `version` (unqualified) → resolves to the **local** variable in `main()` → `8`.\n2. `::version` → the `::` prefix means \"global namespace\", bypassing all local/namespace scopes → `5`.\n3. `Config::version` → explicitly accesses the `version` inside the `Config` namespace → `2`.\n\nOutput: `8 5 2`. The **scope resolution operator** `::` is the key tool for disambiguating names — `::name` always means global, and `Namespace::name` targets a specific namespace."
+    },
+    {
+      "id": 9,
+      "text": "What is the output?\n```cpp\nint* p = new int(3);\nint* q = new int(7);\ndelete p;\np = q;\nstd::cout << *p;\n```",
+      "options": {
+        "A": "7",
+        "B": "3",
+        "C": "Undefined behavior",
+        "D": "Compilation error"
+      },
+      "correct": ["A"],
+      "mode": "any",
+      "explanation": "Step-by-step execution:\n\n1. `p` points to heap memory containing `3`; `q` points to heap memory containing `7`.\n2. `delete p` frees the memory holding `3` — that allocation is gone.\n3. `p = q` makes `p` point to the **same** memory as `q` (which still holds `7` and has **not** been deleted).\n4. `*p` dereferences valid memory → prints `7`.\n\nThis is perfectly safe. However, note that the memory originally allocated for `3` was properly freed, but now **two** pointers (`p` and `q`) reference the `7` allocation — you must be careful to only `delete` it once."
+    },
+    {
+      "id": 10,
+      "text": "What is the output?\n```cpp\ndouble result = 9 / 4;\nstd::cout << result;\n```",
+      "options": {
+        "A": "2.25",
+        "B": "2",
+        "C": "2.5",
+        "D": "Compilation error"
+      },
+      "correct": ["B"],
+      "mode": "any",
+      "explanation": "In C++, when **both** operands of `/` are integers, **integer division** is performed — the result is truncated toward zero, discarding any fractional part. So `9 / 4` evaluates to `2` (not `2.25`). This integer `2` is then implicitly converted to `double` when stored in `result`, but the fractional information is already lost.\n\n```cpp\ndouble a = 9 / 4;    // integer division → 2 → stored as 2.0\ndouble b = 9.0 / 4;  // floating-point division → 2.25\ndouble c = 9 / 4.0;  // also floating-point → 2.25\n```\n\nRule: if **either** operand is a floating-point type, the division produces a floating-point result."
+    },
+    {
+      "id": 11,
+      "text": "`int` has a maximum value of 2,147,483,647. What is the output?\n```cpp\nint x = 2147483647;\nx = x + 1;\nstd::cout << x;\n```",
+      "options": {
+        "A": "2147483648",
+        "B": "0",
+        "C": "-2147483648",
+        "D": "Compilation error"
+      },
+      "correct": ["C"],
+      "mode": "any",
+      "explanation": "Signed integer overflow is **undefined behavior** in C++. However, on virtually all modern systems using **two's complement** representation, adding `1` to `INT_MAX` (2,147,483,647 = `0x7FFFFFFF`) wraps around to `INT_MIN` (-2,147,483,648 = `0x80000000`).\n\nThis happens because incrementing the bit pattern `0111...1111` flips to `1000...0000`, which in two's complement is the most negative number.\n\n```cpp\n#include <climits>\nstd::cout << INT_MAX;     // 2147483647\nstd::cout << INT_MAX + 1; // undefined behavior! (likely -2147483648)\n```\n\nThe compiler is allowed to optimize assuming overflow never happens, so never rely on this wrapping behavior in production code."
+    },
+    {
+      "id": 12,
+      "text": "What is the output?\n```cpp\nint x = 7;\nif (x = 1) std::cout << \"A\";\nelse std::cout << \"B\";\n```",
+      "options": {
+        "A": "B",
+        "B": "The program crashes at runtime",
+        "C": "Compilation error",
+        "D": "A"
+      },
+      "correct": ["D"],
+      "mode": "any",
+      "explanation": "This is a classic C++ pitfall: `=` is **assignment**, not **comparison** (`==`). The expression `x = 1` assigns `1` to `x` and then returns the assigned value (`1`). Since any nonzero integer is **truthy** in C++, the `if` condition evaluates to `true`, and `\"A\"` is printed.\n\n```cpp\nif (x = 1)  // BUG: assigns 1 to x, always truthy\nif (x == 1) // CORRECT: compares x to 1\n```\n\nMost compilers will issue a warning for assignment inside an `if` condition. To avoid this mistake, some programmers write `if (1 == x)` (\"Yoda conditions\") so that `if (1 = x)` would cause a compile error."
+    },
+    {
+      "id": 13,
+      "text": "What is the output?\n```cpp\nint x = 10;\n{\n    int x = 20;\n    std::cout << x;\n}\nstd::cout << x;\n```",
+      "options": {
+        "A": "2010",
+        "B": "1020",
+        "C": "2020",
+        "D": "1010"
+      },
+      "correct": ["A"],
+      "mode": "any",
+      "explanation": "C++ allows nested **block scopes** (delimited by `{}`), and a variable declared in an inner block **shadows** any variable with the same name in an outer block.\n\n1. The inner block declares `int x = 20`, which shadows the outer `x = 10`. `std::cout << x` prints `20`.\n2. When the inner block ends (`}`), the inner `x` is destroyed. The outer `x = 10` is visible again, so `std::cout << x` prints `10`.\n\nOutput: `2010`. Each block creates a new scope — variables declared inside it are only alive until the closing `}`."
+    },
+    {
+      "id": 14,
+      "text": "What is the output?\n```cpp\nint score = 42;\nint main() {\n    int score = 99;\n    std::cout << ::score << \" \" << score;\n}\n```",
+      "options": {
+        "A": "99 42",
+        "B": "42 99",
+        "C": "42 42",
+        "D": "Compilation error"
+      },
+      "correct": ["B"],
+      "mode": "any",
+      "explanation": "When a local variable has the same name as a global variable, the local one shadows the global. To access the global despite the shadow, use the **scope resolution operator** `::` with nothing on the left side.\n\n1. `::score` → explicitly requests the **global** `score` → `42`.\n2. `score` → resolves to the **local** `score` in `main()` → `99`.\n\nOutput: `42 99`.\n\n```cpp\nint val = 1;\nint main() {\n    int val = 2;\n    std::cout << ::val; // 1 (global)\n    std::cout << val;   // 2 (local)\n}\n```"
+    },
+    {
+      "id": 15,
+      "text": "Which correctly reads a full line including spaces?\n```cpp\nstd::string str;\n// ???\nstd::cout << str;\n```",
+      "options": {
+        "A": "`std::cin >> str;`",
+        "B": "`std::cin.get();`",
+        "C": "`std::getline(std::cin, str);`",
+        "D": "`std::cin.ignore(str);`"
+      },
+      "correct": ["C"],
+      "mode": "any",
+      "explanation": "`std::getline(std::cin, str)` reads everything up to (and including) the newline character, storing all characters except the newline itself in `str`. This is the correct way to read a full line including spaces.\n\nIn contrast, `std::cin >> str` uses **whitespace as a delimiter** — it stops reading at the first space, tab, or newline, so it would only capture the first word.\n\n```cpp\n// Input: \"Hello World\"\nstd::cin >> str;              // str = \"Hello\" (stops at space)\nstd::getline(std::cin, str);  // str = \"Hello World\" (reads full line)\n```\n\n`std::cin.get()` reads a single character, and `std::cin.ignore()` discards characters — neither reads into a `std::string`."
+    },
+    {
+      "id": 16,
+      "text": "What is the output?\n```cpp\nint a = 3;\nint b = a++;\nstd::cout << a << \" \" << b;\n```",
+      "options": {
+        "A": "3 3",
+        "B": "4 4",
+        "C": "3 4",
+        "D": "4 3"
+      },
+      "correct": ["D"],
+      "mode": "any",
+      "explanation": "`a++` is the **post-increment** operator: it returns the **current** value of `a` first, *then* increments `a`. So `b` receives the old value `3`, and `a` becomes `4` afterward.\n\n```cpp\nint a = 3;\nint b = a++;  // b = 3 (old value), a = 4 (incremented)\n// contrast with:\nint c = ++a;  // a incremented to 5 first, c = 5 (new value)\n```\n\nOutput: `4 3`. Remember: **post** (`a++`) = \"use then increment\"; **pre** (`++a`) = \"increment then use\"."
+    },
+    {
+      "id": 17,
+      "text": "What is the output?\n```cpp\nint a = 3;\nint b = ++a;\nstd::cout << b << \" \" << a;\n```",
+      "options": {
+        "A": "4 4",
+        "B": "3 4",
+        "C": "4 3",
+        "D": "3 3"
+      },
+      "correct": ["A"],
+      "mode": "any",
+      "explanation": "`++a` is the **pre-increment** operator: it increments `a` **first** (from `3` to `4`), then returns the new value. So both `b` and `a` are `4`.\n\n```cpp\nint a = 3;\nint b = ++a;  // a becomes 4, then b receives 4\n// vs post-increment:\nint c = a++;  // c receives 4 (old value), then a becomes 5\n```\n\nOutput: `4 4`. Pre-increment is generally preferred in C++ when you don't need the old value, because for complex types (like iterators) it avoids creating a temporary copy."
+    },
+    {
+      "id": 18,
+      "text": "What is the output?\n```cpp\nint i = 0;\nwhile (i < 6) {\n    i++;\n    if (i == 4) continue;\n    if (i == 6) break;\n    std::cout << i;\n}\n```",
+      "options": {
+        "A": "123456",
+        "B": "1235",
+        "C": "12345",
+        "D": "01235"
+      },
+      "correct": ["B"],
+      "mode": "any",
+      "explanation": "Trace through the loop step by step (`i` starts at `0`, loop condition is `i < 6`):\n\n| `i` after `i++` | `i == 4`? (continue) | `i == 6`? (break) | Printed? |\n|---|---|---|---|\n| 1 | no | no | `1` |\n| 2 | no | no | `2` |\n| 3 | no | no | `3` |\n| 4 | yes → `continue` | — | skipped |\n| 5 | no | no | `5` |\n| 6 | no | yes → `break` | exits loop |\n\nOutput: `1235`. Key concepts: `continue` skips the **rest of the current iteration** and jumps back to the loop condition; `break` **exits the loop entirely**. Note that `i++` happens before the checks, so `continue` does not skip the increment."
+    },
+    {
+      "id": 19,
+      "text": "What is the output?\n```cpp\nint i = 0;\nwhile (i < 5) {\n    i++;\n    if (i % 2 == 0) continue;\n    std::cout << i;\n}\n```",
+      "options": {
+        "A": "12345",
+        "B": "24",
+        "C": "135",
+        "D": "1234"
+      },
+      "correct": ["C"],
+      "mode": "any",
+      "explanation": "Trace through with `i` starting at `0` and the loop running while `i < 5`:\n\n1. `i` becomes `1` → `1 % 2 == 0` is `false` → prints `1`\n2. `i` becomes `2` → `2 % 2 == 0` is `true` → `continue` (skip print)\n3. `i` becomes `3` → `3 % 2 == 0` is `false` → prints `3`\n4. `i` becomes `4` → `4 % 2 == 0` is `true` → `continue` (skip print)\n5. `i` becomes `5` → `5 % 2 == 0` is `false` → prints `5`\n\nOutput: `135`. The `%` (modulo) operator returns the remainder of division — `n % 2 == 0` is the standard way to test if a number is even."
+    },
+    {
+      "id": 20,
+      "text": "What is the output?\n```cpp\nint* getBadPointer() {\n    int x = 42;\n    return &x;\n}\nint main() {\n    int* p = getBadPointer();\n    std::cout << *p;\n}\n```",
+      "options": {
+        "A": "Always prints 42",
+        "B": "Prints 0",
+        "C": "Compilation error",
+        "D": "Undefined behavior"
+      },
+      "correct": ["D"],
+      "mode": "any",
+      "explanation": "Local variables live on the **stack** and are destroyed when the function returns. Here, `x` is a local `int` inside `getBadPointer()` — the function returns `&x` (the address of `x`), but by the time `main()` uses that pointer, `x` no longer exists. The pointer is **dangling**, and dereferencing it is **undefined behavior**.\n\n```cpp\n// WRONG: returning address of local variable\nint* getBadPointer() { int x = 42; return &x; }\n\n// FIX 1: allocate on the heap (caller must delete)\nint* getGoodPointer() { return new int(42); }\n\n// FIX 2: just return by value (preferred)\nint getValue() { return 42; }\n```\n\nThe compiler will usually warn about this — always pay attention to \"returning address of local variable\" warnings."
+    },
+    {
+      "id": 21,
+      "text": "What is the output?\n```cpp\nint* p;\n{\n    int x = 100;\n    p = &x;\n}\nstd::cout << *p;\n```",
+      "options": {
+        "A": "Undefined behavior",
+        "B": "100",
+        "C": "Compilation error",
+        "D": "0"
+      },
+      "correct": ["A"],
+      "mode": "any",
+      "explanation": "The variable `x` is local to the inner block `{}` — it is created when the block is entered and **destroyed** when the block exits. After the closing `}`, `p` still holds the address where `x` used to be, making it a **dangling pointer**. Dereferencing `*p` is undefined behavior.\n\nThis is the same principle as returning a pointer to a local variable from a function — once the scope ends, stack memory is reclaimed.\n\n```cpp\n// Safe alternative: use dynamic allocation\nint* p;\n{\n    int* temp = new int(100);\n    p = temp;  // heap memory survives the block\n}\nstd::cout << *p;  // OK: prints 100\ndelete p;          // don't forget to free it\n```"
+    },
+    {
+      "id": 22,
+      "text": "What does `std::cin.clear()` do after a failed input?",
+      "options": {
+        "A": "Empties all characters from the keyboard buffer",
+        "B": "Resets the error flags on `cin` so it can be used again",
+        "C": "Closes the input stream permanently",
+        "D": "Deletes the last character typed"
+      },
+      "correct": ["B"],
+      "mode": "any",
+      "explanation": "When an input operation fails (e.g., you type `\"abc\"` when an `int` is expected), `cin` enters a **fail state** by setting its `failbit`. Once in a fail state, **all subsequent input operations are silently ignored** until the error is cleared.\n\n`std::cin.clear()` resets these error flags, making `cin` usable again. However, the bad input is still sitting in the buffer — you also need `cin.ignore()` to discard it.\n\n```cpp\nint n;\nstd::cin >> n;  // user types \"abc\" → failbit set\n// cin is now broken — all reads will fail\nstd::cin.clear();                                    // reset error flags\nstd::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\\n'); // flush buffer\nstd::cin >> n;  // now this works again\n```"
+    },
+    {
+      "id": 23,
+      "text": "What is the output?\n```cpp\nint x = 5;\n{\n    int x = 10;\n    {\n        std::cout << x;\n    }\n}\nstd::cout << x;\n```",
+      "options": {
+        "A": "55",
+        "B": "1010",
+        "C": "105",
+        "D": "510"
+      },
+      "correct": ["C"],
+      "mode": "any",
+      "explanation": "C++ resolves variable names by searching **outward** from the current scope. There are three nested scopes here, each with access to different `x` values:\n\n1. **Innermost block** (`std::cout << x`): no local `x` declared here, so it looks outward and finds `x = 10` in the middle block → prints `10`.\n2. **After both inner blocks close**: both inner `x` variables are destroyed. `std::cout << x` resolves to the outermost `x = 5` → prints `5`.\n\nOutput: `105`. The rule is simple: the **nearest enclosing scope** wins when multiple variables share the same name. This is called **name lookup** in C++."
+    },
+    {
+      "id": 24,
+      "text": "What is the output?\n```cpp\nnamespace Physics { double g = 9.81; }\nnamespace Math { double pi = 3.14; }\nint main() {\n    std::cout << Physics::g - Math::pi;\n}\n```",
+      "options": {
+        "A": "12.95",
+        "B": "0",
+        "C": "Compilation error",
+        "D": "6.67"
+      },
+      "correct": ["D"],
+      "mode": "any",
+      "explanation": "Namespaces are an organizational tool — they group related names to avoid collisions, but they don't change how values work. Using the scope resolution operator `::`, you can access any member: `Physics::g` is `9.81` and `Math::pi` is `3.14`.\n\nThe expression `Physics::g - Math::pi` = `9.81 - 3.14` = `6.67`.\n\n```cpp\n// Namespaces prevent name collisions:\nnamespace Audio { int rate = 44100; }\nnamespace Video { int rate = 60; }\n// Audio::rate and Video::rate are distinct variables\n```\n\nNamespaces are essential in large projects — they prevent naming conflicts between libraries (e.g., `std::` is the namespace for the entire C++ standard library)."
+    },
+    {
+      "id": 25,
+      "text": "What is wrong with this code?\n```cpp\nvoid foo() {\n    int* p = new int(1);\n    int* q = new int(2);\n    q = p;\n    delete q;\n}\n```",
+      "options": {
+        "A": "The integer with value 2 is leaked",
+        "B": "Both integers are leaked",
+        "C": "No memory is leaked",
+        "D": "The integer with value 1 is leaked"
+      },
+      "correct": ["A"],
+      "mode": "any",
+      "explanation": "This is a classic **memory leak** scenario. Let's trace through:\n\n1. `p` → heap memory with value `1`; `q` → heap memory with value `2`.\n2. `q = p` → `q` now points to the same memory as `p` (value `1`). **The memory holding `2` is now orphaned** — no pointer references it, so it can never be freed.\n3. `delete q` frees the memory holding `1` (since `q` now points there).\n\nThe integer `2` is **leaked**. To fix this, always `delete` before reassigning:\n```cpp\ndelete q;   // free the 2 first\nq = p;      // now safe to reassign\ndelete q;   // free the 1\np = nullptr; // avoid dangling pointer\n```"
+    },
+    {
+      "id": 26,
+      "text": "What is the output?\n```cpp\nint x = 0;\nint* p = &x;\n*p = 99;\nstd::cout << x << \" \" << *p;\n```",
+      "options": {
+        "A": "0 99",
+        "B": "99 99",
+        "C": "99 0",
+        "D": "0 0"
+      },
+      "correct": ["B"],
+      "mode": "any",
+      "explanation": "A pointer stores the **memory address** of another variable. Here, `p` holds the address of `x`. When you write `*p = 99` (dereference and assign), you're modifying the value **at the address `p` holds** — which is `x` itself.\n\nSince `x` and `*p` refer to the exact same memory location, they always reflect the same value. After `*p = 99`, both `x` and `*p` are `99`.\n\n```cpp\nint x = 0;\nint* p = &x;  // p stores address of x\n*p = 99;      // write 99 to the address p holds → x is now 99\n// x == 99, *p == 99 — they are the same memory\n```\n\nOutput: `99 99`."
+    },
+    {
+      "id": 27,
+      "text": "What is the output?\n```cpp\nvoid setToTen(int* p) { *p = 10; }\nint main() {\n    int x = 0;\n    setToTen(&x);\n    std::cout << x;\n}\n```",
+      "options": {
+        "A": "0",
+        "B": "Undefined behavior",
+        "C": "10",
+        "D": "Compilation error"
+      },
+      "correct": ["C"],
+      "mode": "any",
+      "explanation": "This demonstrates **pass-by-pointer**, which allows a function to modify the caller's variable. `setToTen` receives a pointer `p` that holds the address of `x`. Writing `*p = 10` dereferences the pointer and modifies the value at that address — which is `x` in `main()`.\n\n```cpp\nvoid setToTen(int* p) { *p = 10; }  // modifies value at address p\nint main() {\n    int x = 0;\n    setToTen(&x);  // pass address of x\n    // x is now 10\n}\n```\n\nThis achieves the same effect as pass-by-reference (`int& p`), but with explicit pointer syntax. The `&x` in the call takes the address of `x`, and `*p` in the function dereferences it. Output: `10`."
+    },
+    {
+      "id": 28,
+      "text": "What is the output?\n```cpp\nnamespace Vehicle {\n    int speed = 100;\n    namespace Boat { int speed = 30; }\n}\nusing namespace Vehicle;\nint main() {\n    std::cout << speed << \" \" << Boat::speed;\n}\n```",
+      "options": {
+        "A": "30 100",
+        "B": "100 100",
+        "C": "Compilation error",
+        "D": "100 30"
+      },
+      "correct": ["D"],
+      "mode": "any",
+      "explanation": "The `using namespace Vehicle;` directive brings all of `Vehicle`'s direct members into the current scope, so `speed` resolves to `Vehicle::speed` (`100`). The nested namespace `Boat` is also brought in as a name, so `Boat::speed` accesses `Vehicle::Boat::speed` (`30`).\n\nOutput: `100 30`.\n\n```cpp\nusing namespace Vehicle;\n// Now we can write:\nspeed        // same as Vehicle::speed → 100\nBoat::speed  // same as Vehicle::Boat::speed → 30\n```\n\nNote that `using namespace` only pulls in **direct** members — it does not recursively import nested namespace members. You would need `using namespace Vehicle::Boat;` to use the inner `speed` without a qualifier."
+    },
+    {
+      "id": 29,
+      "text": "What is wrong with this code?\n```cpp\nvoid foo() {\n    int* a = new int(1);\n    int* b = new int(2);\n    delete a;\n}\n```",
+      "options": {
+        "A": "The integer with value 2 is leaked",
+        "B": "The integer with value 1 is leaked",
+        "C": "Both integers are leaked",
+        "D": "No memory is leaked"
+      },
+      "correct": ["A"],
+      "mode": "any",
+      "explanation": "Every `new` must be paired with a `delete`, or the memory is **leaked**. Here, `a` is properly deleted (freeing the integer `1`), but `b` is never deleted. When the function returns, the local pointer `b` is destroyed — but the **heap memory** it pointed to (holding `2`) is not freed. That memory is now unreachable and leaked.\n\n```cpp\nvoid foo() {\n    int* a = new int(1);\n    int* b = new int(2);\n    delete a;  // ✓ memory for 1 is freed\n    delete b;  // ← this line is missing! memory for 2 is leaked\n}\n```\n\nIn modern C++, use **smart pointers** (`std::unique_ptr`) to avoid manual memory management — they automatically `delete` when they go out of scope."
+    },
+    {
+      "id": 30,
+      "text": "What is the output?\n```cpp\nint* p = new int(5);\nint* q = p;\ndelete p;\nstd::cout << *q;\n```",
+      "options": {
+        "A": "5",
+        "B": "Undefined behavior",
+        "C": "0",
+        "D": "Compilation error"
+      },
+      "correct": ["B"],
+      "mode": "any",
+      "explanation": "Both `p` and `q` point to the same heap-allocated `int` (because `q = p` copies the address). After `delete p`, that memory is freed — but `q` still holds the old address. This makes `q` a **dangling pointer**. Dereferencing it with `*q` is **undefined behavior** — it might print `5`, crash, or do anything else.\n\nSafe pattern — set pointers to `nullptr` after deleting:\n```cpp\ndelete p;\np = nullptr;\nq = nullptr;  // q also pointed to the same memory\n// now we can check: if (q != nullptr) before using\n```\n\nEven better: use `std::unique_ptr`, which prevents two pointers from owning the same memory and automatically frees it."
+    }
+  ]
+}

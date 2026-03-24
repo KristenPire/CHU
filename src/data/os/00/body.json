@@ -1,0 +1,10 @@
+{
+  "bodyType": "mcq",
+  "questions": [
+    { "id": 1, "text": "What does the MLFQ scheduler use to determine a process's priority?", "options": { "A": "Process ID", "B": "Observed behavior over time", "C": "File descriptor count", "D": "Memory allocation size" }, "correct": ["B"], "mode": "any", "explanation": "The MLFQ adjusts priority based on observed behavior: CPU-bound processes get demoted, I/O-bound processes stay high priority." },
+    { "id": 2, "text": "Which system call creates a new process in Unix/Linux?", "options": { "A": "exec()", "B": "fork()", "C": "spawn()", "D": "clone()" }, "correct": ["B", "D"], "mode": "any", "explanation": "fork() duplicates the calling process. clone() is Linux-specific with finer sharing control." },
+    { "id": 3, "text": "Which of the following are valid page replacement algorithms?", "options": { "A": "LRU", "B": "FIFO", "C": "FCFS", "D": "Optimal (Bélády)" }, "correct": ["A", "B", "D"], "mode": "all", "explanation": "LRU, FIFO, and Optimal are page replacement algorithms. FCFS is a CPU scheduling algorithm." },
+    { "id": 4, "text": "What is a race condition?", "options": { "A": "When two processes compete for CPU time", "B": "When the outcome depends on the timing of uncontrollable events", "C": "When a process exceeds its memory limit", "D": "When a deadlock occurs between three or more processes" }, "correct": ["B"], "mode": "any", "explanation": "A race condition occurs when behavior depends on the timing of uncontrollable events." },
+    { "id": 5, "text": "In virtual memory, what does the TLB cache?", "options": { "A": "Disk block addresses", "B": "Recent virtual-to-physical page translations", "C": "Process control blocks", "D": "File system inodes" }, "correct": ["B"], "mode": "any", "explanation": "The TLB caches recent virtual-to-physical address mappings." }
+  ]
+}

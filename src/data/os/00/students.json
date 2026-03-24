@@ -1,0 +1,5 @@
+{
+  "20230001": { "name": "Zhang Wei", "grade": 100, "wrong": {} },
+  "20230002": { "name": "Li Ming", "grade": 40, "wrong": { "1": "A", "3": "AB", "4": "A" } },
+  "20230003": { "name": "Wang Fang", "grade": 40, "wrong": { "2": "D", "3": "ABCD", "5": "A" } }
+}
