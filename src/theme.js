@@ -11,7 +11,7 @@ export const C = {
   green: "#00ff41", greenDim: "#00aa2a",
   red: "#ff3333", redDim: "#aa2222",
   cyan: "#00d4ff", cyanDim: "#0099bb",
-  yellow: "#ffd700", text: "#d4d4d4",
+  yellow: "#ffd700", yellowDim: "#aa8f00", text: "#d4d4d4",
   textDim: "#666680", border: "#2a2a4a", white: "#f0f0f0",
 };
 

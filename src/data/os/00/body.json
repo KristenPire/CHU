@@ -1,0 +1,617 @@
+{
+  "bodyType": "mcq",
+  "questions": [
+    {
+      "id": 1,
+      "text": "In the 1950s, two programs ran one after the other on the same machine. What stopped one program from reading the other's data?",
+      "options": {
+        "A": "Nothing — there was no protection between programs at all",
+        "B": "The human operator removed each program from memory before the next ran",
+        "C": "Programs were each given separate physical sections of the machine",
+        "D": "Programs were not allowed to store data in memory at all"
+      },
+      "correct": [
+        "A",
+        "B"
+      ],
+      "mode": "any",
+      "explanation": "In the **1950s**, the OS was just a simple library of helper routines — there was no hardware memory protection. Programs ran one at a time, loaded and unloaded by a human operator.\n\n**Why A and B are both acceptable:**\n- **(A)** is technically correct: at the hardware level, there was *no* protection at all. Any program could read or write *any* memory address, including the OS itself or another program's data.\n- **(B)** is also correct: in practice, the only \"protection\" was that the operator manually removed one program before loading the next — so they never actually overlapped in memory.\n\nBoth capture the reality: the safety came from **sequential operation + human oversight**, not from any OS mechanism. OSTEP Chapter 2 describes this era as when \"protection between running programs simply did not exist.\" The lesson: hardware memory protection (the MMU) was a later invention, born from the chaos this arrangement caused."
+    },
+    {
+      "id": 2,
+      "text": "In batch processing, jobs were run one by one by a human operator. What was the main problem for users?",
+      "options": {
+        "A": "Users had to wait hours or days to see their program results",
+        "B": "Programs could not be saved and had to be resubmitted every day",
+        "C": "The operator could only run programs written by the same company",
+        "D": "Only programs shorter than one punch card could be submitted"
+      },
+      "correct": [
+        "A"
+      ],
+      "mode": "any",
+      "explanation": "**Batch processing** (1950s–60s) automated the sequential execution of jobs, but users still experienced enormous latency.\n\n**Why A is correct:** Jobs were submitted as decks of punch cards, collected into a \"batch,\" and run overnight. A user might wait **24 hours** to discover a single typo. This painful wait drove the invention of time-sharing systems where users interact in real time.\n\n**Why the others are wrong:**\n- B: Programs could be arbitrarily long — they were spooled to tape, not limited by a card\n- C: Operators ran any job from any user or company\n- D: A single punch card could only hold one line; programs filled entire boxes of cards\n\nOSTEP Chapter 2: *\"The introduction of time-sharing solved this problem — multiple users could use a machine at once, and each user received a timely response.\"*"
+    },
+    {
+      "id": 3,
+      "text": "Which statements about multiprogramming are correct?",
+      "options": {
+        "A": "Each program in memory gets its own dedicated CPU permanently",
+        "B": "Programs run faster because they can share each other's variables",
+        "C": "When one program waits for I/O, another program can use the CPU",
+        "D": "Keeping several programs in memory reduces wasted CPU idle time"
+      },
+      "correct": [
+        "C",
+        "D"
+      ],
+      "mode": "all",
+      "explanation": "**Multiprogramming** keeps several programs in memory simultaneously and switches between them when one blocks on I/O.\n\n**Why C and D are correct:**\n- **(C)** When a program calls `read()` or waits for a disk, it blocks. Instead of wasting the CPU, the OS runs *another* program. This is **I/O overlap**.\n- **(D)** With several programs in memory, the CPU is almost always doing something useful — idle time drops dramatically.\n\n**Why A and B are wrong:**\n- A: There is only *one* CPU. No program gets a dedicated CPU — they *share* it by taking turns.\n- B: Programs have **isolated address spaces**. They cannot touch each other's variables. That's the whole point of virtual memory.\n\nOSTEP Chapter 2: *\"By allowing multiple programs to reside in memory at the same time, the CPU is better utilized.\"*"
+    },
+    {
+      "id": 4,
+      "text": "Linux became popular in the 1990s mainly because it was:",
+      "options": {
+        "A": "faster than all other operating systems available at the time",
+        "B": "developed by a large company with strong legal protection",
+        "C": "free, open source, and built on proven UNIX design principles",
+        "D": "the only OS that could run on the new personal computers"
+      },
+      "correct": [
+        "C"
+      ],
+      "mode": "any",
+      "explanation": "**Linux** was created by Linus Torvalds in 1991 as a free alternative to expensive UNIX systems. It spread rapidly because of three properties:\n\n1. **Free**: zero licensing cost — any student or company could download it\n2. **Open source**: the full source code was visible, auditable, and modifiable\n3. **Built on UNIX design**: decades of battle-tested design principles from Bell Labs\n\n**Why the others are wrong:**\n- A: Linux was not faster than everything — Solaris, IRIX, and others were competitive\n- B: Torvalds was a university student, not a large company with legal teams\n- D: DOS and Windows already ran on PCs; Linux was an *alternative* to them, not the only option\n\nOSTEP Chapter 2: *\"Linux borrowed heavily from UNIX and made it available for free.\"* The open-source movement around Linux changed the industry permanently."
+    },
+    {
+      "id": 5,
+      "text": "`counter = 10`. Thread A loads 10. Before A stores, Thread B also loads 10. Both add 1. Both store. What is the final value of `counter`?",
+      "options": {
+        "A": "12 — both threads each added 1 successfully to the value",
+        "B": "11 — one increment was lost because both threads read the same value",
+        "C": "10 — the two stores overwrote each other and cancelled out",
+        "D": "20 — each thread doubled the value before storing its result"
+      },
+      "correct": [
+        "B"
+      ],
+      "mode": "any",
+      "explanation": "This is the canonical **race condition** example from OSTEP Chapter 26.\n\n**Trace of the dangerous interleaving:**\n```\nThread A: load counter → gets 10\nThread B: load counter → gets 10   (A hasn't stored yet!)\nThread A: add 1 → 11, store 11\nThread B: add 1 → 11, store 11\nFinal value: 11  (should be 12 — one increment is lost)\n```\n\n**Why B (11) is correct:** Both threads read the *same* value of 10, both compute 11, both store 11. One update is silently discarded.\n\n**Why the others are wrong:**\n- A (12): Only possible if the operations were truly sequential (no overlap)\n- C (10): Would require both stores to cancel out, which doesn't happen this way\n- D (20): Both threads doubling is not what the code does\n\nThis is why the OS provides **locks and synchronization primitives** — so that read-modify-write sequences are *atomic* (indivisible)."
+    },
+    {
+      "id": 6,
+      "text": "Which is an example of a scheduling **policy**, not a mechanism?",
+      "options": {
+        "A": "Saving all CPU registers into the process control block",
+        "B": "Switching the CPU from user mode to kernel mode on a trap",
+        "C": "Jumping to the OS interrupt handler when the timer fires",
+        "D": "Running the process that has been waiting the longest first"
+      },
+      "correct": [
+        "D"
+      ],
+      "mode": "any",
+      "explanation": "OSTEP Chapter 6 draws a fundamental OS design distinction:\n\n- A **mechanism** answers *\"HOW?\"* — the low-level procedure to implement something\n- A **policy** answers *\"WHICH?\"* or *\"WHEN?\"* — the decision about what to do\n\n**Why D is the policy:** \"Run the process that has waited the longest\" is a *decision rule* — it describes the scheduling strategy (FIFO). It doesn't tell you how to save registers or switch modes.\n\n**Why A, B, C are mechanisms:**\n- A: Saving CPU registers to the PCB is the mechanical *how* of a context switch\n- B: Switching CPU modes on a trap is a hardware *procedure*\n- C: Jumping to an interrupt handler is a hardware *mechanism*\n\nOSTEP: *\"The separation of policy and mechanism is important because it allows you to change policies without changing the underlying mechanism.\"* For example, you can swap FIFO for SJF without changing how context switches work."
+    },
+    {
+      "id": 7,
+      "text": "Which are main OS responsibilities?",
+      "options": {
+        "A": "Virtualization, making physical resources appear as many virtual ones",
+        "B": "Compilation, turning source code into executable binary files",
+        "C": "Persistence, keeping data safe even when power is lost",
+        "D": "Defragmentation, reorganizing disk files to improve read speed"
+      },
+      "correct": [
+        "A",
+        "C"
+      ],
+      "mode": "all",
+      "explanation": "OSTEP Chapter 2 identifies three main OS responsibilities:\n\n1. **Virtualization** — make physical resources (CPU, memory) appear as many virtual ones\n2. **Concurrency** — safely handle multiple simultaneous operations\n3. **Persistence** — keep data safe even when power is lost\n\n**Why A and C are correct:**\n- A (Virtualization): The OS creates the illusion of private CPU and memory per process — this *is* virtualization\n- C (Persistence): File systems, journaling, fsync — all ensure data survives power loss\n\n**Why B and D are wrong:**\n- B (Compilation): The *compiler* (gcc, javac) turns source into binaries. The OS just runs them.\n- D (Defragmentation): A storage utility, not a core OS responsibility. The OS manages *allocation*, not disk optimization."
+    },
+    {
+      "id": 8,
+      "text": "A database writes records to disk. The computer crashes halfway through. On restart, some records are missing. Which OS responsibility failed?",
+      "options": {
+        "A": "Concurrency — two threads wrote to the database at the same time",
+        "B": "Resource Management — the CPU was not shared correctly between tasks",
+        "C": "Persistence — the write was not completed and made safe on disk",
+        "D": "Virtualization — memory addresses were mapped to the wrong location"
+      },
+      "correct": [
+        "C"
+      ],
+      "mode": "any",
+      "explanation": "A database crash mid-write is a textbook **Persistence** failure.\n\n**Why C is correct:** The OS's file system is responsible for ensuring writes are **durable** and **consistent**. Modern file systems use *journaling* (recording intended operations before doing them) or *copy-on-write* so that a crash leaves the disk in a consistent state. If records are missing after a crash, the persistence layer failed.\n\n**Why the others are wrong:**\n- A (Concurrency): Only one process was writing — no concurrent conflict\n- B (Resource Management): CPU scheduling had no role in this failure\n- D (Virtualization): The memory mapping was fine — the issue was disk durability\n\nOSTEP Chapters 39–42 cover file systems and **crash consistency** in detail. Key tool: `fsync()` — forces the OS to flush data to durable storage before returning."
+    },
+    {
+      "id": 9,
+      "text": "Program X stores a value at virtual address `0x2000`. Program Y also has a variable at virtual address `0x2000`. Program X changes its value. What happens to Program Y's variable?",
+      "options": {
+        "A": "Y still holds its original value — each address maps to a different physical location",
+        "B": "Y also changes — both programs share the same physical memory cell",
+        "C": "An error occurs — two programs cannot use the same virtual address",
+        "D": "Y is set to zero — the OS protects Y by zeroing the shared cell"
+      },
+      "correct": [
+        "A"
+      ],
+      "mode": "any",
+      "explanation": "This is the core of **virtual memory**: every process has its own *private* virtual address space.\n\n**Why A is correct:** Virtual address `0x2000` in Program X maps to physical address P1. Virtual address `0x2000` in Program Y maps to a *completely different* physical address P2. The OS (via the **MMU** — Memory Management Unit) maintains a separate **page table** for each process. When X writes to 0x2000, it modifies P1. Y's 0x2000 still points to P2 — completely unaffected.\n\n**Why B, C, D are wrong:**\n- B: No shared physical cell — virtual address isolation is absolute\n- C: Many programs can use the same virtual address simultaneously — that's the point\n- D: The OS doesn't zero anything; it just keeps separate mappings\n\nOSTEP Chapter 15: *\"The OS creates the illusion that each program has a large, private address space, when in reality multiple programs are sharing physical memory.\"*"
+    },
+    {
+      "id": 10,
+      "text": "What is the correct term for giving each process a small slice of CPU time, switching quickly between them?",
+      "options": {
+        "A": "Space sharing",
+        "B": "Batch processing",
+        "C": "Time sharing",
+        "D": "Multiprogramming"
+      },
+      "correct": [
+        "C"
+      ],
+      "mode": "any",
+      "explanation": "The technique of rapidly switching CPU between processes to create the *illusion* of simultaneous execution is called **time sharing**.\n\n**Why C is correct:** The CPU runs Process 1 for 10ms, then Process 2 for 10ms, then Process 3 — so fast (100–1000 switches/second) that humans perceive them running at the same time.\n\n**Why the others are wrong:**\n- A (Space sharing): Refers to dividing memory, not CPU time\n- B (Batch processing): The sequential, non-interactive old model — opposite of simultaneous\n- D (Multiprogramming): A related but broader concept — keeping multiple programs in memory to reduce CPU idle time. Time sharing is the *specific* mechanism of rapid CPU switching for interactivity.\n\nOSTEP Chapter 4: *\"By time sharing the CPU, it virtualizes the CPU — each process believes it has its own dedicated CPU, when in reality the OS is switching between them rapidly.\"*"
+    },
+    {
+      "id": 11,
+      "text": "Which statements about kernel mode and user mode are correct?",
+      "options": {
+        "A": "In kernel mode, the OS can access any memory or hardware device",
+        "B": "In user mode, programs must use system calls to request OS services",
+        "C": "In kernel mode, the OS executes with the same limits as user mode",
+        "D": "In user mode, programs run faster because fewer checks are performed"
+      },
+      "correct": [
+        "A",
+        "B"
+      ],
+      "mode": "all",
+      "explanation": "The CPU hardware supports two privilege levels: **kernel mode** and **user mode**.\n\n**Why A and B are correct:**\n- **(A)** In kernel mode, the OS runs with full hardware access — any memory address, any instruction, any hardware register. The hardware imposes no restrictions.\n- **(B)** In user mode, programs cannot directly access hardware or perform privileged operations. They *must* go through **system calls** to request OS services.\n\n**Why C and D are wrong:**\n- C: Kernel mode has *fewer* restrictions than user mode, not the same limits\n- D: User mode is not faster — the restrictions exist for safety, not speed. Kernel mode runs at the same CPU speed.\n\nOSTEP Chapter 6: *\"The hardware provides two modes: kernel mode (OS code runs here, full access) and user mode (user programs run here, restricted access). A special trap instruction elevates to kernel mode.\"*"
+    },
+    {
+      "id": 12,
+      "text": "Why does the OS run in kernel mode while user programs run in user mode?",
+      "options": {
+        "A": "Kernel mode makes the OS code execute at a faster clock speed",
+        "B": "User mode prevents programs from directly accessing hardware or other programs' memory",
+        "C": "Kernel mode allows the OS to use more RAM than user programs can",
+        "D": "User mode programs cannot create new processes without switching modes"
+      },
+      "correct": [
+        "B"
+      ],
+      "mode": "any",
+      "explanation": "Hardware user/kernel mode separation is the foundation of OS security and stability.\n\n**Why B is correct:** If user programs could directly access hardware, any program could:\n- Overwrite OS kernel data\n- Read another process's memory (passwords, encryption keys)\n- Crash the entire system\n- Control hardware devices directly\n\nUser mode is a *hardware enforcement* of the principle of least privilege. Programs can only do what the OS allows via **system calls**.\n\n**Why the others are wrong:**\n- A: Kernel mode doesn't increase clock speed — it's the same hardware\n- C: Kernel mode doesn't allow *more RAM* — it's about *instruction privileges*, not memory capacity\n- D: Processes can be created via `fork()` in user mode — that's a system call, but it doesn't require \"switching modes\" as the reason for the restriction\n\nOSTEP Chapter 6: *\"Limited direct execution — programs run directly on the hardware, but the OS limits what they can do.\"*"
+    },
+    {
+      "id": 13,
+      "text": "What is the difference between a **program** and a **process**?",
+      "options": {
+        "A": "A program is temporary; a process is stored permanently on disk",
+        "B": "A program runs in kernel mode; a process runs only in user mode",
+        "C": "A program uses memory; a process is a file waiting to be loaded",
+        "D": "A program is a file on disk; a process is that program actively running"
+      },
+      "correct": [
+        "D"
+      ],
+      "mode": "any",
+      "explanation": "The program/process distinction is fundamental.\n\n**Why D is correct:**\n- A **program** is a *static* artifact: an executable file on disk (`.exe`, `.py`, `a.out`). It contains compiled instructions but does nothing by itself.\n- A **process** is a *dynamic* instance: the program *loaded into memory*, with a program counter, registers, stack, heap, and state. It is actively executing.\n\n**One program, many processes:** You can run the same program 100 times simultaneously — 1 program file, 100 process instances.\n\n**Why A, B, C are wrong:**\n- A: Reversed — the *process* is temporary (exists while running); the *program* persists on disk\n- B: Both programs and processes can involve kernel mode transitions\n- C: Completely reversed — the program is the file; the process is the running instance\n\nOSTEP Chapter 4: *\"A process is simply a running program.\"*"
+    },
+    {
+      "id": 14,
+      "text": "You run the same Python script 4 times at the same time. How many programs and processes are there?",
+      "options": {
+        "A": "1 program and 4 processes",
+        "B": "4 programs and 4 processes",
+        "C": "4 programs and 1 process",
+        "D": "1 program and 1 process"
+      },
+      "correct": [
+        "A"
+      ],
+      "mode": "any",
+      "explanation": "Running the same script 4 times demonstrates the program/process distinction clearly.\n\n**Why A is correct:**\n- There is **1 program** — one copy of the Python script file on disk\n- There are **4 processes** — each `python script.py` invocation creates a new, independent process with its own PID, memory space (stack, heap, registers)\n\nEach of the 4 processes thinks it has the entire machine to itself. They cannot access each other's variables. Each has a unique process ID assigned by the OS.\n\n**Why B is wrong:** The file isn't copied — there's still one script file, just run multiple times.\n**Why C is wrong:** One file, multiple instances — not four files, one instance.\n**Why D is wrong:** 4 executions = 4 processes.\n\nOSTEP Chapter 4: *\"The OS creates the illusion of a nearly endless supply of CPUs by virtualizing the CPU.\"*"
+    },
+    {
+      "id": 15,
+      "text": "A process has `int counter = 0;` declared at the top of the file, outside any function. Where is this stored in the address space?\n\n```\nHIGH ADDRESS\n┌──────────────┐\n│    Stack     │\n│    (free)    │\n│    Heap      │\n├──────────────┤\n│  Static Data │\n├──────────────┤\n│     Code     │\n└──────────────┘\nLOW ADDRESS\n```",
+      "options": {
+        "A": "Stack — it is used inside function calls at runtime",
+        "B": "Heap — it can grow and shrink while the program runs",
+        "C": "Static Data — it is a global variable with a fixed location",
+        "D": "Code — it is part of the compiled binary instructions"
+      },
+      "correct": [
+        "C"
+      ],
+      "mode": "any",
+      "explanation": "The **address space** of a process has four main regions:\n\n```\nHIGH ADDRESS\n┌──────────────┐\n│    Stack     │  ← local variables, function call frames (grows down)\n│    (free)    │\n│    Heap      │  ← dynamic allocation: malloc(), new (grows up)\n├──────────────┤\n│  Static Data │  ← global variables, static variables (fixed size)\n├──────────────┤\n│     Code     │  ← compiled instructions (read-only)\n└──────────────┘\nLOW ADDRESS\n```\n\n**Why C is correct:** `int counter = 0` declared *outside any function* is a **global variable**. Global variables have a fixed address that exists for the entire program lifetime — they live in **Static Data**.\n\n**Why the others are wrong:**\n- A (Stack): Stack is for *local* variables inside functions — they're destroyed when the function returns\n- B (Heap): Heap is for *explicitly allocated* memory (`new`, `malloc`)\n- D (Code): Code stores *compiled instructions*, not data\n\nOSTEP Chapter 13: *\"The static data segment contains global and static variables.\"*"
+    },
+    {
+      "id": 16,
+      "text": "Why does P0 change from READY to RUNNING at time 5?\n\n```\nTime | P0        | P1\n  1  | READY     | RUNNING\n  2  | READY     | RUNNING\n  3  | READY     | RUNNING   ← P1 sends data over the network\n  4  | READY     | BLOCKED\n  5  | RUNNING   | BLOCKED\n```",
+      "options": {
+        "A": "P0 has a higher scheduling priority than P1 in this system",
+        "B": "A timer fired at time 4 and the OS randomly selected P0",
+        "C": "P0 requested more memory and was rewarded with CPU time",
+        "D": "P1 is waiting for network I/O, so the OS runs P0 instead"
+      },
+      "correct": [
+        "D"
+      ],
+      "mode": "any",
+      "explanation": "This schedule illustrates **I/O-triggered context switching**.\n\n**Why D is correct:** At time 3, P1 initiates a network send — a slow I/O operation (network operations take milliseconds). The OS immediately moves P1 to **BLOCKED** state at time 4 (waiting for the network). Since P0 is **READY** and the CPU is free, the scheduler runs P0 at time 5.\n\n**Why the others are wrong:**\n- A: P0 doesn't have higher scheduling priority — P1 ran first because P0 wasn't RUNNING\n- B: A random timer selection would be preemptive scheduling, not what's shown\n- C: P0 doesn't request memory to get CPU time\n\nOSTEP Chapter 4: *\"When a process initiates an I/O request, it is moved to the BLOCKED state. The scheduler then picks another READY process to run.\"* This I/O overlap is precisely why multiprogramming improves CPU utilization."
+    },
+    {
+      "id": 17,
+      "text": "Which items are stored in the Process Control Block (PCB)?",
+      "options": {
+        "A": "The process ID (PID) and the ID of its parent process",
+        "B": "The complete program binary loaded from disk at startup",
+        "C": "A log of every system call the process has made so far",
+        "D": "Information about which files and devices the process has open"
+      },
+      "correct": [
+        "A",
+        "D"
+      ],
+      "mode": "all",
+      "explanation": "The **Process Control Block (PCB)** is the OS's data structure for tracking each process — OSTEP Chapter 4 calls it a \"process list\" entry.\n\n**Why A and D are correct:**\n- **(A)** PID and parent PID are fundamental identifiers. The parent PID enables process trees (needed for `wait()`, signals, job control).\n- **(D)** Open file descriptors and device handles are tracked in the PCB. The OS must know what resources each process holds so it can clean up on exit.\n\n**Why B and C are wrong:**\n- B: The program binary lives on disk and is mapped into memory — not stored in the PCB\n- C: System call logs are not stored per-process in the PCB (they might exist in audit logs, but that's separate)\n\n**Other PCB contents:** saved CPU registers, memory mappings (page table pointer), scheduling priority, accounting info (CPU time used), signal handlers. OSTEP shows the PCB as the central data structure for process management."
+    },
+    {
+      "id": 18,
+      "text": "Which outputs are possible when this code runs? (fork() succeeds)\n\n```cpp\nint rc = fork();\nif (rc == 0) {\n    std::cout << \"hello\" << std::endl;\n} else {\n    std::cout << \"world\" << std::endl;\n}\n```",
+      "options": {
+        "A": "only \"hello\" — the parent process exits right after fork()",
+        "B": "only \"world\" — the child process never reaches the output line",
+        "C": "\"hello\" then \"world\"",
+        "D": "\"world\" then \"hello\""
+      },
+      "correct": [
+        "C",
+        "D"
+      ],
+      "mode": "all",
+      "explanation": "After `fork()`, two independent processes exist and the scheduler can run either first.\n\n**Trace:**\n```\nParent: rc = fork()  →  rc = child's PID (> 0)  →  prints \"world\"\nChild:  rc = fork()  →  rc = 0                  →  prints \"hello\"\n```\n\n**Why C and D are correct:** The OS scheduler decides execution order *after* fork. There is **no guarantee** which runs first. Both orderings are valid:\n- C: Child runs first → \"hello\nworld\"\n- D: Parent runs first → \"world\nhello\"\n\n**Why A and B are wrong:**\n- A: The parent does *not* exit right after fork — it continues to the `else` branch and prints \"world\"\n- B: The child does *not* skip the output — it reaches `std::cout << \"hello\"` via the `if (rc == 0)` branch\n\nOSTEP Chapter 5: *\"After fork, the scheduler determines which process runs next — the parent or child. We cannot make any assumptions about the ordering.\"*"
+    },
+    {
+      "id": 19,
+      "text": "A child process was just created by fork(). What value does the **child** receive as the return value of fork()?",
+      "options": {
+        "A": "0 — the child always receives zero from fork()",
+        "B": "Its own PID — so it knows its own process identity",
+        "C": "The parent's PID — so it knows who created it",
+        "D": "-1 — the value that signals success in UNIX system calls"
+      },
+      "correct": [
+        "A"
+      ],
+      "mode": "any",
+      "explanation": "`fork()` uses a clever trick to tell parent and child apart with a single return value.\n\n| Who | Return value of fork() |\n|-----|------------------------|\n| **Child** | `0` |\n| **Parent** | Child's PID (positive) |\n| **Error** | `-1` |\n\n**Why A is correct:** The child always receives `0`. This is a *signal*, not a PID — it simply means \"you are the newly created child.\" The child can call `getpid()` if it needs its own PID.\n\n**Why the others are wrong:**\n- B: The child doesn't receive its own PID from fork — it gets 0\n- C: The parent's PID is not what fork returns in the child\n- D: `-1` means fork *failed*, not succeeded\n\nOSTEP Chapter 5: *\"The child gets 0 back from fork(); the parent gets the PID of the newly-created child.\"* This design makes the common `if (rc == 0)` child-detection pattern possible."
+    },
+    {
+      "id": 20,
+      "text": "What is the main weakness of cooperative scheduling?",
+      "options": {
+        "A": "It switches between programs too often, causing too much overhead",
+        "B": "It requires a hardware timer that not all computers support",
+        "C": "A program that never calls a system call can run forever, blocking others",
+        "D": "Programs must be written in a special way to give up the CPU"
+      },
+      "correct": [
+        "C"
+      ],
+      "mode": "any",
+      "explanation": "**Cooperative scheduling** relies on processes voluntarily yielding the CPU. This worked on simple systems but has a fatal flaw.\n\n**Why C is correct:** If a process enters an infinite loop and *never* calls a system call or `yield()`, the OS never gets control back. The system **freezes** until reboot. The OS is helpless — it needs the CPU to act, but the CPU is trapped in the loop.\n\n**Why the others are wrong:**\n- A: Cooperative OS doesn't kill processes — it can't, because it never gets the CPU back\n- B: Timers exist in preemptive scheduling, *not* cooperative scheduling\n- D: Loops don't auto-yield on overflow — the code has to explicitly call yield\n\n**The solution:** **Preemptive scheduling** + a hardware timer interrupt. Every N milliseconds (typically 10ms), the timer fires and the hardware transfers control to the OS interrupt handler, regardless of what the process is doing. OSTEP Chapter 6: *\"The addition of the timer interrupt gives the OS the ability to run again on a CPU.\"*"
+    },
+    {
+      "id": 21,
+      "text": "A timer fires while Process A is running. Which sequence is correct?\n\n```\n1: CPU switches to kernel mode and jumps to the interrupt handler\n2: OS saves A's kernel registers into A's process structure\n3: Timer interrupt fires while A is running\n4: OS loads B's registers from B's process structure and jumps to B\n5: Hardware saves A's user-level registers onto the kernel stack\n```",
+      "options": {
+        "A": "3 → 1 → 5 → 2 → 4",
+        "B": "3 → 5 → 1 → 2 → 4",
+        "C": "3 → 2 → 1 → 5 → 4",
+        "D": "5 → 3 → 1 → 2 → 4"
+      },
+      "correct": [
+        "B"
+      ],
+      "mode": "any",
+      "explanation": "The **timer interrupt** context switch sequence has two distinct phases — hardware and software.\n\n**Correct order: 3 → 5 → 1 → 2 → 4**\n\nStep by step:\n1. **(3) Timer fires** — hardware detects the interrupt\n2. **(5) Hardware saves user-level registers** onto the *kernel stack* — this is **automatic**, done by CPU hardware with no OS involvement\n3. **(1) CPU switches to kernel mode and jumps to interrupt handler** — hardware changes privilege level\n4. **(2) OS saves kernel registers into PCB** — this is **software**, the OS context switch code explicitly saves registers like SP, PC to the process's PCB\n5. **(4) OS loads new process's registers and jumps to it** — the new process runs\n\n**Key insight:** The *first* save (step 5) is done by hardware automatically. The *second* save (step 2) is done by OS software. Both are necessary.\n\nOSTEP Chapter 6 shows this two-phase save as a crucial detail of context switching."
+    },
+    {
+      "id": 22,
+      "text": "When a timer interrupt fires, the hardware saves the current process's registers. Where are they saved?",
+      "options": {
+        "A": "Into the process control block (PCB) in main memory",
+        "B": "Into a special register file inside the CPU core",
+        "C": "Into the kernel stack for the current process",
+        "D": "Into a region of the user process's own stack memory"
+      },
+      "correct": [
+        "C"
+      ],
+      "mode": "any",
+      "explanation": "When a timer interrupt fires, the CPU automatically saves registers *before* the OS can act.\n\n**Why C is correct:** The hardware saves the interrupted process's registers onto that process's **kernel stack** — a separate per-process stack in kernel memory. This is a hardware operation (the CPU does it automatically, not software). The OS then reads these values and saves them to the PCB.\n\n**Why the others are wrong:**\n- A (PCB directly): The hardware saves to kernel stack *first*; OS software later moves them to PCB\n- B (special register file): There is no \"register file\" for saving interrupt context — it uses the kernel stack\n- D (user stack): Saving to the user stack would be insecure — user code could modify saved registers\n\nOSTEP Chapter 6: *\"When the timer interrupt occurs, the hardware saves the registers of the currently-running process onto the kernel stack.\"* This is the first of two saves in a full context switch."
+    },
+    {
+      "id": 23,
+      "text": "Which are hidden costs of a context switch?",
+      "options": {
+        "A": "The process must be recompiled before it can run again",
+        "B": "Memory used by the old process must be freed immediately",
+        "C": "The CPU pipeline is flushed, wasting partially processed instructions",
+        "D": "The CPU cache holds data from the old process, causing misses for the new one"
+      },
+      "correct": [
+        "C",
+        "D"
+      ],
+      "mode": "all",
+      "explanation": "Beyond the explicit register save/restore, context switches have **hidden performance costs**.\n\n**Why C and D are correct:**\n- **(C) CPU pipeline flush:** Modern CPUs execute instructions in stages (fetch, decode, execute, writeback). When a context switch occurs mid-pipeline, all partially-processed instructions are discarded — wasted work.\n- **(D) Cache invalidation:** The CPU cache is warm for the old process (its data is in L1/L2 cache). After switching, the new process accesses *different* memory. Every cache miss requires fetching from RAM (~100× slower). The system runs slowly until the cache warms up again for the new process.\n\n**Why A and B are wrong:**\n- A: Code is never reloaded from disk — it's memory-mapped and stays in RAM\n- B: Memory is *not* freed on a context switch — the process still owns its memory\n\nOSTEP Chapter 6: *\"Cache pollution is a hidden cost — running a new process evicts the old process's cache contents, slowing the first few instructions of the new process.\"*"
+    },
+    {
+      "id": 24,
+      "text": "Why must only the OS kernel be allowed to control the hardware timer?",
+      "options": {
+        "A": "Timer hardware requires kernel-level assembly code to program correctly",
+        "B": "Two programs sharing timer access would cause the timer to lose accuracy",
+        "C": "A program that stops the timer could take over the CPU and never be interrupted",
+        "D": "The timer is the only mechanism the OS has to forcibly regain control of the CPU"
+      },
+      "correct": [
+        "C",
+        "D"
+      ],
+      "mode": "all",
+      "explanation": "The hardware timer is the OS's **only mechanism for preemptive control**.\n\n**Why C and D are correct:**\n- **(C)** If a user program disables the timer, it can run forever without interruption. No other mechanism can forcibly preempt it — the OS would lose control permanently.\n- **(D)** The timer interrupt is literally the *only* hardware signal the OS uses to forcibly reclaim the CPU from a running process. Without it, the OS must wait for the process to voluntarily yield.\n\n**Why A and B are wrong:**\n- A: Timer circuits don't require special assembly — the issue is *privilege*, not difficulty\n- B: Two programs sharing timer control is a scheduling problem, not a hardware accuracy issue\n\nOSTEP Chapter 6: *\"The OS must control the hardware timer to ensure it can run again. If a user program could stop the timer, it would own the CPU forever.\"* This is why timer control is a privileged operation, available only in kernel mode."
+    },
+    {
+      "id": 25,
+      "text": "Response time is defined as:",
+      "options": {
+        "A": "T_completion − T_arrival",
+        "B": "T_firstrun − T_arrival",
+        "C": "T_completion − T_firstrun",
+        "D": "T_arrival − T_firstrun"
+      },
+      "correct": [
+        "B"
+      ],
+      "mode": "any",
+      "explanation": "OSTEP Chapter 7 defines two distinct performance metrics:\n\n| Metric | Formula | Measures |\n|--------|---------|---------|\n| **Turnaround time** | T_completion − T_arrival | Total time from submission to completion |\n| **Response time** | T_firstrun − T_arrival | How long until first CPU access |\n\n**Why B is correct:** Response time = T_firstrun − T_arrival captures *interactivity* — how quickly does the system react to a new job?\n\n**Why the others are wrong:**\n- A: That's *turnaround time*, not response time\n- C: T_completion − T_firstrun measures execution time (how long the job actually ran), not a standard metric\n- D: Negative value — would be nonsensical\n\nResponse time matters for interactive systems (users notice delays > 100ms). Turnaround matters for batch systems (minimize total job completion time)."
+    },
+    {
+      "id": 26,
+      "text": "[Calculation] Three jobs arrive at time 0: A=20s, B=20s, C=20s. FIFO: A→B→C. Average turnaround time?",
+      "options": {
+        "A": "20s",
+        "B": "30s",
+        "C": "60s",
+        "D": "40s"
+      },
+      "correct": [
+        "D"
+      ],
+      "mode": "any",
+      "explanation": "**FIFO with equal-length jobs** — calculate turnaround times:\n\n```\nTimeline: |── A (20s) ──|── B (20s) ──|── C (20s) ──|\n           t=0          t=20          t=40           t=60\n```\n\n| Job | Finish time | Arrival | Turnaround |\n|-----|------------|---------|-----------|\n| A   | 20         | 0       | 20s       |\n| B   | 40         | 0       | 40s       |\n| C   | 60         | 0       | 60s       |\n\n**Average = (20 + 40 + 60) / 3 = 120 / 3 = 40s**\n\nWith *equal-length* jobs, FIFO is actually optimal — no other ordering would improve the average. The problem arises only when job lengths differ (the \"convoy effect\")."
+    },
+    {
+      "id": 27,
+      "text": "[Calculation] Three jobs arrive at time 0: A=90s, B=5s, C=5s. FIFO: A→B→C. Average turnaround time?",
+      "options": {
+        "A": "40s",
+        "B": "95s",
+        "C": "70s",
+        "D": "100s"
+      },
+      "correct": [
+        "B"
+      ],
+      "mode": "any",
+      "explanation": "**FIFO convoy effect** — one long job blocks all the short ones.\n\n```\nTimeline: |──────────── A (90s) ────────────|─B─|─C─|\n           t=0                               t=90 t=95 t=100\n```\n\n| Job | Finish | Turnaround |\n|-----|--------|-----------|\n| A   | 90     | 90s       |\n| B   | 95     | 95s       |\n| C   | 100    | 100s      |\n\n**Average = (90 + 95 + 100) / 3 = 285 / 3 = 95s**\n\nB and C are only 5 seconds of work but must wait 90 seconds! If SJF were used (B→C→A): turnaround would be (5 + 10 + 100)/3 = 38.3s — a huge improvement.\n\nOSTEP Chapter 7: *\"The convoy effect occurs when a number of relatively-short potential consumers of a resource get queued behind a heavyweight resource consumer.\"*"
+    },
+    {
+      "id": 28,
+      "text": "[Calculation] Three jobs arrive at time 0: A=8s, B=3s, C=12s. SJF (shortest first). What is the **response time** for job A?",
+      "options": {
+        "A": "3s",
+        "B": "8s",
+        "C": "0s",
+        "D": "11s"
+      },
+      "correct": [
+        "A"
+      ],
+      "mode": "any",
+      "explanation": "**SJF** (Shortest Job First) reorders jobs by length. With A=8s, B=3s, C=12s:\n\n```\nSJF order: B (3s) → A (8s) → C (12s)\nTimeline:  |─B─|────A────|────────C────────|\n            t=0  t=3     t=11              t=23\n```\n\n**Response time for job A = T_firstrun − T_arrival = 3 − 0 = 3s**\n\nA first gets CPU at t=3 (after B finishes). It arrived at t=0. So response time = 3s.\n\n**Why the other options are wrong:**\n- B (8s): That would be A's response time if it ran first, or B's execution duration\n- C (0s): A doesn't start immediately — B goes first (B is shorter)\n- D (11s): That's A's *turnaround* time, not response time\n\nOSTEP Chapter 7: Response time = first moment the job gets the CPU, not when it finishes."
+    },
+    {
+      "id": 29,
+      "text": "[Calculation] Round Robin, time slice = 2s, 5 jobs all arriving at time 0. Worst-case response time?",
+      "options": {
+        "A": "2s",
+        "B": "4s",
+        "C": "10s",
+        "D": "8s"
+      },
+      "correct": [
+        "D"
+      ],
+      "mode": "any",
+      "explanation": "**Round Robin** worst-case response time with N jobs and time slice Q:\n\n**Formula: (N − 1) × Q**\n\nWith 5 jobs and time slice = 2s:\n```\nt=0:  Job 1 runs (response time = 0)\nt=2:  Job 2 runs (response time = 2)\nt=4:  Job 3 runs (response time = 4)\nt=6:  Job 4 runs (response time = 6)\nt=8:  Job 5 runs (response time = 8)\n```\n\n**Worst-case response time = (5 − 1) × 2 = 8s** (for the last job in the rotation)\n\n**Why:** In the worst case, a job arrives just *after* being skipped and must wait for all N−1 other jobs to each get one time slice before it gets its first turn.\n\nOSTEP Chapter 7: *\"RR is fair — every job gets a turn quickly — making it excellent for response time but poor for turnaround time.\"*"
+    },
+    {
+      "id": 30,
+      "text": "A student says: \"SJF is the best scheduler so we should always use it.\" What is wrong with this?",
+      "options": {
+        "A": "SJF requires too much memory to keep all jobs sorted by length",
+        "B": "SJF can only handle a maximum of 10 jobs at once",
+        "C": "The OS has no way of knowing in advance how long each job will run",
+        "D": "SJF only works correctly on computers with multiple CPU cores"
+      },
+      "correct": [
+        "C"
+      ],
+      "mode": "any",
+      "explanation": "**SJF is theoretically optimal for turnaround time but practically impossible.**\n\n**Why C is correct:** The OS cannot know how long a job will run before it starts. Job length is only known *after* the job completes. You can estimate it (using exponential averaging of past CPU bursts), but exact prediction is impossible. A process might exit early due to user input, hit an unexpected branch, or encounter a network timeout.\n\n**Why the others are wrong:**\n- A: SJF uses no more memory than FIFO — job length is just a number, not extra data structures\n- B: SJF works even with different arrival times (STCF — Shortest Time-to-Completion First — handles this)\n- D: SJF needs no special hardware\n\nOSTEP Chapter 7: *\"SJF is the provably optimal algorithm if we know job lengths in advance — but we generally don't, so it cannot be used directly.\"* This is why MLFQ was invented: to approximate SJF without requiring foreknowledge."
+    },
+    {
+      "id": 31,
+      "text": "Which statements about Round Robin are correct?",
+      "options": {
+        "A": "Round Robin gives each job a fast first turn, improving response time",
+        "B": "Round Robin gives very low average turnaround time for most workloads",
+        "C": "Round Robin shares the CPU fairly by giving each job a fixed time slice",
+        "D": "Round Robin must know each job's total run time before it can start"
+      },
+      "correct": [
+        "A",
+        "C"
+      ],
+      "mode": "all",
+      "explanation": "**Round Robin** trades turnaround time for response time.\n\n**Why A and C are correct:**\n- **(A)** Every job gets its first turn within (N−1) × timeslice. This guarantees *fast response time* — great for interactive systems.\n- **(C)** RR operates by giving each job a fixed time slice (quantum), then moving to the next. This is its defining mechanism.\n\n**Why B and D are wrong:**\n- B: RR has *terrible* average turnaround time. It stretches all jobs out equally instead of finishing short ones first. OSTEP Chapter 7: *\"RR is one of the worst policies for turnaround time.\"*\n- D: RR needs *no* foreknowledge — it just rotates regardless of job length. This is an advantage over SJF.\n\nOSTEP Chapter 7: *\"RR trades turnaround time for response time — it optimizes for interactivity at the expense of completion efficiency.\"*"
+    },
+    {
+      "id": 32,
+      "text": "A job uses 8ms of CPU, then does I/O. Allotment per level = 20ms. After I/O, what is its priority?",
+      "options": {
+        "A": "Reduced — the job used some CPU time, even under the allotment",
+        "B": "Moved to lowest — all jobs that do I/O are moved to the bottom",
+        "C": "Reset to top — finishing I/O always triggers a full priority reset",
+        "D": "Unchanged — the job has not used up its full 20ms allotment yet"
+      },
+      "correct": [
+        "D"
+      ],
+      "mode": "any",
+      "explanation": "**MLFQ Rule 4** (OSTEP Chapter 8): A job's allotment tracks CPU time used at its *current queue level*, including across I/O operations.\n\n**Why D is correct:** The job used 8ms of its 20ms allotment. It has **12ms remaining**. After returning from I/O, it re-enters at the **same priority level** (same queue) with its remaining allotment intact. The job is NOT demoted because it hasn't exhausted its allotment.\n\n**Why the others are wrong:**\n- A: Not demoted — partial allotment use doesn't cause demotion\n- B: I/O doesn't automatically drop a job to the lowest queue\n- C: I/O completion does NOT reset the allotment — that loophole was explicitly closed to prevent \"gaming\" the scheduler\n\n**The key insight:** I/O-intensive jobs (like text editors, web browsers) naturally stay at high priority — they voluntarily give up the CPU frequently, never exhausting their allotment. MLFQ rewards this behavior."
+    },
+    {
+      "id": 33,
+      "text": "A CPU-bound job enters MLFQ. Q2 (high) → Q1 → Q0 (low). Allotment = 15ms. No I/O. After 45ms, which queue?",
+      "options": {
+        "A": "Q0 — demoted twice: Q2→Q1, then Q1→Q0",
+        "B": "Q1 — demoted once after using Q2's allotment",
+        "C": "Q1 — reaching Q0 requires more than 30ms of CPU use",
+        "D": "Q2 — using the CPU alone does not change a job's priority"
+      },
+      "correct": [
+        "A"
+      ],
+      "mode": "any",
+      "explanation": "**CPU-bound job demotion trace** with allotment = 15ms per level:\n\n```\nt=0:   Enters Q2 (highest priority)\nt=15:  Exhausted Q2 allotment → DEMOTED to Q1\nt=30:  Exhausted Q1 allotment → DEMOTED to Q0\nt=45:  Now at Q0 (lowest priority)\n```\n\n**Why A is correct:** After 3 × 15ms = 45ms with no I/O, the job has been demoted twice. It sits at Q0.\n\nThis is MLFQ \"learning\" that the job is CPU-bound. It progressively reduces its priority, saving the high-priority queues for interactive/short jobs. A pure CPU job at Q0 gets the least priority but still runs — it's not killed, just deprioritized.\n\nOSTEP Chapter 8 Rule 4: *\"Once a job uses up its time allotment at a given level, its priority is reduced.\"*"
+    },
+    {
+      "id": 34,
+      "text": "If MLFQ never uses priority boost, what happens to a CPU-bound job at Q0?",
+      "options": {
+        "A": "It gets moved to a higher queue after it has waited long enough",
+        "B": "It keeps running but slower, since Q0 receives less CPU power",
+        "C": "It may never run again if interactive jobs keep arriving at Q2",
+        "D": "It receives CPU time each time a new job arrives to the system"
+      },
+      "correct": [
+        "C"
+      ],
+      "mode": "any",
+      "explanation": "**Starvation** — the problem MLFQ priority boost was designed to solve.\n\n**Why C is correct:** Without a periodic priority boost:\n1. Interactive jobs keep arriving at Q2 (highest priority)\n2. The scheduler always picks Q2 jobs first\n3. The CPU-bound job at Q0 *never* runs — it is **starved**\n\nThis can last indefinitely. A batch job submitted Friday afternoon might not run until the interactive workload decreases — or never.\n\n**Why the others are wrong:**\n- A: Jobs that stay high-priority don't get moved — only Q0 jobs are at risk\n- B: Interactive jobs *stay* high unless they start using CPU heavily\n- D: The job does NOT receive CPU on new arrivals — new jobs go to Q2, making the situation worse\n\nOSTEP Chapter 8: *\"Without any other mechanism, a process that is demoted to the lowest queue may never run again — this is called starvation. Priority boost solves this.\"*"
+    },
+    {
+      "id": 35,
+      "text": "Two jobs are both in Q1. Neither has a higher priority than the other. How does MLFQ decide which one runs?",
+      "options": {
+        "A": "The one that arrived in the system first gets the CPU",
+        "B": "The one that has used less total CPU time so far gets the CPU",
+        "C": "They take turns using the CPU with a fixed time slice",
+        "D": "The one with the lower process ID number gets the CPU"
+      },
+      "correct": [
+        "C"
+      ],
+      "mode": "any",
+      "explanation": "**MLFQ Rule 2** (OSTEP Chapter 8): *If two jobs are at the same priority, run them round-robin.*\n\n**Why C is correct:** Within a queue, all jobs are equal. The scheduler uses **Round Robin** among same-level jobs — each gets a time slice, then yields to the next.\n\n**Why the others are wrong:**\n- A: FIFO by arrival is NOT the rule — RR is used within a queue\n- B: CPU usage history doesn't break ties within a queue\n- D: Process ID does not determine scheduling order\n\nThis rule ensures **fairness within a priority level**. Two users both running CPU-heavy jobs at Q0 will each get half the CPU time. Neither can monopolize based on having a lower PID or arriving earlier."
+    },
+    {
+      "id": 36,
+      "text": "Which statements about MLFQ are correct?",
+      "options": {
+        "A": "Jobs that do frequent I/O tend to stay at higher priority queues",
+        "B": "All jobs always stay in the same queue for their entire time in the system",
+        "C": "A periodic priority boost prevents long-running jobs from being starved",
+        "D": "New jobs always enter at the lowest priority queue to wait their turn"
+      },
+      "correct": [
+        "A",
+        "C"
+      ],
+      "mode": "all",
+      "explanation": "**MLFQ property review:**\n\n**Why A and C are correct:**\n- **(A)** Jobs that do frequent I/O consistently use only a small fraction of their allotment before blocking. They never exhaust it → never get demoted → **stay at high priority**. MLFQ naturally identifies and rewards I/O-intensive interactive jobs.\n- **(C)** The periodic priority boost (Rule 5) moves *all* jobs back to the highest queue after period S. This **prevents starvation** and also gives CPU-bound jobs that have changed behavior (e.g., became interactive) a chance to regain appropriate priority.\n\n**Why B and D are wrong:**\n- B: Jobs move constantly — CPU jobs sink, boosts raise everyone\n- D: New jobs enter at the **highest** queue (Rule 3), not the lowest. MLFQ assumes new jobs are short until proven otherwise."
+    },
+    {
+      "id": 37,
+      "text": "A job at Q2 uses 9ms of CPU, then does I/O. Allotment per level = 15ms. When it returns from I/O, how much allotment remains at Q2?",
+      "options": {
+        "A": "6ms — the OS tracks total CPU used, even across I/O",
+        "B": "15ms — the allotment fully resets after every I/O call",
+        "C": "9ms — previous CPU usage is forgotten when I/O starts",
+        "D": "0ms — any I/O call uses up all remaining allotment"
+      },
+      "correct": [
+        "A"
+      ],
+      "mode": "any",
+      "explanation": "**MLFQ allotment tracking across I/O** (anti-gaming rule):\n\n```\nJob at Q2, allotment = 15ms\nUsed: 9ms of CPU\nRemaining: 15 - 9 = 6ms\n```\n\n**Why A is correct:** The OS tracks *cumulative* CPU usage per allotment period. After returning from I/O, the job has only **6ms remaining** at Q2. If it uses those 6ms without blocking again, it exhausts the allotment and is demoted to Q1.\n\n**This rule was added specifically to prevent gaming.** Without it, a smart program could issue a trivial I/O call (like `read` of 1 byte) just before its allotment expires, resetting its counter and staying at high priority forever — unfairly hogging the top queue.\n\nOSTEP Chapter 8: *\"The scheduler must be designed so programs cannot game it to achieve better service than they deserve.\"*"
+    },
+    {
+      "id": 38,
+      "text": "A new job arrives in MLFQ. It turns out to be very long and CPU-bound. What will MLFQ do with it over time?",
+      "options": {
+        "A": "Keep it at the top queue so other jobs can plan around it",
+        "B": "Gradually demote it to lower queues as it uses up each level's allotment",
+        "C": "Move it immediately to the bottom queue since long jobs are not allowed at top",
+        "D": "Terminate it after a fixed time since long jobs are not allowed in MLFQ"
+      },
+      "correct": [
+        "B"
+      ],
+      "mode": "any",
+      "explanation": "**MLFQ Rule 3** (OSTEP Chapter 8): *When a job enters the system, it is placed at the highest priority queue.*\n\n**Why B is correct:** MLFQ doesn't know if a new job will be short or long. It *optimistically* places it at Q2 (highest), giving it the benefit of the doubt. If it turns out to be short/interactive, it stays high — good response time. If it's actually long and CPU-bound, it will gradually exhaust allotments and be demoted to Q1, then Q0.\n\n**Why the others are wrong:**\n- A: New jobs are not more *urgent*, they're just *unknown* — MLFQ assumes short until proven otherwise\n- B/D: Not about urgency or user preference — it's about optimistic assumption\n\nOSTEP Chapter 8: *\"MLFQ approximates SJF: by placing new jobs at the top and observing their behavior, it learns over time which are short (interactive) and which are long (CPU-bound).\"*"
+    },
+    {
+      "id": 39,
+      "text": "Job X runs 1ms then does I/O, repeatedly. Job Y runs non-stop for a long time. After many rounds, where is each job in MLFQ?",
+      "options": {
+        "A": "Both at Q0 — all jobs eventually sink to the bottom queue",
+        "B": "X at Q2, Y at Q0 — X never uses its full allotment, Y gets demoted",
+        "C": "Both at Q2 — priority boost keeps resetting everyone to the top",
+        "D": "X at Q0, Y at Q2 — I/O jobs are penalized and CPU jobs are rewarded"
+      },
+      "correct": [
+        "A",
+        "B"
+      ],
+      "mode": "any",
+      "explanation": "**Steady-state behavior** of X (I/O-intensive) vs Y (CPU-bound):\n\n**Job X:** Runs 1ms → I/O → repeat. Never uses its full allotment at Q2. Per MLFQ rules, it is **never demoted**. X stays at Q2 indefinitely, getting immediate CPU access each time it returns from I/O.\n\n**Job Y:** Runs continuously. Uses its full allotment at each level. Q2→Q1→Q0. Y sinks to the bottom queue.\n\n**Answer B (X at Q2, Y at Q0)** describes the primary steady-state.\n**Answer A (both at Q0)** could occur after many priority boosts where even X is boosted but then... actually X stays high. B is the better answer.\n\nOSTEP Chapter 8: *\"MLFQ approximates SJF without requiring foreknowledge — interactive jobs naturally float to the top; CPU-bound jobs sink to the bottom.\"*"
+    },
+    {
+      "id": 40,
+      "text": "MLFQ tries to achieve two goals at once. Which are they?",
+      "options": {
+        "A": "Good response time for interactive jobs that do frequent I/O",
+        "B": "Give all jobs exactly equal CPU time over any time period",
+        "C": "Maximize the total number of processes that can run at once",
+        "D": "Good turnaround time by running shorter jobs before longer ones"
+      },
+      "correct": [
+        "A",
+        "D"
+      ],
+      "mode": "all",
+      "explanation": "**MLFQ was designed to solve two competing goals simultaneously** (OSTEP Chapter 8):\n\n**Goal 1 — Good turnaround time (D):** By demoting CPU-bound jobs and keeping short jobs at high priority, MLFQ approximates SJF without knowing job lengths in advance. Short jobs finish quickly at high priority.\n\n**Goal 2 — Good response time for interactive jobs (A):** I/O-heavy interactive jobs stay at high priority queues. They get CPU immediately after each I/O, giving users sub-millisecond response times.\n\n**Why B and C are wrong:**\n- B: Equal CPU time is *Round Robin's* goal — MLFQ intentionally gives *unequal* time based on behavior\n- C: Maximizing simultaneous processes is a memory management goal, not a scheduler goal\n\nOSTEP Chapter 8: *\"The fundamental problem MLFQ tries to solve: how do we design a scheduler that behaves like SJF for short interactive jobs, while still being fair to long-running CPU-bound jobs?\"*"
+    }
+  ]
+}

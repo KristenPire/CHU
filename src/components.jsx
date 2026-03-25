@@ -73,6 +73,7 @@ const TAG_CLASSES = {
   fail: "text-[#1a0000] bg-tm-red",
   partial: "text-[#1a1200] bg-tm-yellow",
   info: "text-tm-cyan bg-transparent border border-tm-cyandim",
+  warn: "text-[#1a1200] bg-tm-yellow",
 };
 
 export function Tag({ type, children }) {
@@ -248,9 +249,12 @@ export function QuestionCard({ question, wrongAnswer, index }) {
   const [showWhy, setShowWhy] = useState(false);
 
   // wrongAnswer = what the student picked (string like "A" or "ABC"), or undefined if correct
+  // "x" means the student did not answer at all
   const isWrongQuestion = wrongAnswer !== undefined;
-  const picked = isWrongQuestion ? wrongAnswer.split("") : question.correct;
-  const accent = isWrongQuestion ? C.redDim : C.greenDim;
+  const isNoAnswer = isWrongQuestion && wrongAnswer === "x";
+  const picked = isWrongQuestion ? (isNoAnswer ? [] : wrongAnswer.split("")) : question.correct;
+  const accent = isWrongQuestion ? (isNoAnswer ? C.yellowDim : C.redDim) : C.greenDim;
+  const isEitherOr = question.mode === "any" && question.correct.length > 1;
 
   return (
     <motion.div variants={staggerItem}>
@@ -261,10 +265,11 @@ export function QuestionCard({ question, wrongAnswer, index }) {
             <span className="text-tm-cyan text-[12px]">
               Q{String(index + 1).padStart(2, "0")}
             </span>
-            <Tag type={isWrongQuestion ? "fail" : "ok"}>
-              {isWrongQuestion ? "WRONG" : "OK"}
+            <Tag type={isNoAnswer ? "warn" : isWrongQuestion ? "fail" : "ok"}>
+              {isNoAnswer ? "NO ANSWER" : isWrongQuestion ? "WRONG" : "OK"}
             </Tag>
             {question.mode === "all" && <Tag type="info">SELECT ALL</Tag>}
+            {isEitherOr && <Tag type="info">{question.correct.join("/")}</Tag>}
           </div>
         </div>
 
