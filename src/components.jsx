@@ -227,19 +227,26 @@ function OptionRow({ letter, text, isCorrect, isPicked, isWrong }) {
 
   return (
     <div
-      className="py-1.5 px-2.5 text-[13px]"
+      className="py-1.5 px-2.5 text-[13px] flex items-baseline justify-between gap-4"
       style={{
         background: bg,
         color,
         borderLeft: isPicked
-          ? `2px solid ${isPicked && isCorrect ? C.green : C.red}`
+          ? `2px solid ${isCorrect ? C.green : C.red}`
           : "2px solid transparent",
       }}
     >
-      {prefix}
-      {letter}. <Md>{text}</Md>
-      {suffix}
-      {isPicked && <Tag type="info">YOUR ANSWER</Tag>}
+      <span>
+        {prefix}{letter}. <Md>{text}</Md>{suffix}
+      </span>
+      {isPicked && (
+        <span
+          className="text-[11px] font-mono shrink-0 tracking-wider"
+          style={{ color: isWrong ? C.redDim : C.greenDim }}
+        >
+          your pick
+        </span>
+      )}
     </div>
   );
 }
