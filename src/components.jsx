@@ -216,15 +216,15 @@ function OptionRow({ letter, text, isCorrect, isPicked, isWrong }) {
     bg = "rgba(0,255,65,0.08)";
     color = C.green;
     prefix = "» ";
-    suffix = " [OK]";
+    suffix = " [YOU ✓]";
   } else if (isPicked && isWrong) {
     bg = "rgba(255,51,51,0.08)";
     color = C.red;
     prefix = "» ";
-    suffix = " [✗]";
+    suffix = " [YOU ✗]";
   } else if (isCorrect && !isPicked) {
-    color = C.greenDim;
-    suffix = " [✓]";
+    color = C.yellow;
+    suffix = " [← CORRECT]";
   }
 
   return (
