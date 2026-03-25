@@ -139,7 +139,7 @@ function TerminalInput({ studentId, error, shakeKey, inputRef, onSubmit, onFocus
         value={studentId}
         onChange={(e) => onChange(e.target.value.replace(/\D/g, ""))}
         onKeyDown={(e) => e.key === "Enter" && onSubmit()}
-        className="absolute -left-[9999px] opacity-0 w-0 h-0"
+        className="fixed top-0 left-0 opacity-0 w-px h-px pointer-events-none"
       />
     </motion.div>
   );
