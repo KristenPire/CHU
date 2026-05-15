@@ -1,0 +1,571 @@
+{
+  "bodyType": "mcq",
+  "questions": [
+    {
+      "id": 1,
+      "text": "In the earliest operating systems, the OS was just a library of functions. What was the biggest danger this created?",
+      "options": {
+        "A": "Any running program could read or write any other program's memory",
+        "B": "Programs ran too slowly because the library had no scheduler",
+        "C": "Users had to recompile the OS library for every new program written",
+        "D": "A buggy program could corrupt the CPU's microcode and permanently damage the chip"
+      },
+      "correct": [
+        "A"
+      ],
+      "mode": "any"
+    },
+    {
+      "id": 2,
+      "text": "A running process calls `read()` to load data from disk. The disk is slow. Under multiprogramming, what should the OS do while waiting?",
+      "options": {
+        "A": "Leave the CPU idle until the disk request completes",
+        "B": "Switch the CPU to another ready process",
+        "C": "Cancel the read and retry it later in the background",
+        "D": "Speed up the disk by pre-loading adjacent blocks"
+      },
+      "correct": [
+        "B"
+      ],
+      "mode": "any"
+    },
+    {
+      "id": 3,
+      "text": "Which of the following is a **mechanism**, not a policy?",
+      "options": {
+        "A": "Always run the job with the shortest remaining time first",
+        "B": "Prefer I/O-bound jobs over CPU-bound jobs at all times",
+        "C": "Saving and restoring CPU registers when switching processes",
+        "D": "Give interactive users twice the CPU share of batch jobs"
+      },
+      "correct": [
+        "C"
+      ],
+      "mode": "any"
+    },
+    {
+      "id": 4,
+      "text": "Which are the three main OS responsibilities?",
+      "options": {
+        "A": "Virtualizing CPU and memory so each process has its own private view",
+        "B": "Compiling programs to native machine code before they run",
+        "C": "Managing concurrent access to shared data safely",
+        "D": "Persisting data so it survives crashes and reboots"
+      },
+      "correct": [
+        "A",
+        "C",
+        "D"
+      ],
+      "mode": "all"
+    },
+    {
+      "id": 5,
+      "text": "`nginx` is started three times from the same binary. How many program and processes exist?",
+      "options": {
+        "A": "3 programs and 1 process",
+        "B": "3 programs and 3 processes",
+        "C": "1 program and 1 process",
+        "D": "1 program and 3 processes"
+      },
+      "correct": [
+        "D"
+      ],
+      "mode": "any"
+    },
+    {
+      "id": 6,
+      "text": "A C++ function calls `new char[1024]`. Where in the process address space is the allocated region?",
+      "options": {
+        "A": "Heap",
+        "B": "Code",
+        "C": "Static Data",
+        "D": "Stack"
+      },
+      "correct": [
+        "A"
+      ],
+      "mode": "any"
+    },
+    {
+      "id": 7,
+      "text": "Process P0 is running. It calls `read()` from disk. Which state transition occurs for P0?",
+      "options": {
+        "A": "READY → RUNNING",
+        "B": "RUNNING → BLOCKED",
+        "C": "BLOCKED → READY",
+        "D": "RUNNING → READY"
+      },
+      "correct": [
+        "B"
+      ],
+      "mode": "any"
+    },
+    {
+      "id": 8,
+      "text": "To create a new process, the OS performs these steps. Put them in the correct order:\n\n```\nP: The CPU begins executing the program's first instruction\nQ: The OS loads the program's code and static data into memory\nR: The OS allocates a stack and heap for the process\nS: The OS assigns a PID and creates a Process Control Block\nT: The OS places the process on the ready queue\n```",
+      "options": {
+        "A": "Q → R → S → P → T",
+        "B": "S → Q → R → T → P",
+        "C": "S → R → Q → T → P",
+        "D": "Q → S → R → T → P"
+      },
+      "correct": [
+        "B"
+      ],
+      "mode": "any"
+    },
+    {
+      "id": 9,
+      "text": "Process A and Process B both write to virtual address `0x1000`. What is the result?",
+      "options": {
+        "A": "The second write overwrites the first — virtual addresses are shared between processes",
+        "B": "The OS blocks one write until the other process releases that address",
+        "C": "Each write goes to a different physical location — each process has its own address space",
+        "D": "Both writes are discarded — the OS reserves `0x1000` for kernel use"
+      },
+      "correct": [
+        "C"
+      ],
+      "mode": "any"
+    },
+    {
+      "id": 10,
+      "text": "A timer fires while Process A is running. Put these steps in the correct order:\n\n```\nP: OS decides to switch to Process B\nQ: Hardware saves A's registers to the kernel stack\nR: OS loads B's saved registers and resumes B\nS: Timer fires\nT: CPU jumps to the OS interrupt handler\n```",
+      "options": {
+        "A": "S → Q → T → P → R",
+        "B": "T → S → Q → P → R",
+        "C": "S → T → Q → R → P",
+        "D": "Q → S → T → P → R"
+      },
+      "correct": [
+        "A"
+      ],
+      "mode": "any"
+    },
+    {
+      "id": 11,
+      "text": "During a context switch, who performs the **second** register save — saving kernel registers into A's PCB?",
+      "options": {
+        "A": "The hardware, at the same time it saves A's user registers",
+        "B": "The OS software inside the context switch routine",
+        "C": "The user process itself just before it is preempted",
+        "D": "The disk driver once its current I/O request finishes"
+      },
+      "correct": [
+        "B"
+      ],
+      "mode": "any"
+    },
+    {
+      "id": 12,
+      "text": "Which are hidden costs of a context switch, beyond saving and restoring registers?",
+      "options": {
+        "A": "The CPU's data cache holds the old process's data, hurting the new process's performance",
+        "B": "The OS must move the old process's heap to swap space to free memory",
+        "C": "The TLB may need to be refilled for the new process's address translations",
+        "D": "The OS must recompile the old process's code before it can resume"
+      },
+      "correct": [
+        "A",
+        "C"
+      ],
+      "mode": "all"
+    },
+    {
+      "id": 13,
+      "text": "Three jobs arrive at time 0: A=10s, B=10s, C=10s. FIFO order A→B→C. Average **turnaround** time?",
+      "options": {
+        "A": "5s",
+        "B": "10s",
+        "C": "20s",
+        "D": "30s"
+      },
+      "correct": [
+        "C"
+      ],
+      "mode": "any"
+    },
+    {
+      "id": 14,
+      "text": "Jobs A=100s, B=5s, C=5s all arrive at time 0. FIFO runs A first, making B and C wait 100s. Which scheduling algorithm would most improve average turnaround time?",
+      "options": {
+        "A": "Round Robin with a 1s time slice",
+        "B": "Shortest Job First",
+        "C": "Priority Scheduling",
+        "D": "Cooperative Scheduling"
+      },
+      "correct": [
+        "B"
+      ],
+      "mode": "any"
+    },
+    {
+      "id": 15,
+      "text": "Why can't the OS use SJF (Shortest Job First) for real processes?",
+      "options": {
+        "A": "The OS cannot know how long a job will run before it starts",
+        "B": "SJF causes priority inversion between batch and interactive jobs",
+        "C": "SJF requires special hardware support not found in standard CPUs",
+        "D": "SJF only works correctly when all jobs arrive at exactly time 0"
+      },
+      "correct": [
+        "A"
+      ],
+      "mode": "any"
+    },
+    {
+      "id": 16,
+      "text": "Round Robin, time slice = 2s. Four jobs arrive at time 0. What is the **worst-case response time** for any single job?",
+      "options": {
+        "A": "2s",
+        "B": "6s",
+        "C": "4s",
+        "D": "8s"
+      },
+      "correct": [
+        "B"
+      ],
+      "mode": "any"
+    },
+    {
+      "id": 17,
+      "text": "Job A uses 1ms of CPU then issues I/O. Job B uses the CPU non-stop. Both start at Q2 with a 10ms allotment. After A completes 4 I/O cycles and B has used 12ms of CPU, which job is at the highest queue?",
+      "options": {
+        "A": "B",
+        "B": "Both",
+        "C": "A",
+        "D": "Neither"
+      },
+      "correct": [
+        "C"
+      ],
+      "mode": "any"
+    },
+    {
+      "id": 18,
+      "text": "A job enters MLFQ at Q2 (highest). Allotment = 10ms. It uses 7ms of CPU, then issues I/O. After returning from I/O, how much allotment is left at Q2?",
+      "options": {
+        "A": "10ms",
+        "B": "7ms",
+        "C": "0ms",
+        "D": "3ms"
+      },
+      "correct": [
+        "D"
+      ],
+      "mode": "any"
+    },
+    {
+      "id": 19,
+      "text": "Every new job in MLFQ starts at the highest-priority queue. Why?",
+      "options": {
+        "A": "The OS assumes the job is short until CPU usage proves otherwise",
+        "B": "New jobs are always more urgent than jobs already running",
+        "C": "New jobs start at the top so they are guaranteed to run immediately within one time slice of arriving",
+        "D": "Higher queues have more CPU cores available on multi-core systems"
+      },
+      "correct": [
+        "A"
+      ],
+      "mode": "any"
+    },
+    {
+      "id": 20,
+      "text": "A CPU-bound job enters MLFQ with queues Q2, Q1, Q0. Allotment = 10ms per queue. No I/O. After using 12ms of CPU, which queue is it in?",
+      "options": {
+        "A": "Q2",
+        "B": "Q1",
+        "C": "Q0",
+        "D": "Q1"
+      },
+      "correct": [
+        "B",
+        "D"
+      ],
+      "mode": "any"
+    },
+    {
+      "id": 21,
+      "text": "Without periodic priority boost in MLFQ, which problem occurs?",
+      "options": {
+        "A": "New jobs skip Q2 and enter at Q0 directly to avoid priority gaps",
+        "B": "I/O-bound interactive jobs gradually sink to Q0 through CPU overuse",
+        "C": "Long-running CPU-bound jobs at Q0 may never receive CPU time",
+        "D": "The scheduler must fully restart its queue structures on each new arrival"
+      },
+      "correct": [
+        "C"
+      ],
+      "mode": "any"
+    },
+    {
+      "id": 22,
+      "text": "Which two goals does MLFQ try to achieve simultaneously?",
+      "options": {
+        "A": "Give all jobs exactly equal CPU time across any time window",
+        "B": "Good turnaround time by running shorter jobs before longer ones",
+        "C": "Good response time for interactive and short jobs",
+        "D": "Guarantee the longest-running job finishes before any new arrivals"
+      },
+      "correct": [
+        "B",
+        "C"
+      ],
+      "mode": "all"
+    },
+    {
+      "id": 23,
+      "text": "A process has BASE = 20KB and BOUNDS = 10KB. It accesses virtual address 11KB. What happens?",
+      "options": {
+        "A": "Physical address = 20KB + 11KB = 31KB; the access succeeds",
+        "B": "The address wraps to 11KB − 10KB = 1KB within the region",
+        "C": "The OS silently extends BOUNDS to 11KB and retries the access",
+        "D": "The hardware raises a protection fault — 11KB exceeds the 10KB bounds"
+      },
+      "correct": [
+        "D"
+      ],
+      "mode": "any"
+    },
+    {
+      "id": 24,
+      "text": "The system uses base and bounds. A 48KB physical region is reserved for a process that only uses 6KB. The unused 42KB cannot be given to other processes. What is this waste called?",
+      "options": {
+        "A": "Internal fragmentation",
+        "B": "External fragmentation",
+        "C": "A page fault",
+        "D": "A memory leak"
+      },
+      "correct": [
+        "A"
+      ],
+      "mode": "any"
+    },
+    {
+      "id": 25,
+      "text": "The system uses segmentation. After several allocations and frees, physical memory contains:\n\n```\n[Used 6KB][Free 2KB][Used 10KB][Free 3KB][Used 8KB][Free 4KB]\n```\n\nA new segment needs 7KB. Total free = 9KB, but no single hole is large enough. What is this called?",
+      "options": {
+        "A": "Internal fragmentation",
+        "B": "External fragmentation",
+        "C": "A page fault",
+        "D": "Memory overflow"
+      },
+      "correct": [
+        "B"
+      ],
+      "mode": "any"
+    },
+    {
+      "id": 26,
+      "text": "Segmentation gives each of code, heap, and stack its own base+bounds register pair. Compared to a single base+bounds for the whole address space, what is the key advantage?",
+      "options": {
+        "A": "The OS can compress unused segments using hardware bitmaps",
+        "B": "The OS moves inactive segments to disk to free physical memory",
+        "C": "The unused gap between heap and stack needs no physical memory",
+        "D": "All segments always map to the same starting physical address"
+      },
+      "correct": [
+        "C"
+      ],
+      "mode": "any"
+    },
+    {
+      "id": 27,
+      "text": "In a paged system, a virtual address is split into two fields. What are they?",
+      "options": {
+        "A": "Segment number and byte offset within that segment",
+        "B": "Physical Frame Number and total data size in bytes",
+        "C": "Page directory index and a bounds register value",
+        "D": "Virtual Page Number (VPN) and offset within the page"
+      },
+      "correct": [
+        "D"
+      ],
+      "mode": "any"
+    },
+    {
+      "id": 28,
+      "text": "A process needs exactly 9KB of memory. The system uses 4KB pages. How much physical memory is actually allocated?",
+      "options": {
+        "A": "9KB",
+        "B": "8KB",
+        "C": "12KB",
+        "D": "16KB"
+      },
+      "correct": [
+        "C"
+      ],
+      "mode": "any"
+    },
+    {
+      "id": 29,
+      "text": "A program accesses the same 6 pages in a tight loop. After the first pass, nearly all accesses are TLB hits. Which principle explains this?",
+      "options": {
+        "A": "Spatial locality",
+        "B": "Temporal locality",
+        "C": "Sequential prefetching",
+        "D": "Random access optimization"
+      },
+      "correct": [
+        "B"
+      ],
+      "mode": "any"
+    },
+    {
+      "id": 30,
+      "text": "The OS switches from Process A to Process B. The TLB still contains A's translations. To avoid flushing the entire TLB on every context switch, what mechanism does a modern OS use?",
+      "options": {
+        "A": "Copy A's TLB entries into B's page table so they can be reused",
+        "B": "Tag each TLB entry with an Address Space ID (ASID) so A's and B's entries coexist safely",
+        "C": "Mark all TLB entries as read-only until B validates them",
+        "D": "Increase the TLB size so it holds all translations for all processes at once"
+      },
+      "correct": [
+        "B"
+      ],
+      "mode": "any"
+    },
+    {
+      "id": 31,
+      "text": "A process uses only 5% of its 4GB virtual address space. Why does a linear page table waste memory?",
+      "options": {
+        "A": "The table is stored in CPU registers which have very limited capacity",
+        "B": "Each PTE is 64 bytes, making even small page tables enormous",
+        "C": "The table must be duplicated in memory for each open file descriptor",
+        "D": "Every virtual page has an entry, even pages the process never uses"
+      },
+      "correct": [
+        "D"
+      ],
+      "mode": "any"
+    },
+    {
+      "id": 32,
+      "text": "In a two-level page table, a page directory entry (PDE) has its valid bit set to 0. What does this mean?",
+      "options": {
+        "A": "No page table page exists for that virtual address region, all pages there are unused",
+        "B": "That virtual region was swapped to disk and will reload when accessed",
+        "C": "The PDE's frame number is zero, pointing to reserved OS kernel memory",
+        "D": "The entire page directory is corrupt and the OS must rebuild it from scratch"
+      },
+      "correct": [
+        "A"
+      ],
+      "mode": "any"
+    },
+    {
+      "id": 33,
+      "text": "Which are advantages of multi-level page tables over a linear page table?",
+      "options": {
+        "A": "Page Table memory is only allocated for virtual regions the process actually uses",
+        "B": "Each piece of the page table fits in one physical page — no contiguous allocation needed",
+        "C": "TLB misses require fewer memory accesses with a multi-level table",
+        "D": "Multi-level tables allow the page table to be stored on disk instead of in physical memory"
+      },
+      "correct": [
+        "A",
+        "B"
+      ],
+      "mode": "all"
+    },
+    {
+      "id": 34,
+      "text": "A TLB holds 16 entries and uses Least Recently Used (LRU) replacement. A program loops over 17 distinct pages repeatedly. What happens on each loop pass?",
+      "options": {
+        "A": "Only the 17th page causes misses; the first 16 stay permanently cached",
+        "B": "Every page access misses",
+        "C": "The OS detects the pattern and expands the TLB to 17 entries automatically",
+        "D": "About half the accesses hit because LRU keeps some entries by chance"
+      },
+      "correct": [
+        "B"
+      ],
+      "mode": "any"
+    },
+    {
+      "id": 35,
+      "text": "Process X crashes due to a bad pointer. Process Y keeps running without interruption. Which virtual memory property makes this possible?",
+      "options": {
+        "A": "Efficiency",
+        "B": "Transparency",
+        "C": "Isolation",
+        "D": "Temporal locality"
+      },
+      "correct": [
+        "C"
+      ],
+      "mode": "any"
+    },
+    {
+      "id": 36,
+      "text": "A user program tries to directly read a hardware device register at a privileged memory address. The system enforces kernel mode / user mode separation. What happens?",
+      "options": {
+        "A": "The OS grants hardware access after checking the program's privilege level",
+        "B": "The access succeeds because all valid virtual addresses can be read by any running process",
+        "C": "The program must first call an OS function to disable interrupts before hardware access is allowed",
+        "D": "A protection fault is raised"
+      },
+      "correct": [
+        "D"
+      ],
+      "mode": "any"
+    },
+    {
+      "id": 37,
+      "text": "Two threads execute `counter++` concurrently on a shared variable. Thread 1 loads counter=10, then Thread 2 loads counter=10. Both add 1 and store. What is the final value of `counter`?",
+      "options": {
+        "A": "11",
+        "B": "10",
+        "C": "12",
+        "D": "21"
+      },
+      "correct": [
+        "A"
+      ],
+      "mode": "any"
+    },
+    {
+      "id": 38,
+      "text": "Thread A holds a mutex(lock) and is in its critical section. Thread B calls `lock()` on the same mutex. In a sleeping lock (mutex) implementation, what does Thread B do while waiting?",
+      "options": {
+        "A": "It executes the critical section in parallel with Thread A",
+        "B": "It is suspended by the OS and added to a wait queue",
+        "C": "It spins in a loop checking the lock flag until it becomes free",
+        "D": "It raises a deadlock exception visible to the OS and both threads"
+      },
+      "correct": [
+        "B"
+      ],
+      "mode": "any"
+    },
+    {
+      "id": 39,
+      "text": "Appending a block to a file requires writing three structures: the data block, the inode, and the bitmap. The system crashes after only the data block is written. Why is journaling a better solution than fsck?",
+      "options": {
+        "A": "Journaling prevents crashes from occurring during disk write sequences",
+        "B": "Journaling stores all three writes in duplicate so one copy always survives",
+        "C": "Recovery only scans the journal log, not the entire disk",
+        "D": "Journaling merges the three writes into a single atomic disk sector"
+      },
+      "correct": [
+        "C"
+      ],
+      "mode": "any"
+    },
+    {
+      "id": 40,
+      "text": "A file is identified internally by its inode number, not its filename. Where is the mapping from filename to inode number stored?",
+      "options": {
+        "A": "In the superblock, which stores a list of all file names and their on-disk locations in the file system",
+        "B": "In the inode itself, as a special name field alongside file size and permissions",
+        "C": "In the bitmap, which tracks which inodes are allocated and which are currently free",
+        "D": "In the directory that contains the file"
+      },
+      "correct": [
+        "D"
+      ],
+      "mode": "any"
+    }
+  ]
+}
