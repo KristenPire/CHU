@@ -1,0 +1,15 @@
+{
+  "bodyType": "project",
+  "parts": [
+    {
+      "id": "code",
+      "label": "Code",
+      "maxPoints": 100
+    },
+    {
+      "id": "question",
+      "label": "Question",
+      "maxPoints": 100
+    }
+  ]
+}
