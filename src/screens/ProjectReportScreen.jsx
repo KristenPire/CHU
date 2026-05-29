@@ -83,7 +83,7 @@ function ReportHeader({ project, group, studentId }) {
       </div>
 
       <div className="flex flex-wrap gap-1.5 mb-4">
-        {group && Object.entries(group.members).map(([id, name]) => (
+        {group && Object.entries(group.members).map(([id]) => (
           <span
             key={id}
             className="text-[11px] px-2 py-0.5 border"
@@ -93,7 +93,7 @@ function ReportHeader({ project, group, studentId }) {
                 : { color: C.textDim, borderColor: C.border }
             }
           >
-            {name} <span style={{ opacity: 0.5 }}>{id}</span>
+            {id}
           </span>
         ))}
       </div>

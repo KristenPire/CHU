@@ -82,16 +82,13 @@ function ScoreHeader({ exam, student, studentId, pct, label, hasAnswers, correct
         {exam.date} │ {exam.coeff}% │ ID: {studentId}
       </div>
 
-      <div className="flex justify-between items-baseline flex-wrap gap-2 mb-2">
-        <span className="text-tm-white text-[13px]">
-          Student: <span className="text-tm-cyan">{student.name}</span>
-        </span>
-        {label && (
+      {label && (
+        <div className="flex justify-end mb-2">
           <span className="text-[13px] font-bold" style={{ color: gradeColor(pct) }}>
             [{label}]
           </span>
-        )}
-      </div>
+        </div>
+      )}
 
       <div className="mb-3">
         <span className="text-tm-white text-[24px] sm:text-[28px] font-bold">{student.grade}</span>

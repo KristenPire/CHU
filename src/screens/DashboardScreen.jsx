@@ -18,14 +18,12 @@ import {
 import {
   getStudentExams,
   getStudentProjects,
-  getStudentName,
   getDefaultClassId,
   computeWeightedAverage,
   PROJECT_REPORTS,
 } from "../data";
 
 export function DashboardScreen({ studentId, onSelectExam, onSelectProject, onLogout }) {
-  const name = getStudentName(studentId);
   const [classId, setClassId] = useState(() => getDefaultClassId(studentId));
 
   const exams = useMemo(
@@ -57,7 +55,7 @@ export function DashboardScreen({ studentId, onSelectExam, onSelectProject, onLo
       <LogoutButton onLogout={onLogout} />
 
       <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
-        <IdentityCard name={name} studentId={studentId} />
+        <IdentityCard studentId={studentId} />
       </motion.div>
 
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
@@ -133,13 +131,10 @@ function LogoutButton({ onLogout }) {
   );
 }
 
-function IdentityCard({ name, studentId }) {
+function IdentityCard({ studentId }) {
   return (
     <AsciiBox accent="#00d4ff" className="p-3 sm:p-4 mb-5">
-      <div className="flex justify-between items-center flex-wrap gap-2">
-        <div className="text-tm-white text-[16px] sm:text-[18px] font-bold">{name}</div>
-        <div className="text-tm-dim text-[12px]">ID: {studentId}</div>
-      </div>
+      <div className="text-tm-white text-[16px] sm:text-[18px] font-bold">ID: {studentId}</div>
     </AsciiBox>
   );
 }

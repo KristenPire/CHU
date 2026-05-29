@@ -71,7 +71,7 @@ export function ProjectCard({ project, group, studentId, hasReport, onViewReport
               <div className="mb-4">
                 <div className="text-tm-dim text-[10px] tracking-widest mb-1.5">MEMBERS</div>
                 <div className="flex flex-wrap gap-1.5">
-                  {Object.entries(group.members).map(([id, name]) => (
+                  {Object.entries(group.members).map(([id]) => (
                     <span
                       key={id}
                       className="text-[11px] px-2 py-0.5 border"
@@ -81,7 +81,7 @@ export function ProjectCard({ project, group, studentId, hasReport, onViewReport
                           : { color: C.textDim, borderColor: C.border }
                       }
                     >
-                      {name} <span style={{ opacity: 0.5 }}>{id}</span>
+                      {id}
                     </span>
                   ))}
                 </div>
