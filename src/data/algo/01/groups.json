@@ -83,8 +83,8 @@
   {
     "groupName": "Chloe",
     "repositoryLink": null,
-    "grade": 92,
-    "comments": "Strong submission. M1 (build the tree): mostly there but find_by_id not working. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus was not attempted (no penalty).",
+    "grade": 98,
+    "comments": "Strong submission: tree, explorer and leaderboard all correct. The optional find_by_id was not done.",
     "members": {
       "2025903857": "Chloe"
     }
@@ -110,8 +110,8 @@
   {
     "groupName": "Michael",
     "repositoryLink": null,
-    "grade": 92,
-    "comments": "Strong submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): mostly there but collect not working. The optional tournament bonus was not attempted (no penalty). Note: main.py does not run end-to-end (SyntaxError: f-string expression part cannot include a backslash), but the individual functions are graded on their own, so this did not cost points.",
+    "grade": 96,
+    "comments": "Tree, explorer and tournament are correct. collect_all_comments misses part of the tree.",
     "members": {
       "2025901732": "Michael"
     }
@@ -146,8 +146,8 @@
   {
     "groupName": "Arkin",
     "repositoryLink": null,
-    "grade": 34,
-    "comments": "Incomplete submission. M1 (build the tree): mostly there but comment_class, build_tree, find_by_id not working. M2 (explore the tree): fully correct. M3 (leaderboard): not done. The optional tournament bonus was not attempted (no penalty). Note: main.py does not run end-to-end (SyntaxError: f-string: unmatched '['), but the individual functions are graded on their own, so this did not cost points.",
+    "grade": 80,
+    "comments": "Comment tree and explorer are solid. The leaderboard is started but has a few bugs. Good effort overall.",
     "members": {
       "2025903545": "Arkin"
     }
@@ -155,8 +155,8 @@
   {
     "groupName": "Eli",
     "repositoryLink": null,
-    "grade": 82,
-    "comments": "Strong submission. M1 (build the tree): mostly there but find_by_id not working. M2 (explore the tree): mostly there but deepest not working. M3 (leaderboard): fully correct. The optional tournament bonus was not attempted (no penalty).",
+    "grade": 90,
+    "comments": "Tree and leaderboard are correct. deepest_thread is off by one and find_by_id returns the id.",
     "members": {
       "2025903548": "Eli"
     }
@@ -182,8 +182,8 @@
   {
     "groupName": "Lucas",
     "repositoryLink": null,
-    "grade": 60,
-    "comments": "explorer used comment.replies instead of .children; deepest & delete are correct (credited), count still has a separate bug. Resurrected part(s) credited at 80% (−20% for not running as submitted). | Incomplete submission. M1 (build the tree): mostly there but comment_class, build_tree not working. M2 (explore the tree): not done. M3 (leaderboard): mostly there but collect not working. The optional tournament bonus is implemented (+10.0).",
+    "grade": 92,
+    "comments": "Tree, explorer, leaderboard and tournament bonus all run. Small bug in count_total_replies.",
     "members": {
       "2025902500": "Lucas"
     }
@@ -191,8 +191,8 @@
   {
     "groupName": "jerry",
     "repositoryLink": null,
-    "grade": 90,
-    "comments": "Strong submission. M1 (build the tree): fully correct. M2 (explore the tree): mostly there but delete not working. M3 (leaderboard): fully correct. The optional tournament bonus was not attempted (no penalty).",
+    "grade": 92,
+    "comments": "Tree and leaderboard are correct. delete_comment does not remove the node and find_by_id has an indentation bug.",
     "members": {
       "2025901720": "jerry"
     }
@@ -245,8 +245,8 @@
   {
     "groupName": "Jing",
     "repositoryLink": null,
-    "grade": 95,
-    "comments": "Strong submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): mostly there but collect not working. The optional tournament bonus is implemented (+3.0). Note: main.py does not run end-to-end (AttributeError: 'Comment' object has no attribute 'comment'), but the individual functions are graded on their own, so this did not cost points.",
+    "grade": 97,
+    "comments": "Tree, explorer and leaderboard work. collect misses a few comments and the tournament bonus has a small bug.",
     "members": {
       "2025902502": "Jing"
     }
@@ -299,8 +299,8 @@
   {
     "groupName": "Louis",
     "repositoryLink": null,
-    "grade": 82,
-    "comments": "Partial submission — the core is half-built. M1 (build the tree): mostly there but build_tree, find_by_id, display not working. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0). Note: main.py does not run end-to-end (KeyError: 'children'), but the individual functions are graded on their own, so this did not cost points.",
+    "grade": 95,
+    "comments": "Explorer, leaderboard and tournament bonus all correct. build_tree crashes on an extra argument.",
     "members": {
       "2025904742": "Louis"
     }
@@ -308,8 +308,8 @@
   {
     "groupName": "dejan",
     "repositoryLink": null,
-    "grade": 55,
-    "comments": "explorer & leaderboard read Comment objects as dicts ([\"...\"]); M2/M3 algorithms correct and credited; M1 remains broken on its own. Resurrected part(s) credited at 80% (−20% for not running as submitted). | Incomplete submission. M1 (build the tree): mostly there but comment_class, build_tree, find_by_id not working. M2 (explore the tree): not done. M3 (leaderboard): not done. The optional tournament bonus is implemented (+3.0).",
+    "grade": 95,
+    "comments": "Tree, explorer, leaderboard and the tournament bonus all work. The build step uses dictionaries rather than the Comment class.",
     "members": {
       "2025900917": "dejan"
     }
@@ -317,8 +317,8 @@
   {
     "groupName": "allen",
     "repositoryLink": null,
-    "grade": 96,
-    "comments": "Strong submission. M1 (build the tree): mostly there but find_by_id, display not working. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+8.0). Note: main.py does not run end-to-end (FileNotFoundError: [Errno 2] No such file or directory: 'projects/project_01_bilibili_comments/data/comments.json'), but the individual functions are graded on their own, so this did not cost points.",
+    "grade": 97,
+    "comments": "Full project working: tree, explorer, leaderboard and tournament. display and find_by_id are written as methods.",
     "members": {
       "2025900914": "allen"
     }
@@ -344,8 +344,8 @@
   {
     "groupName": "kelly",
     "repositoryLink": null,
-    "grade": 82,
-    "comments": "Partial submission — the core is half-built. M1 (build the tree): mostly there but build_tree, find_by_id, display not working. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "grade": 87,
+    "comments": "Explorer, leaderboard and tournament bonus are correct. build_tree and find_by_id have bugs.",
     "members": {
       "2025901723": "kelly"
     }
@@ -362,8 +362,8 @@
   {
     "groupName": "Klay",
     "repositoryLink": null,
-    "grade": 68,
-    "comments": "explorer used comment.replies instead of .children; the rest of M2 is correct. Resurrected part(s) credited at 80% (−20% for not running as submitted). | Incomplete submission. M1 (build the tree): mostly there but comment_class, build_tree not working. M2 (explore the tree): not done. M3 (leaderboard): mostly there but collect not working. The optional tournament bonus is implemented (+10.0).",
+    "grade": 95,
+    "comments": "Complete project: tree, explorer, leaderboard and tournament bonus. Uses 'replies' instead of 'children'.",
     "members": {
       "2025901730": "Klay"
     }
@@ -434,8 +434,8 @@
   {
     "groupName": "Coco",
     "repositoryLink": null,
-    "grade": 86,
-    "comments": "Partial submission — the core is half-built. M1 (build the tree): mostly there but build_tree, find_by_id not working. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "grade": 92,
+    "comments": "Explorer, leaderboard and tournament bonus are correct. build_tree only keeps part of the tree.",
     "members": {
       "2025901736": "Coco"
     }
@@ -479,8 +479,8 @@
   {
     "groupName": "Ray",
     "repositoryLink": null,
-    "grade": 92,
-    "comments": "Strong submission. M1 (build the tree): mostly there but find_by_id not working. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus was not attempted (no penalty).",
+    "grade": 98,
+    "comments": "Strong submission: tree, explorer and leaderboard all correct. The optional find_by_id was not done.",
     "members": {
       "2025904447": "Ray"
     }
@@ -695,8 +695,8 @@
   {
     "groupName": "Caesar",
     "repositoryLink": null,
-    "grade": 64,
-    "comments": "Partial submission — the core is half-built. M1 (build the tree): mostly there but comment_class, build_tree, find_by_id not working. M2 (explore the tree): mostly there but delete not working. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "grade": 96,
+    "comments": "Full project working: tree, explorer, leaderboard and tournament bonus. Uses private attribute names.",
     "members": {
       "2025900916": "Caesar"
     }
@@ -713,8 +713,8 @@
   {
     "groupName": "Nick",
     "repositoryLink": null,
-    "grade": 58,
-    "comments": "explorer used comment.replies instead of .children; the rest of M2 is correct. Resurrected part(s) credited at 80% (−20% for not running as submitted). | Incomplete submission. M1 (build the tree): mostly there but comment_class, build_tree not working. M2 (explore the tree): not done. M3 (leaderboard): mostly there but collect not working. The optional tournament bonus was not attempted (no penalty).",
+    "grade": 95,
+    "comments": "Everything works: tree, explorer and leaderboard. Uses a 'replies' field instead of 'children'.",
     "members": {
       "2025900606": "Nick"
     }
@@ -723,7 +723,7 @@
     "groupName": "Jonason",
     "repositoryLink": null,
     "grade": 98,
-    "comments": "explorer & leaderboard read Comment objects as dicts (.get(...)); the algorithms are correct, so M2 and M3 are credited. Resurrected part(s) credited at 80% (−20% for not running as submitted). | Incomplete submission. M1 (build the tree): fully correct. M2 (explore the tree): not done. M3 (leaderboard): not done. The optional tournament bonus is implemented (+10.0). Note: main.py does not run end-to-end (AttributeError: 'Comment' object has no attribute 'get'), but the individual functions are graded on their own, so this did not cost points.",
+    "comments": "All milestones implemented with correct logic, including the tournament bonus. Uses .get() on Comment objects.",
     "members": {
       "2025902892": "Jonason"
     }
@@ -749,8 +749,8 @@
   {
     "groupName": "peter",
     "repositoryLink": null,
-    "grade": 82,
-    "comments": "Partial submission — the core is half-built. M1 (build the tree): mostly there but find_by_id not working. M2 (explore the tree): mostly there but deepest, delete not working. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "grade": 86,
+    "comments": "Tree, leaderboard and tournament bonus work. deepest_thread, delete_comment and find_by_id have bugs.",
     "members": {
       "2025904132": "peter"
     }
@@ -776,8 +776,8 @@
   {
     "groupName": "Gary",
     "repositoryLink": null,
-    "grade": 76,
-    "comments": "f-string syntax error in print_leaderboard broke the whole module import; collect is correct (credited), top_k assumes dicts so still fails. Resurrected part(s) credited at 80% (−20% for not running as submitted). | Partial submission — the core is half-built. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): not done. The optional tournament bonus was not attempted (no penalty). Note: main.py does not run end-to-end (SyntaxError: f-string: unmatched '['), but the individual functions are graded on their own, so this did not cost points.",
+    "grade": 100,
+    "comments": "Complete and correct project, including the tournament bonus.",
     "members": {
       "2025900911": "Gary"
     }
