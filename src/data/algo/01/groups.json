@@ -1,0 +1,839 @@
+[
+  {
+    "groupName": "Wendy",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025901735": "Wendy"
+    }
+  },
+  {
+    "groupName": "Lucas",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0). Note: main.py does not run end-to-end (FileNotFoundError: [Errno 2] No such file or directory: 'C:\\\\Users\\\\admin\\\\Desktop\\\\算法2\\\\algo_data-II\\\\projects\\\\project_01_bilibili_comments\\\\data\\\\comments.json'), but the individual functions are graded on their own, so this did not cost points.",
+    "members": {
+      "2025903860": "Lucas"
+    }
+  },
+  {
+    "groupName": "James",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025901734": "James"
+    }
+  },
+  {
+    "groupName": "leo",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus was not attempted (no penalty). Note: main.py does not run end-to-end (IndentationError: unindent does not match any outer indentation level), but the individual functions are graded on their own, so this did not cost points.",
+    "members": {
+      "2025901739": "leo"
+    }
+  },
+  {
+    "groupName": "charles",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025903547": "charles"
+    }
+  },
+  {
+    "groupName": "Simon",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025903550": "Simon"
+    }
+  },
+  {
+    "groupName": "Nico",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Strong submission. M1 (build the tree): fully correct. M2 (explore the tree): mostly there but deepest not working. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0). Note: main.py does not run end-to-end (UnboundLocalError: local variable 'max_depth' referenced before assignment), but the individual functions are graded on their own, so this did not cost points.",
+    "members": {
+      "2025900607": "Nico"
+    }
+  },
+  {
+    "groupName": "daniel",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus was not attempted (no penalty).",
+    "members": {
+      "2025902501": "daniel"
+    }
+  },
+  {
+    "groupName": "Aron",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025904741": "Aron"
+    }
+  },
+  {
+    "groupName": "Chloe",
+    "repositoryLink": null,
+    "grade": 92,
+    "comments": "Strong submission. M1 (build the tree): mostly there but find_by_id not working. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus was not attempted (no penalty).",
+    "members": {
+      "2025903857": "Chloe"
+    }
+  },
+  {
+    "groupName": "louis",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025901719": "louis"
+    }
+  },
+  {
+    "groupName": "kenny",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus was not attempted (no penalty). Note: main.py does not run end-to-end (IndentationError: expected an indented block), but the individual functions are graded on their own, so this did not cost points.",
+    "members": {
+      "2025900610": "kenny"
+    }
+  },
+  {
+    "groupName": "Michael",
+    "repositoryLink": null,
+    "grade": 92,
+    "comments": "Strong submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): mostly there but collect not working. The optional tournament bonus was not attempted (no penalty). Note: main.py does not run end-to-end (SyntaxError: f-string expression part cannot include a backslash), but the individual functions are graded on their own, so this did not cost points.",
+    "members": {
+      "2025901732": "Michael"
+    }
+  },
+  {
+    "groupName": "kim",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025901722": "kim"
+    }
+  },
+  {
+    "groupName": "charles?",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Strong submission. M1 (build the tree): fully correct. M2 (explore the tree): mostly there but deepest not working. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025902889": "charles?"
+    }
+  },
+  {
+    "groupName": "max",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025900211": "max"
+    }
+  },
+  {
+    "groupName": "Arkin",
+    "repositoryLink": null,
+    "grade": 34,
+    "comments": "Incomplete submission. M1 (build the tree): mostly there but comment_class, build_tree, find_by_id not working. M2 (explore the tree): fully correct. M3 (leaderboard): not done. The optional tournament bonus was not attempted (no penalty). Note: main.py does not run end-to-end (SyntaxError: f-string: unmatched '['), but the individual functions are graded on their own, so this did not cost points.",
+    "members": {
+      "2025903545": "Arkin"
+    }
+  },
+  {
+    "groupName": "Eli",
+    "repositoryLink": null,
+    "grade": 82,
+    "comments": "Strong submission. M1 (build the tree): mostly there but find_by_id not working. M2 (explore the tree): mostly there but deepest not working. M3 (leaderboard): fully correct. The optional tournament bonus was not attempted (no penalty).",
+    "members": {
+      "2025903548": "Eli"
+    }
+  },
+  {
+    "groupName": "Zoey",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus was not attempted (no penalty).",
+    "members": {
+      "2025901729": "Zoey"
+    }
+  },
+  {
+    "groupName": "Felix",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus was not attempted (no penalty).",
+    "members": {
+      "2025903549": "Felix"
+    }
+  },
+  {
+    "groupName": "Lucas",
+    "repositoryLink": null,
+    "grade": 60,
+    "comments": "explorer used comment.replies instead of .children; deepest & delete are correct (credited), count still has a separate bug. Resurrected part(s) credited at 80% (−20% for not running as submitted). | Incomplete submission. M1 (build the tree): mostly there but comment_class, build_tree not working. M2 (explore the tree): not done. M3 (leaderboard): mostly there but collect not working. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025902500": "Lucas"
+    }
+  },
+  {
+    "groupName": "jerry",
+    "repositoryLink": null,
+    "grade": 90,
+    "comments": "Strong submission. M1 (build the tree): fully correct. M2 (explore the tree): mostly there but delete not working. M3 (leaderboard): fully correct. The optional tournament bonus was not attempted (no penalty).",
+    "members": {
+      "2025901720": "jerry"
+    }
+  },
+  {
+    "groupName": "Roy",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025901726": "Roy"
+    }
+  },
+  {
+    "groupName": "Touch",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025903858": "Touch"
+    }
+  },
+  {
+    "groupName": "Lucas",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+5.0). Note: main.py does not run end-to-end (/Library/Developer/CommandLineTools/usr/bin/python3: can't open file '/private/var/folders/w1/14wlzs8x7hj9143wl3tdtxdw0000gn/T/algograde_oqh9_qb8/main.py': [Errno 2] No such file or directory), but the individual functions are graded on their own, so this did not cost points.",
+    "members": {
+      "2025904451": "Lucas"
+    }
+  },
+  {
+    "groupName": "timothy",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025904450": "timothy"
+    }
+  },
+  {
+    "groupName": "mortis",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025900915": "mortis"
+    }
+  },
+  {
+    "groupName": "Jing",
+    "repositoryLink": null,
+    "grade": 95,
+    "comments": "Strong submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): mostly there but collect not working. The optional tournament bonus is implemented (+3.0). Note: main.py does not run end-to-end (AttributeError: 'Comment' object has no attribute 'comment'), but the individual functions are graded on their own, so this did not cost points.",
+    "members": {
+      "2025902502": "Jing"
+    }
+  },
+  {
+    "groupName": "klein",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025904449": "klein"
+    }
+  },
+  {
+    "groupName": "eric",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus was not attempted (no penalty).",
+    "members": {
+      "2025900609": "eric"
+    }
+  },
+  {
+    "groupName": "kevin",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025901725": "kevin"
+    }
+  },
+  {
+    "groupName": "vicsher",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025903551": "vicsher"
+    }
+  },
+  {
+    "groupName": "jill",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025904134": "jill"
+    }
+  },
+  {
+    "groupName": "Louis",
+    "repositoryLink": null,
+    "grade": 82,
+    "comments": "Partial submission — the core is half-built. M1 (build the tree): mostly there but build_tree, find_by_id, display not working. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0). Note: main.py does not run end-to-end (KeyError: 'children'), but the individual functions are graded on their own, so this did not cost points.",
+    "members": {
+      "2025904742": "Louis"
+    }
+  },
+  {
+    "groupName": "dejan",
+    "repositoryLink": null,
+    "grade": 55,
+    "comments": "explorer & leaderboard read Comment objects as dicts ([\"...\"]); M2/M3 algorithms correct and credited; M1 remains broken on its own. Resurrected part(s) credited at 80% (−20% for not running as submitted). | Incomplete submission. M1 (build the tree): mostly there but comment_class, build_tree, find_by_id not working. M2 (explore the tree): not done. M3 (leaderboard): not done. The optional tournament bonus is implemented (+3.0).",
+    "members": {
+      "2025900917": "dejan"
+    }
+  },
+  {
+    "groupName": "allen",
+    "repositoryLink": null,
+    "grade": 96,
+    "comments": "Strong submission. M1 (build the tree): mostly there but find_by_id, display not working. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+8.0). Note: main.py does not run end-to-end (FileNotFoundError: [Errno 2] No such file or directory: 'projects/project_01_bilibili_comments/data/comments.json'), but the individual functions are graded on their own, so this did not cost points.",
+    "members": {
+      "2025900914": "allen"
+    }
+  },
+  {
+    "groupName": "Elysian",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Strong submission. M1 (build the tree): fully correct. M2 (explore the tree): mostly there but count not working. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025901718": "Elysian"
+    }
+  },
+  {
+    "groupName": "Carroll",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025905428": "Carroll"
+    }
+  },
+  {
+    "groupName": "kelly",
+    "repositoryLink": null,
+    "grade": 82,
+    "comments": "Partial submission — the core is half-built. M1 (build the tree): mostly there but build_tree, find_by_id, display not working. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025901723": "kelly"
+    }
+  },
+  {
+    "groupName": "Rita",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025903546": "Rita"
+    }
+  },
+  {
+    "groupName": "Klay",
+    "repositoryLink": null,
+    "grade": 68,
+    "comments": "explorer used comment.replies instead of .children; the rest of M2 is correct. Resurrected part(s) credited at 80% (−20% for not running as submitted). | Incomplete submission. M1 (build the tree): mostly there but comment_class, build_tree not working. M2 (explore the tree): not done. M3 (leaderboard): mostly there but collect not working. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025901730": "Klay"
+    }
+  },
+  {
+    "groupName": "lily",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Strong submission. M1 (build the tree): mostly there but find_by_id not working. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025904131": "lily"
+    }
+  },
+  {
+    "groupName": "Eric",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+5.0).",
+    "members": {
+      "2025900611": "Eric"
+    }
+  },
+  {
+    "groupName": "Chessia",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025905427": "Chessia"
+    }
+  },
+  {
+    "groupName": "saber",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025903552": "saber"
+    }
+  },
+  {
+    "groupName": "Fred",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Strong submission. M1 (build the tree): mostly there but find_by_id not working. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025901733": "Fred"
+    }
+  },
+  {
+    "groupName": "silver",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus was not attempted (no penalty).",
+    "members": {
+      "2025900612": "silver"
+    }
+  },
+  {
+    "groupName": "killy",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025905431": "killy"
+    }
+  },
+  {
+    "groupName": "Coco",
+    "repositoryLink": null,
+    "grade": 86,
+    "comments": "Partial submission — the core is half-built. M1 (build the tree): mostly there but build_tree, find_by_id not working. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025901736": "Coco"
+    }
+  },
+  {
+    "groupName": "allen",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Strong submission. M1 (build the tree): fully correct. M2 (explore the tree): mostly there but deepest not working. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025904743": "allen"
+    }
+  },
+  {
+    "groupName": "Bella",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025905429": "Bella"
+    }
+  },
+  {
+    "groupName": "Zelda",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025902887": "Zelda"
+    }
+  },
+  {
+    "groupName": "Jerry",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025902895": "Jerry"
+    }
+  },
+  {
+    "groupName": "Ray",
+    "repositoryLink": null,
+    "grade": 92,
+    "comments": "Strong submission. M1 (build the tree): mostly there but find_by_id not working. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus was not attempted (no penalty).",
+    "members": {
+      "2025904447": "Ray"
+    }
+  },
+  {
+    "groupName": "tony",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025901724": "tony"
+    }
+  },
+  {
+    "groupName": "Roger",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025904135": "Roger"
+    }
+  },
+  {
+    "groupName": "star",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025903864": "star"
+    }
+  },
+  {
+    "groupName": "Hugo",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+5.0).",
+    "members": {
+      "2025900918": "Hugo"
+    }
+  },
+  {
+    "groupName": "Sue",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025902505": "Sue"
+    }
+  },
+  {
+    "groupName": "aurora",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025901731": "aurora"
+    }
+  },
+  {
+    "groupName": "Zero",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025902891": "Zero"
+    }
+  },
+  {
+    "groupName": "Louis green",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+3.0).",
+    "members": {
+      "2025902888": "Louis green"
+    }
+  },
+  {
+    "groupName": "Lester",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus was not attempted (no penalty).",
+    "members": {
+      "2025903863": "Lester"
+    }
+  },
+  {
+    "groupName": "Maggie",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025901713": "Maggie"
+    }
+  },
+  {
+    "groupName": "bernie",
+    "repositoryLink": null,
+    "grade": 62,
+    "comments": "Partial submission — the core is half-built. M1 (build the tree): mostly there but find_by_id not working. M2 (explore the tree): fully correct. M3 (leaderboard): not done. The optional tournament bonus was not attempted (no penalty).",
+    "members": {
+      "2025902504": "bernie"
+    }
+  },
+  {
+    "groupName": "Jasper",
+    "repositoryLink": null,
+    "grade": 70,
+    "comments": "Partial submission — the core is half-built. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): not done. The optional tournament bonus was not attempted (no penalty).",
+    "members": {
+      "2025901717": "Jasper"
+    }
+  },
+  {
+    "groupName": "Alex",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025902503": "Alex"
+    }
+  },
+  {
+    "groupName": "Zyler",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025904133": "Zyler"
+    }
+  },
+  {
+    "groupName": "Keira",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025900213": "Keira"
+    }
+  },
+  {
+    "groupName": "Liliane",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025901728": "Liliane"
+    }
+  },
+  {
+    "groupName": "Henry",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025903862": "Henry"
+    }
+  },
+  {
+    "groupName": "Ben",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025900919": "Ben"
+    }
+  },
+  {
+    "groupName": "Kris",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025902499": "Kris"
+    }
+  },
+  {
+    "groupName": "Mark",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0). Note: main.py does not run end-to-end (FileNotFoundError: [Errno 2] No such file or directory: 'projects/project_01_bilibili_comments/data/comments.json'), but the individual functions are graded on their own, so this did not cost points.",
+    "members": {
+      "2025903861": "Mark"
+    }
+  },
+  {
+    "groupName": "Ronaldo",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Strong submission. M1 (build the tree): mostly there but find_by_id not working. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025903859": "Ronaldo"
+    }
+  },
+  {
+    "groupName": "Betty",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025901738": "Betty"
+    }
+  },
+  {
+    "groupName": "Fiona",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025900910": "Fiona"
+    }
+  },
+  {
+    "groupName": "Caesar",
+    "repositoryLink": null,
+    "grade": 64,
+    "comments": "Partial submission — the core is half-built. M1 (build the tree): mostly there but comment_class, build_tree, find_by_id not working. M2 (explore the tree): mostly there but delete not working. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025900916": "Caesar"
+    }
+  },
+  {
+    "groupName": "candy",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025904739": "candy"
+    }
+  },
+  {
+    "groupName": "Nick",
+    "repositoryLink": null,
+    "grade": 58,
+    "comments": "explorer used comment.replies instead of .children; the rest of M2 is correct. Resurrected part(s) credited at 80% (−20% for not running as submitted). | Incomplete submission. M1 (build the tree): mostly there but comment_class, build_tree not working. M2 (explore the tree): not done. M3 (leaderboard): mostly there but collect not working. The optional tournament bonus was not attempted (no penalty).",
+    "members": {
+      "2025900606": "Nick"
+    }
+  },
+  {
+    "groupName": "Jonason",
+    "repositoryLink": null,
+    "grade": 98,
+    "comments": "explorer & leaderboard read Comment objects as dicts (.get(...)); the algorithms are correct, so M2 and M3 are credited. Resurrected part(s) credited at 80% (−20% for not running as submitted). | Incomplete submission. M1 (build the tree): fully correct. M2 (explore the tree): not done. M3 (leaderboard): not done. The optional tournament bonus is implemented (+10.0). Note: main.py does not run end-to-end (AttributeError: 'Comment' object has no attribute 'get'), but the individual functions are graded on their own, so this did not cost points.",
+    "members": {
+      "2025902892": "Jonason"
+    }
+  },
+  {
+    "groupName": "Lynne",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus was not attempted (no penalty).",
+    "members": {
+      "2025901727": "Lynne"
+    }
+  },
+  {
+    "groupName": "Vito",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025902894": "Vito"
+    }
+  },
+  {
+    "groupName": "peter",
+    "repositoryLink": null,
+    "grade": 82,
+    "comments": "Partial submission — the core is half-built. M1 (build the tree): mostly there but find_by_id not working. M2 (explore the tree): mostly there but deepest, delete not working. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025904132": "peter"
+    }
+  },
+  {
+    "groupName": "Nicole",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus was not attempted (no penalty).",
+    "members": {
+      "2025902893": "Nicole"
+    }
+  },
+  {
+    "groupName": "Justin",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025900912": "Justin"
+    }
+  },
+  {
+    "groupName": "Gary",
+    "repositoryLink": null,
+    "grade": 76,
+    "comments": "f-string syntax error in print_leaderboard broke the whole module import; collect is correct (credited), top_k assumes dicts so still fails. Resurrected part(s) credited at 80% (−20% for not running as submitted). | Partial submission — the core is half-built. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): not done. The optional tournament bonus was not attempted (no penalty). Note: main.py does not run end-to-end (SyntaxError: f-string: unmatched '['), but the individual functions are graded on their own, so this did not cost points.",
+    "members": {
+      "2025900911": "Gary"
+    }
+  },
+  {
+    "groupName": "Eric",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025900608": "Eric"
+    }
+  },
+  {
+    "groupName": "Clark",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+5.0).",
+    "members": {
+      "2025901716": "Clark"
+    }
+  },
+  {
+    "groupName": "Cecelia",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus was not attempted (no penalty).",
+    "members": {
+      "2025902896": "Cecelia"
+    }
+  },
+  {
+    "groupName": "Frankie",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025901714": "Frankie"
+    }
+  },
+  {
+    "groupName": "Rain",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025904740": "Rain"
+    }
+  },
+  {
+    "groupName": "Harold",
+    "repositoryLink": null,
+    "grade": 100,
+    "comments": "Excellent submission. M1 (build the tree): fully correct. M2 (explore the tree): fully correct. M3 (leaderboard): fully correct. The optional tournament bonus is implemented (+10.0).",
+    "members": {
+      "2025900212": "Harold"
+    }
+  }
+]

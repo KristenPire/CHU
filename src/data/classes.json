@@ -1,7 +1,37 @@
 [
-  { "id": "net", "label": "Net", "fullName": "Networking" },
-  { "id": "os", "label": "OS", "fullName": "Operating Systems" },
-  { "id": "fp", "label": "FP", "fullName": "Functional Programming" },
-  { "id": "cpp", "label": "C++", "fullName": "C++" },
-  { "id": "web", "label": "Web", "fullName": "Web Development" }
+  {
+    "id": "net",
+    "label": "Net",
+    "fullName": "Networking"
+  },
+  {
+    "id": "os",
+    "label": "OS",
+    "fullName": "Operating Systems"
+  },
+  {
+    "id": "fp",
+    "label": "FP",
+    "fullName": "Functional Programming"
+  },
+  {
+    "id": "cpp",
+    "label": "C++",
+    "fullName": "C++"
+  },
+  {
+    "id": "web",
+    "label": "Web",
+    "fullName": "Web Development"
+  },
+  {
+    "id": "shell",
+    "label": "Shell",
+    "fullName": "Shell Programming"
+  },
+  {
+    "id": "algo",
+    "label": "Algo",
+    "fullName": "Data Structures & Algorithms II"
+  }
 ]
