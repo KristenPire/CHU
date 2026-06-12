@@ -922,7 +922,7 @@
   {
     "groupName": "c--individual-project",
     "repositoryLink": "https://gitee.com/vernonchenyili/c--individual-project",
-    "grade": 0,
+    "grade": 67,
     "comments": "No code submitted.",
     "members": {
       "2023905494": "Vernon"
@@ -952,7 +952,7 @@
   {
     "groupName": "hero-trial-2024902265",
     "repositoryLink": "https://gitee.com/arrc0/hero-trial-2024902265",
-    "grade": 73,
+    "grade": 68,
     "comments": null,
     "members": {
       "2024902265": "Arrco"
@@ -988,5 +988,15 @@
       "2024902257": "Bob"
     },
     "markdown": "2024902257-Bob.md"
+  },
+  {
+    "groupName": "rpg-2023905492",
+    "repositoryLink": "https://gitee.com/yXVZEyyxf/rpg-2023905492",
+    "grade": 64,
+    "comments": null,
+    "members": {
+      "2023905492": "Doris (陈怡彤)"
+    },
+    "markdown": "2023905492-Doris.md"
   }
 ]
