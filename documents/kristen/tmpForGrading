@@ -1,0 +1,27 @@
+Please create a grading md criteria for @Subject.md                        
+                                                                             
+                                                                             
+                                                                             
+  I want 40% on clean code. Small clear and focused function. Canonical      
+form, good                                                                   
+  function and variable name etc.                                            
+                                                                             
+                                                                             
+                                                                             
+  10% if its using good operator overload                                    
+                                                                             
+  10% if its using good heap usage                                           
+                                                                             
+  10% if its using good inheritance usage.                                   
+                                                                             
+                                                                             
+                                                                             
+  30 % if its doing everything asked in the subject                          
+                                                                             
+                                                                             
+                                                                             
+  We are going to use this for auto-grading by ai later so be thorough.      
+please create                                                                
+  the result in   the Subject is @C++GroupGrading/Reference/Subject.md       
+                                                                             
+The result of this should be in the same file as subject 
