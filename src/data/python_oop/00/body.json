@@ -1,0 +1,551 @@
+{
+  "bodyType": "mcq",
+  "questions": [
+    {
+      "id": 1,
+      "text": "Which variable name follows PEP 8?",
+      "options": {
+        "A": "TotalPrice",
+        "B": "total_price",
+        "C": "TOTALprice",
+        "D": "totalPrice"
+      },
+      "correct": ["B"],
+      "mode": "any",
+      "explanation": "PEP 8 is the official style guide of Python.\n\nFor variables and functions, it asks for **snake_case**:\n- all lowercase\n- words separated by `_`\n\n```python\ntotal_price = 10  # good\nTotalPrice = 10   # style for classes, not variables\n```"
+    },
+    {
+      "id": 2,
+      "text": "Which line starts a function correctly in Python?",
+      "options": {
+        "A": "function add(a, b):",
+        "B": "def add(a, b)",
+        "C": "def add(a, b):",
+        "D": "def add[a, b]:"
+      },
+      "correct": ["C"],
+      "mode": "any",
+      "explanation": "A function definition needs three things:\n- the keyword **`def`** (not `function` — that is JavaScript)\n- parentheses `( )` for the parameters\n- a colon `:` at the end of the line\n\n```python\ndef add(a, b):\n    return a + b\n```"
+    },
+    {
+      "id": 3,
+      "text": "What is a \"magic number\" in code?",
+      "options": {
+        "A": "A number written directly in the code, with no name",
+        "B": "A number bigger than one thousand",
+        "C": "A number given by the user",
+        "D": "A number that changes by itself"
+      },
+      "correct": ["A"],
+      "mode": "any",
+      "explanation": "A **magic number** is a raw number in the middle of the code. Nobody knows what it means.\n\n```python\nif age > 18:          # magic number\nADULT_AGE = 18\nif age > ADULT_AGE:   # clear\n```\n\nGive the number a name: the code explains itself, and you can change the value in one place."
+    },
+    {
+      "id": 4,
+      "text": "The test if age > 18: is in five places in your code. What is the best fix?",
+      "options": {
+        "A": "Write a comment next to each test",
+        "B": "Copy the test again",
+        "C": "Make a constant, and use it in the five places",
+        "D": "Use a shorter variable name"
+      },
+      "correct": ["C"],
+      "mode": "any",
+      "explanation": "When the same value appears in many places, make a **constant**:\n\n```python\nADULT_AGE = 18\nif age > ADULT_AGE:\n```\n\nIf the rule changes one day (for example 21), you change **one line**, not five. Less repetition = fewer bugs."
+    },
+    {
+      "id": 5,
+      "text": "This code does not run. What is missing?\n\ndef greet(name)\n    print(\"Hello\", name)",
+      "options": {
+        "A": "A comma after name",
+        "B": "A colon : at the end of line 1",
+        "C": "The word return on line 2",
+        "D": "Brackets around \"Hello\", name"
+      },
+      "correct": ["B"],
+      "mode": "any",
+      "explanation": "Every line that opens a block (`def`, `if`, `for`, `while`...) must end with a **colon** `:`.\n\n```python\ndef greet(name):\n    print(\"Hello\", name)\n```\n\nWithout it, Python raises a `SyntaxError` before running anything."
+    },
+    {
+      "id": 6,
+      "text": "A function should do:",
+      "options": {
+        "A": "Only printing",
+        "B": "Nothing",
+        "C": "One job",
+        "D": "As many jobs as possible"
+      },
+      "correct": ["C"],
+      "mode": "any",
+      "explanation": "This is the **single responsibility** rule: one function = one job.\n\nA function that does one thing is:\n- easy to name\n- easy to test\n- easy to reuse\n\nIf you need the word \"and\" to describe your function, it probably does too much."
+    },
+    {
+      "id": 7,
+      "text": "Why do we keep a function short (about fifteen lines)?",
+      "options": {
+        "A": "It uses less memory",
+        "B": "Python does not allow longer functions",
+        "C": "Short functions run faster",
+        "D": "You can read it and test it easily"
+      },
+      "correct": ["D"],
+      "mode": "any",
+      "explanation": "Short functions are for **humans**, not for the computer.\n\n- You can read the whole function without scrolling.\n- You can test it alone.\n- A bug is easier to find in 15 lines than in 150.\n\nPython allows very long functions — but your teammates do not."
+    },
+    {
+      "id": 8,
+      "text": "What does type(3.0) give?",
+      "options": {
+        "A": "int",
+        "B": "float",
+        "C": "str",
+        "D": "bool"
+      },
+      "correct": ["B"],
+      "mode": "any",
+      "explanation": "The decimal point makes the difference:\n\n```python\ntype(3)    # <class 'int'>\ntype(3.0)  # <class 'float'>\n```\n\n`3.0` has a decimal part, so it is a **float**, even if that part is zero."
+    },
+    {
+      "id": 9,
+      "text": "Which line creates a dictionary?",
+      "options": {
+        "A": "prices = [\"apple\", 3]",
+        "B": "prices = {\"apple\": 3}",
+        "C": "prices = (\"apple\", 3)",
+        "D": "prices = dict[\"apple\", 3]"
+      },
+      "correct": ["B"],
+      "mode": "any",
+      "explanation": "Each bracket has a meaning in Python:\n- `[ ]` → **list**\n- `( )` → **tuple**\n- `{ key: value }` → **dictionary**\n\n```python\nprices = {\"apple\": 3}   # key \"apple\", value 3\n```"
+    },
+    {
+      "id": 10,
+      "text": "What is the result of 10 / 3?",
+      "options": {
+        "A": "3.3333333333333335",
+        "B": "3.0",
+        "C": "An error",
+        "D": "3"
+      },
+      "correct": ["A"],
+      "mode": "any",
+      "explanation": "In Python, `/` is the **true division**: it always gives a `float`.\n\n```python\n10 / 3   # 3.3333333333333335\n10 // 3  # 3  (integer division)\n```\n\nThe strange `...335` at the end comes from how computers store floats (binary approximation)."
+    },
+    {
+      "id": 11,
+      "text": "Which line is a correct if in Python?",
+      "options": {
+        "A": "if hp < 20 then:",
+        "B": "if (hp < 20)",
+        "C": "if hp < 20:",
+        "D": "if hp = 20:"
+      },
+      "correct": ["C"],
+      "mode": "any",
+      "explanation": "A Python `if` needs:\n- no `then` (that is not Python)\n- a **colon** `:` at the end\n- `==` to compare, never `=`\n\n```python\nif hp < 20:\n    print(\"danger\")\n```\n\nParentheses are allowed but not needed."
+    },
+    {
+      "id": 12,
+      "text": "What does input(\"Age ? \") always give back?",
+      "options": {
+        "A": "A number",
+        "B": "A number, if the user types a number",
+        "C": "A string, whatever the user types",
+        "D": "Nothing, until you convert it"
+      },
+      "correct": ["C"],
+      "mode": "any",
+      "explanation": "`input()` **always returns a string**, even if the user types digits.\n\n```python\nage = input(\"Age ? \")   # \"25\"  → a str\nage = int(age)          # 25    → now an int\n```\n\nIf you forget the conversion, `age > 18` raises a `TypeError`."
+    },
+    {
+      "id": 13,
+      "text": "What does == do?",
+      "options": {
+        "A": "It puts a value in a variable",
+        "B": "It compares two values",
+        "C": "It adds two numbers",
+        "D": "It creates a list"
+      },
+      "correct": ["B"],
+      "mode": "any",
+      "explanation": "Do not confuse the two:\n- `=` **assigns** a value to a variable\n- `==` **compares** two values and gives `True` or `False`\n\n```python\nx = 5        # assignment\nx == 5       # True (comparison)\n```"
+    },
+    {
+      "id": 14,
+      "text": "What happens with \"5\" + 5?",
+      "options": {
+        "A": "It gives 55",
+        "B": "It gives a TypeError",
+        "C": "It gives 10",
+        "D": "It gives \"55\""
+      },
+      "correct": ["B"],
+      "mode": "any",
+      "explanation": "Python refuses to mix a `str` and an `int` with `+`.\n\n```python\n\"5\" + 5        # TypeError\n\"5\" + str(5)   # \"55\"\nint(\"5\") + 5   # 10\n```\n\nThis is **strong typing**: you must convert explicitly. Python never guesses for you."
+    },
+    {
+      "id": 15,
+      "text": "In an if / elif / else, the first test is true. What happens?",
+      "options": {
+        "A": "The first block runs, and the else too",
+        "B": "Python gives an error",
+        "C": "All the blocks run",
+        "D": "Only the first block runs"
+      },
+      "correct": ["D"],
+      "mode": "any",
+      "explanation": "An `if` / `elif` / `else` chain is **exclusive**: Python runs the **first true branch**, then skips all the rest.\n\n- first test true → its block runs\n- `elif` and `else` are never even checked\n\nOnly one branch of the chain runs, always."
+    },
+    {
+      "id": 16,
+      "text": "Your code has if score > 10: first, then elif score > 50:. The score is 60. What happens?",
+      "options": {
+        "A": "Only the first block runs. The second one never runs.",
+        "B": "Both blocks run",
+        "C": "Nothing runs",
+        "D": "Only the second block runs"
+      },
+      "correct": ["A"],
+      "mode": "any",
+      "explanation": "`60 > 10` is true, so the first block runs and Python **skips the elif** — even if `60 > 50` is also true.\n\nThis is a classic bug: the **order of the tests matters**. Put the most specific test first:\n\n```python\nif score > 50:      # specific first\nelif score > 10:    # general after\n```"
+    },
+    {
+      "id": 17,
+      "text": "What does break do?",
+      "options": {
+        "A": "It stops the loop now",
+        "B": "It goes to the next turn of the loop",
+        "C": "It stops the whole program",
+        "D": "It starts the loop again"
+      },
+      "correct": ["A"],
+      "mode": "any",
+      "explanation": "**`break`** exits the loop immediately. The program continues after the loop.\n\n```python\nfor item in items:\n    if item == \"exit\":\n        break        # leave the loop now\nprint(\"after\")       # runs next\n```\n\nIt does not stop the program — only the loop."
+    },
+    {
+      "id": 18,
+      "text": "What does continue do?",
+      "options": {
+        "A": "It repeats the same turn",
+        "B": "It does nothing",
+        "C": "It leaves the loop",
+        "D": "It goes to the next turn of the loop"
+      },
+      "correct": ["D"],
+      "mode": "any",
+      "explanation": "**`continue`** skips the rest of the current turn and jumps to the **next turn** of the loop.\n\n```python\nfor n in [1, -2, 3]:\n    if n < 0:\n        continue     # skip negatives\n    print(n)         # prints 1, then 3\n```\n\nCompare: `break` leaves the loop, `continue` stays in it."
+    },
+    {
+      "id": 19,
+      "text": "You have items = []. Which line adds \"sword\" to the end of the list?",
+      "options": {
+        "A": "items.add(\"sword\")",
+        "B": "items.push(\"sword\")",
+        "C": "append(items, \"sword\")",
+        "D": "items.append(\"sword\")"
+      },
+      "correct": ["D"],
+      "mode": "any",
+      "explanation": "The list method is **`append`**, called on the list itself:\n\n```python\nitems = []\nitems.append(\"sword\")   # [\"sword\"]\n```\n\n- `add` is for sets\n- `push` is JavaScript\n- `append(items, ...)` — it is a method, not a free function"
+    },
+    {
+      "id": 20,
+      "text": "You do not know how many turns the loop needs. Which loop do you choose?",
+      "options": {
+        "A": "for",
+        "B": "while",
+        "C": "if",
+        "D": "range"
+      },
+      "correct": ["B"],
+      "mode": "any",
+      "explanation": "The rule:\n- number of turns **known** → `for`\n- number of turns **unknown** → **`while`** (loop until a condition changes)\n\n```python\nwhile answer != \"yes\":\n    answer = input(\"Continue? \")\n```\n\nYou cannot write this with `for`, because you do not know when the user will say yes."
+    },
+    {
+      "id": 21,
+      "text": "With names = [\"ana\", \"bo\", \"cai\"], what is names[1]?",
+      "options": {
+        "A": "\"ana\"",
+        "B": "\"bo\"",
+        "C": "\"cai\"",
+        "D": "An IndexError"
+      },
+      "correct": ["B"],
+      "mode": "any",
+      "explanation": "Indexing starts at **zero** in Python:\n\n```python\nnames[0]  # \"ana\"\nnames[1]  # \"bo\"\nnames[2]  # \"cai\"\n```\n\nSo `names[1]` is the **second** item, `\"bo\"`."
+    },
+    {
+      "id": 22,
+      "text": "names has three items. What happens with for i in range(len(names) + 1): and print(names[i])?",
+      "options": {
+        "A": "It prints the three names",
+        "B": "It prints nothing",
+        "C": "It gives an IndexError",
+        "D": "It prints the last name two times"
+      },
+      "correct": ["C"],
+      "mode": "any",
+      "explanation": "`range(len(names) + 1)` gives `0, 1, 2, 3`. But the valid indexes are only `0, 1, 2`.\n\nAt `i = 3`, `names[3]` does not exist → **`IndexError`**.\n\nThis is the classic **off-by-one** error. The clean fix: loop on the items directly.\n\n```python\nfor name in names:\n    print(name)\n```"
+    },
+    {
+      "id": 23,
+      "text": "What does x = names.append(\"dan\") put in x?",
+      "options": {
+        "A": "None",
+        "B": "\"dan\"",
+        "C": "The number of items",
+        "D": "The new list"
+      },
+      "correct": ["A"],
+      "mode": "any",
+      "explanation": "`append` modifies the list **in place** and returns **`None`**.\n\n```python\nnames.append(\"dan\")      # good: the list changes\nx = names.append(\"dan\")  # x is None!\n```\n\nMethods that modify in place (`append`, `sort`, `reverse`...) return `None` — a very common trap."
+    },
+    {
+      "id": 24,
+      "text": "With the same list, what is names[0:2]?",
+      "options": {
+        "A": "[\"ana\", \"bo\", \"cai\"]",
+        "B": "[\"bo\", \"cai\"]",
+        "C": "[\"ana\"]",
+        "D": "[\"ana\", \"bo\"]"
+      },
+      "correct": ["D"],
+      "mode": "any",
+      "explanation": "A **slice** `[start:end]` includes `start` but **excludes** `end`.\n\n```python\nnames[0:2]  # indexes 0 and 1 → [\"ana\", \"bo\"]\n```\n\nRemember: the end index is never included. `[0:2]` gives exactly `2 - 0 = 2` items."
+    },
+    {
+      "id": 25,
+      "text": "With prices = {\"sword\": 40.0}, what does prices[\"bow\"] do?",
+      "options": {
+        "A": "It adds the key \"bow\"",
+        "B": "It returns None",
+        "C": "It returns 0",
+        "D": "It gives a KeyError"
+      },
+      "correct": ["D"],
+      "mode": "any",
+      "explanation": "Reading a key that does not exist with `[ ]` raises a **`KeyError`**.\n\n```python\nprices[\"bow\"]           # KeyError: 'bow'\nprices.get(\"bow\")       # None (safe)\nprices.get(\"bow\", 0)    # 0 (safe, with default)\n```\n\nUse `[ ]` when the key must exist, `.get()` when it may not."
+    },
+    {
+      "id": 26,
+      "text": "With the same dictionary, what does prices.get(\"bow\", 0) return?",
+      "options": {
+        "A": "A KeyError",
+        "B": "0",
+        "C": "None",
+        "D": "\"bow\""
+      },
+      "correct": ["B"],
+      "mode": "any",
+      "explanation": "**`.get(key, default)`** never raises an error:\n- key exists → its value\n- key missing → the **default** you gave\n\n```python\nprices.get(\"bow\", 0)    # \"bow\" is missing → 0\nprices.get(\"sword\", 0)  # exists → 40.0\n```"
+    },
+    {
+      "id": 27,
+      "text": "In for name, price in prices.items():, what is in name?",
+      "options": {
+        "A": "The whole dictionary",
+        "B": "The value",
+        "C": "The key",
+        "D": "The position in the dictionary"
+      },
+      "correct": ["C"],
+      "mode": "any",
+      "explanation": "`.items()` gives pairs `(key, value)`. The first variable receives the **key**, the second the value.\n\n```python\nfor name, price in prices.items():\n    # name  → \"sword\"  (key)\n    # price → 40.0     (value)\n```"
+    },
+    {
+      "id": 28,
+      "text": "What does prices[\"shield\"] = 25.0 do?",
+      "options": {
+        "A": "It adds the key \"shield\" with the value 25.0",
+        "B": "It replaces the whole dictionary",
+        "C": "It does nothing",
+        "D": "It gives an error, because the key does not exist"
+      },
+      "correct": ["A"],
+      "mode": "any",
+      "explanation": "**Writing** to a missing key is not an error — it **creates** the key:\n\n```python\nprices[\"shield\"] = 25.0   # adds the pair\n```\n\nCompare with question 25: **reading** a missing key raises `KeyError`, but **writing** creates it."
+    },
+    {
+      "id": 29,
+      "text": "With stock = {\"sword\": {\"qty\": 3, \"price\": 40.0}}, how do you read the quantity of the sword?",
+      "options": {
+        "A": "stock[\"qty\"]",
+        "B": "stock[\"sword\", \"qty\"]",
+        "C": "stock[\"sword\"][\"qty\"]",
+        "D": "stock.qty(\"sword\")"
+      },
+      "correct": ["C"],
+      "mode": "any",
+      "explanation": "This is a **nested dictionary**: a dict inside a dict. Read it level by level:\n\n```python\nstock[\"sword\"]           # {\"qty\": 3, \"price\": 40.0}\nstock[\"sword\"][\"qty\"]    # 3\n```\n\nFirst bracket → the inner dict. Second bracket → the value inside it."
+    },
+    {
+      "id": 30,
+      "text": "A function has no return. What does it give back?",
+      "options": {
+        "A": "None",
+        "B": "An empty string",
+        "C": "An error",
+        "D": "0"
+      },
+      "correct": ["A"],
+      "mode": "any",
+      "explanation": "A function without `return` gives back **`None`**, always.\n\n```python\ndef greet(name):\n    print(\"Hello\", name)\n\nx = greet(\"ana\")   # prints Hello ana\nprint(x)           # None\n```\n\nPrinting is not returning — see the next question."
+    },
+    {
+      "id": 31,
+      "text": "What is the difference between print and return?",
+      "options": {
+        "A": "They do the same thing",
+        "B": "print shows text on the screen. return gives a value back.",
+        "C": "return shows text on the screen",
+        "D": "print gives a value back to the caller"
+      },
+      "correct": ["B"],
+      "mode": "any",
+      "explanation": "- **`print`** shows something to the **human** on the screen. The program cannot reuse it.\n- **`return`** gives a value back to the **caller**. The program can store it and use it.\n\n```python\ndef add(a, b):\n    return a + b\n\nresult = add(2, 3)   # result is 5, usable later\n```"
+    },
+    {
+      "id": 32,
+      "text": "A variable is created inside a function. After the function ends:",
+      "options": {
+        "A": "It becomes a constant",
+        "B": "It replaces the variable with the same name outside",
+        "C": "It can be used everywhere in the file",
+        "D": "It no longer exists"
+      },
+      "correct": ["D"],
+      "mode": "any",
+      "explanation": "A variable created inside a function is **local**: it lives only during the function call.\n\n```python\ndef compute():\n    total = 10   # local\n\ncompute()\nprint(total)     # NameError: total does not exist here\n```\n\nThis is the **scope** rule. To give a value to the outside, use `return`."
+    },
+    {
+      "id": 33,
+      "text": "A function gets a list, and adds an item to it. Outside the function, the list:",
+      "options": {
+        "A": "Has the new item too",
+        "B": "Is empty",
+        "C": "Raises an error",
+        "D": "Is not changed, because the function used a copy"
+      },
+      "correct": ["A"],
+      "mode": "any",
+      "explanation": "A list is **mutable**, and the function receives a **reference** to the same list — not a copy.\n\n```python\ndef add_item(items):\n    items.append(\"sword\")\n\nbag = []\nadd_item(bag)\nprint(bag)   # [\"sword\"] — the original changed\n```\n\nChanges made inside the function are visible outside."
+    },
+    {
+      "id": 34,
+      "text": "After import math, how do you call the square root?",
+      "options": {
+        "A": "sqrt(16)",
+        "B": "math.sqrt(16)",
+        "C": "math→sqrt(16)",
+        "D": "import sqrt(16)"
+      },
+      "correct": ["B"],
+      "mode": "any",
+      "explanation": "With `import math`, the names stay **inside the module**. You reach them with the dot:\n\n```python\nimport math\nmath.sqrt(16)   # 4.0\n```\n\n`sqrt(16)` alone works only with `from math import sqrt` — and the prefix `math.` shows clearly where the function comes from."
+    },
+    {
+      "id": 35,
+      "text": "Why should you never write from math import *?",
+      "options": {
+        "A": "It is not valid Python",
+        "B": "It imports only one name",
+        "C": "It is slower than the other ways",
+        "D": "You cannot see where a name comes from"
+      },
+      "correct": ["D"],
+      "mode": "any",
+      "explanation": "`import *` dumps **all** the names of the module into your file.\n\nProblems:\n- you cannot see where a function comes from\n- two modules can define the same name — one silently **overwrites** the other\n\n```python\nimport math\nmath.sqrt(16)   # explicit and clear\n```\n\nExplicit is better than implicit — it is even in the Zen of Python."
+    },
+    {
+      "id": 36,
+      "text": "Where do you write the imports of a file?",
+      "options": {
+        "A": "At the end of the file",
+        "B": "Inside every function that needs them",
+        "C": "At the top of the file",
+        "D": "Anywhere, it does not matter"
+      },
+      "correct": ["C"],
+      "mode": "any",
+      "explanation": "PEP 8: all imports go **at the top of the file**, before the rest of the code.\n\nWhy:\n- the reader sees all the dependencies in one look\n- no surprise import hidden in the middle of the code\n\n```python\nimport math\nimport random\n\n# ... rest of the file\n```"
+    },
+    {
+      "id": 37,
+      "text": "What is if __name__ == \"__main__\": used for?",
+      "options": {
+        "A": "To make the import faster",
+        "B": "To create the main function of the program",
+        "C": "To give a name to the file",
+        "D": "To run this code only when you start this file"
+      },
+      "correct": ["D"],
+      "mode": "any",
+      "explanation": "Python sets `__name__` to:\n- `\"__main__\"` when you **run the file directly**\n- the module name when the file is **imported**\n\n```python\nif __name__ == \"__main__\":\n    main()   # runs only with: python my_file.py\n```\n\nSo another file can import your functions **without** starting your program."
+    },
+    {
+      "id": 38,
+      "text": "Which error do you get with int(\"abc\")?",
+      "options": {
+        "A": "SyntaxError",
+        "B": "TypeError",
+        "C": "ValueError",
+        "D": "KeyError"
+      },
+      "correct": ["C"],
+      "mode": "any",
+      "explanation": "The **type** is correct (`int()` accepts a string), but the **value** `\"abc\"` cannot become a number → **`ValueError`**.\n\n```python\nint(\"42\")    # 42\nint(\"abc\")   # ValueError\nint([1, 2])  # TypeError (wrong type)\n```\n\nWrong value → `ValueError`. Wrong type → `TypeError`."
+    },
+    {
+      "id": 39,
+      "text": "In a traceback, which line gives the error type and the message?",
+      "options": {
+        "A": "The last line",
+        "B": "The line in the middle",
+        "C": "There is no such line",
+        "D": "The first line"
+      },
+      "correct": ["A"],
+      "mode": "any",
+      "explanation": "Read a traceback **from the bottom**:\n- the **last line** gives the error type and the message\n- the lines above show the path of calls that led there\n\n```\nTraceback (most recent call last):\n  File \"game.py\", line 12, in <module>\nValueError: invalid literal for int()  ← start here\n```"
+    },
+    {
+      "id": 40,
+      "text": "Why is except: alone a bad idea?",
+      "options": {
+        "A": "It is slower",
+        "B": "It also catches your own mistakes, and hides the real bug",
+        "C": "Python forbids it",
+        "D": "It catches only ValueError"
+      },
+      "correct": ["B"],
+      "mode": "any",
+      "explanation": "A bare `except:` catches **everything** — including your own typos and bugs. The program continues silently, and the real problem is hidden.\n\n```python\ntry:\n    age = int(text)\nexcept ValueError:   # catch only what you expect\n    print(\"Not a number\")\n```\n\nAlways catch the **specific** error you expect."
+    },
+    {
+      "id": 41,
+      "text": "You are stuck on an exercise. Which use of AI helps you learn?",
+      "options": {
+        "A": "Paste the exercise, and copy the answer",
+        "B": "Ask it to write the function, then read the code",
+        "C": "Ask it to explain your error, then fix the code yourself",
+        "D": "Ask it for the answer, and change the variable names"
+      },
+      "correct": ["C"],
+      "mode": "any",
+      "explanation": "The goal of an exercise is not the answer — it is the **practice**.\n\nAsk the AI to **explain your error**, then fix the code **yourself**:\n- you understand what went wrong\n- you write the fix with your own hands\n- next time, you will not need help\n\nCopying an answer (even with new variable names) trains nothing."
+    },
+    {
+      "id": 42,
+      "text": "The AI gives you code that works, but you cannot explain it line by line. What do you do?",
+      "options": {
+        "A": "Use it. It works, so the exercise is done",
+        "B": "Use it, and add a comment on every line",
+        "C": "Use it, and change the names to make it yours",
+        "D": "Do not use it. Ask the AI to explain it, then write it yourself"
+      },
+      "correct": ["D"],
+      "mode": "any",
+      "explanation": "The rule: **never submit code you cannot explain**.\n\nCode that works today but that you do not understand:\n- you cannot fix it when it breaks\n- you cannot answer questions about it\n- you learned nothing\n\nAsk for an explanation first, then **write it yourself**. Understanding is the real deliverable."
+    }
+  ]
+}

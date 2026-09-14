@@ -33,5 +33,10 @@
     "id": "algo",
     "label": "Algo",
     "fullName": "Data Structures & Algorithms II"
+  },
+  {
+    "id": "python_oop",
+    "label": "Python",
+    "fullName": "Python OOP"
   }
 ]
