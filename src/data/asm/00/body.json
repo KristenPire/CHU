@@ -1,0 +1,593 @@
+{
+  "bodyType": "mcq",
+  "questions": [
+    {
+      "id": 1,
+      "points": 2,
+      "text": "What is a register?",
+      "options": {
+        "A": "A file saved on the disk",
+        "B": "A small box inside the CPU that holds one number",
+        "C": "A section of your program",
+        "D": "Another name for the RAM"
+      },
+      "correct": ["B"],
+      "mode": "any",
+      "explanation": "A **register** is a tiny storage cell inside the CPU itself.\n\n- It holds exactly one number\n- The CPU can read it and write it instantly\n- It is not the RAM, and not the disk\n\nAll RISC-V instructions work on registers: `add`, `sub`, `li`… they all move numbers between these small boxes."
+    },
+    {
+      "id": 2,
+      "points": 2,
+      "text": "How many general-purpose registers does RISC-V have?",
+      "options": {
+        "A": "16",
+        "B": "32",
+        "C": "64",
+        "D": "8"
+      },
+      "correct": ["B"],
+      "mode": "any",
+      "explanation": "RISC-V has **32 general-purpose registers**, named `x0` to `x31`.\n\nThey also have friendly names:\n- `zero` (x0), always 0\n- `a0`–`a7` for arguments and syscalls\n- `t0`–`t6` for temporary values\n- `s0`–`s11` for saved values"
+    },
+    {
+      "id": 3,
+      "points": 2,
+      "text": "Which one is the fastest for the CPU to reach?",
+      "options": {
+        "A": "A USB key",
+        "B": "The hard disk",
+        "C": "The RAM",
+        "D": "A register"
+      },
+      "correct": ["D"],
+      "mode": "any",
+      "explanation": "**Registers are the fastest** memory in the whole machine, because they are inside the CPU itself.\n\nFrom fastest to slowest:\n- Registers (inside the CPU)\n- RAM (outside the CPU, on the motherboard)\n- Disk (very slow compared to the CPU)\n- USB key (even slower)\n\nThis is why assembly programs load values into registers before working on them."
+    },
+    {
+      "id": 4,
+      "points": 2,
+      "text": "The processor repeats the same three steps for ever. Which ones?",
+      "options": {
+        "A": "Compile, link, run",
+        "B": "Load, save, print",
+        "C": "Read, write, delete",
+        "D": "Fetch, decode, execute"
+      },
+      "correct": ["D"],
+      "mode": "any",
+      "explanation": "The CPU runs the **fetch–decode–execute** cycle, forever:\n\n- **Fetch**: read the next instruction from memory (at the address in the PC)\n- **Decode**: understand what the instruction asks\n- **Execute**: do it\n\nThen it starts again with the next instruction."
+    },
+    {
+      "id": 5,
+      "points": 2,
+      "text": "What does the assembler do?",
+      "options": {
+        "A": "It runs your program",
+        "B": "It corrects your mistakes",
+        "C": "It turns each line you write into one machine instruction",
+        "D": "It stores your data in the RAM"
+      },
+      "correct": ["C"],
+      "mode": "any",
+      "explanation": "The **assembler** is a translator.\n\nEach line of assembly you write becomes **one machine instruction** (a number the CPU understands).\n\nIt does not run the program, and it does not fix logic mistakes — it only translates."
+    },
+    {
+      "id": 6,
+      "points": 2,
+      "text": "Where do you put a text that your program will print?",
+      "options": {
+        "A": "In a register",
+        "B": "After the `main:` label",
+        "C": "In the `.text` section",
+        "D": "In the `.data` section"
+      },
+      "correct": ["D"],
+      "mode": "any",
+      "explanation": "A program has two sections:\n\n- **`.data`** → the data: texts, numbers stored in memory\n- **`.text`** → the code: the instructions\n\nA string is data, so it goes in `.data`:\n```asm\n.data\nmsg: .string \"hello\"\n```\nA register is too small to hold a text — it holds only one number."
+    },
+    {
+      "id": 7,
+      "points": 3,
+      "text": "What is the difference between `li` and `la`?",
+      "options": {
+        "A": "`li` loads a value, `la` loads an address",
+        "B": "`li` is for text, `la` is for numbers",
+        "C": "`la` is slower",
+        "D": "There is none"
+      },
+      "correct": ["A"],
+      "mode": "any",
+      "explanation": "- **`li`** = **l**oad **i**mmediate → puts a **value** in a register: `li t0, 5`\n- **`la`** = **l**oad **a**ddress → puts the **address** of a label in a register: `la a1, msg`\n\nA text lives in memory. You cannot put the text itself in a register, so you load its **address** with `la`."
+    },
+    {
+      "id": 8,
+      "points": 2,
+      "text": "Which register holds the service number before an `ecall`?",
+      "options": {
+        "A": "`x0`",
+        "B": "`a0`",
+        "C": "`a1`",
+        "D": "`t0`"
+      },
+      "correct": ["B"],
+      "mode": "any",
+      "explanation": "Before an `ecall`, the register **`a0`** holds the **service number** — it tells Venus what you want:\n\n- `1` → print an integer\n- `4` → print a string\n- `10` → exit the program\n\nThe value to print goes in `a1`."
+    },
+    {
+      "id": 9,
+      "points": 2,
+      "text": "How do you stop a program properly in Venus?",
+      "options": {
+        "A": "`j end`",
+        "B": "You do not need to; it stops alone",
+        "C": "`li a0, 4` then `ecall`",
+        "D": "`li a0, 10` then `ecall`"
+      },
+      "correct": ["D"],
+      "mode": "any",
+      "explanation": "Service **10** is **exit**:\n```asm\nli a0, 10\necall\n```\nWithout it, the CPU keeps going after your last line and runs into garbage. Service 4 is *print string*, not exit."
+    },
+    {
+      "id": 10,
+      "points": 3,
+      "text": "What does this program print?\n```asm\n.data\nmsg: .string \"hello\"\n.text\nmain:\n    li a0, 4\n    la a1, msg\n    ecall\n```",
+      "options": {
+        "A": "`msg`",
+        "B": "`hello`",
+        "C": "The address of the text",
+        "D": "Nothing"
+      },
+      "correct": ["B"],
+      "mode": "any",
+      "explanation": "Step by step:\n- `li a0, 4` → service 4 = **print string**\n- `la a1, msg` → `a1` gets the address of the text\n- `ecall` → Venus follows the address and prints what is there: `hello`\n\n`msg` is only a **label** (a name for the address). It is not part of the text."
+    },
+    {
+      "id": 11,
+      "points": 3,
+      "text": "This program prints a strange number instead of a text. Why?\n```asm\n.data\nmsg: .string \"hello\"\n.text\nmain:\n    li a0, 1\n    la a1, msg\n    ecall\n```",
+      "options": {
+        "A": "`a0` should be 4, not 1",
+        "B": "The label is wrong",
+        "C": "`a1` should be `a2`",
+        "D": "`la` should be `li`"
+      },
+      "correct": ["A"],
+      "mode": "any",
+      "explanation": "Service **1** means **print integer**. So Venus prints the number in `a1` — which is the **address** of the text. That is the strange number.\n\nTo print the text, ask for service **4** (print string):\n```asm\nli a0, 4\n```"
+    },
+    {
+      "id": 12,
+      "points": 2,
+      "text": "Which register does the print service read the value from?",
+      "options": {
+        "A": "`s0`",
+        "B": "`a0`",
+        "C": "`a1`",
+        "D": "`t0`"
+      },
+      "correct": ["C"],
+      "mode": "any",
+      "explanation": "The two roles are fixed:\n\n- **`a0`** → *what* to do (the service number)\n- **`a1`** → *the thing* to print (the value, or the address of the string)\n\n```asm\nli a0, 1     # service: print integer\nli a1, 42    # the value\necall        # prints 42\n```"
+    },
+    {
+      "id": 13,
+      "points": 3,
+      "text": "What is in `t2` after these lines?\n```asm\nli  t0, 8\nli  t1, 3\nadd t2, t0, t1\n```",
+      "options": {
+        "A": "5",
+        "B": "3",
+        "C": "8",
+        "D": "11"
+      },
+      "correct": ["D"],
+      "mode": "any",
+      "explanation": "`add t2, t0, t1` means: **destination first**, then the two sources.\n\n- `t0` = 8\n- `t1` = 3\n- `t2` = `t0` + `t1` = **11**\n\n`t0` and `t1` are not changed."
+    },
+    {
+      "id": 14,
+      "points": 2,
+      "text": "What is in `t3` after `sub t3, t0, t1`, with `t0 = 4` and `t1 = 9`?",
+      "options": {
+        "A": "-5",
+        "B": "13",
+        "C": "0",
+        "D": "5"
+      },
+      "correct": ["A"],
+      "mode": "any",
+      "explanation": "`sub t3, t0, t1` computes `t0 - t1`, **in this order**:\n\n- `t3` = 4 − 9 = **−5**\n\nRegisters can hold negative numbers, so −5 is a normal result."
+    },
+    {
+      "id": 15,
+      "points": 2,
+      "text": "What does the `i` in `addi` mean?",
+      "options": {
+        "A": "The result is an integer",
+        "B": "The second source is a number written in the code",
+        "C": "The instruction is faster",
+        "D": "It only works with `a` registers"
+      },
+      "correct": ["B"],
+      "mode": "any",
+      "explanation": "The `i` means **immediate**: the second source is a **number written directly in the code**, not a register.\n\n```asm\nadd  t2, t0, t1   # register + register\naddi t2, t0, 5    # register + immediate\n```"
+    },
+    {
+      "id": 16,
+      "points": 2,
+      "text": "How do you subtract 5 from `t0` using an immediate?",
+      "options": {
+        "A": "`sub t0, 5`",
+        "B": "`addi t0, -5, t0`",
+        "C": "`subi t0, t0, 5`",
+        "D": "`addi t0, t0, -5`"
+      },
+      "correct": ["D"],
+      "mode": "any",
+      "explanation": "There is **no `subi`** in RISC-V. To subtract an immediate, you **add a negative** one:\n```asm\naddi t0, t0, -5\n```\nThe order is always: destination, source, immediate."
+    },
+    {
+      "id": 17,
+      "points": 2,
+      "text": "In `add t2, t0, t1`, which register is changed?",
+      "options": {
+        "A": "`t2`",
+        "B": "All three",
+        "C": "`t0`",
+        "D": "`t1`"
+      },
+      "correct": ["A"],
+      "mode": "any",
+      "explanation": "The **first register is the destination** — the only one that changes.\n\n- `t2` receives the result\n- `t0` and `t1` are only **read**, they keep their values"
+    },
+    {
+      "id": 18,
+      "points": 0,
+      "text": "*(This question was cancelled — it counts 0 points for everyone.)*\n\nWhat is in `t2` at the end?\n```asm\nli  t0, 10\nli  t0, 20\nadd t2, t0, t1\n```",
+      "options": {
+        "A": "20",
+        "B": "30",
+        "C": "10, because the first `li` wins",
+        "D": "An error, because `t1` has no value"
+      },
+      "correct": ["A"],
+      "mode": "any",
+      "explanation": "**This question was cancelled and is worth 0 points** — the code depends on `t1`, which is never set, so two answers were defensible.\n\nThe intended reading:\n- `li t0, 10` then `li t0, 20` → the **second `li` wins**, `t0` = 20\n- In Venus, registers start at 0, so `t1` = 0\n- `t2` = 20 + 0 = **20**\n\nBut answer D (\"`t1` has no value\") is a fair objection: the program never gives `t1` a value, and relying on the simulator's default is bad practice. Since the question was ambiguous, it was removed from the grading."
+    },
+    {
+      "id": 19,
+      "points": 2,
+      "text": "What is special about the register `x0` (also called `zero`)?",
+      "options": {
+        "A": "It always reads 0, whatever you write to it",
+        "B": "It holds the result of the last operation",
+        "C": "It can only hold small numbers",
+        "D": "It is the fastest one"
+      },
+      "correct": ["A"],
+      "mode": "any",
+      "explanation": "**`x0` is hard-wired to 0.** Writing to it does nothing; reading it always gives 0.\n\nIt is very useful as a fixed reference:\n```asm\nbeq t0, zero, done   # jump if t0 == 0\n```"
+    },
+    {
+      "id": 20,
+      "points": 3,
+      "text": "You must compute `(a + b) - (c + 2)`. Why does each bracket need its own register?",
+      "options": {
+        "A": "Because the CPU cannot add three numbers",
+        "B": "Because brackets are not allowed in assembly",
+        "C": "Because a register would be overwritten before its value is used",
+        "D": "Because `addi` is slower"
+      },
+      "correct": ["C"],
+      "mode": "any",
+      "explanation": "Each bracket produces an intermediate result. If both results go to the **same register**, the second one **overwrites** the first before you can subtract them.\n\n```asm\nadd  t0, a0, a1   # t0 = a + b\naddi t1, a2, 2    # t1 = c + 2  (different register!)\nsub  t2, t0, t1   # t2 = (a+b) - (c+2)\n```\nThis is the idea of **register allocation**: keep a value alive until you have used it."
+    },
+    {
+      "id": 21,
+      "points": 2,
+      "text": "What does the program counter (PC) hold?",
+      "options": {
+        "A": "The address of the next instruction to run",
+        "B": "The result of the last calculation",
+        "C": "The number of loops done",
+        "D": "The number of lines in the program"
+      },
+      "correct": ["A"],
+      "mode": "any",
+      "explanation": "The **PC (program counter)** holds the **address of the next instruction** the CPU will fetch.\n\nIt is how the CPU knows where it is in the program. Jumps and branches work by **changing the PC**."
+    },
+    {
+      "id": 22,
+      "points": 2,
+      "text": "Normally, how does the PC move from one instruction to the next?",
+      "options": {
+        "A": "It adds 8",
+        "B": "It stays the same",
+        "C": "It adds 1",
+        "D": "It adds 4"
+      },
+      "correct": ["D"],
+      "mode": "any",
+      "explanation": "Each RISC-V instruction is **4 bytes** long. So after each instruction, the PC does:\n\n`PC = PC + 4`\n\nIt adds 4 (bytes), not 1 (instruction) — addresses count **bytes**."
+    },
+    {
+      "id": 23,
+      "points": 2,
+      "text": "What is a label in assembly?",
+      "options": {
+        "A": "A comment",
+        "B": "A special register",
+        "C": "A name for an address in the program",
+        "D": "A type of variable"
+      },
+      "correct": ["C"],
+      "mode": "any",
+      "explanation": "A **label** is a **name for an address**. It marks a place in the code (or in the data), so you can jump to it or load it:\n\n```asm\nloop:            # this line has a name\n    j loop       # jump to that address\n```\nThe assembler replaces the name by the real address."
+    },
+    {
+      "id": 24,
+      "points": 2,
+      "text": "`beq t0, t1, done` jumps to `done` when:",
+      "options": {
+        "A": "Always",
+        "B": "`t0` is different from `t1`",
+        "C": "`t0` equals `t1`",
+        "D": "`t0` is smaller than `t1`"
+      },
+      "correct": ["C"],
+      "mode": "any",
+      "explanation": "**`beq`** = **b**ranch if **eq**ual.\n\nIt compares the two registers:\n- equal → jump to the label\n- not equal → continue to the next line\n\nIts opposite is `bne` (branch if **n**ot **e**qual)."
+    },
+    {
+      "id": 25,
+      "points": 2,
+      "text": "Which branch means \"jump if `t0` is smaller than `t1`\"?",
+      "options": {
+        "A": "`beq t0, t1, L`",
+        "B": "`bge t0, t1, L`",
+        "C": "`blt t0, t1, L`",
+        "D": "`bne t0, t1, L`"
+      },
+      "correct": ["C"],
+      "mode": "any",
+      "explanation": "**`blt`** = **b**ranch if **l**ess **t**han → jumps when `t0 < t1`.\n\nThe four main branches:\n- `beq` → equal\n- `bne` → not equal\n- `blt` → less than\n- `bge` → greater or equal"
+    },
+    {
+      "id": 26,
+      "points": 3,
+      "text": "To translate `if a == b:`, which branch do you write?",
+      "options": {
+        "A": "`beq`, because the test is `==`",
+        "B": "`bne`, because you jump away when the condition is false",
+        "C": "`blt`, to compare the two",
+        "D": "`j`, to skip the block"
+      },
+      "correct": ["B"],
+      "mode": "any",
+      "explanation": "In assembly, the `if` block sits **just below the branch**. You want to **skip it when the condition is false** — so you branch on the **opposite** condition.\n\n`if a == b:` → jump away when `a != b`:\n```asm\nbne t0, t1, skip\n# ... the if block ...\nskip:\n```\nThis \"reverse the test\" trick is the key to every `if` and loop."
+    },
+    {
+      "id": 27,
+      "points": 3,
+      "text": "What is the opposite of `>=`, used to reverse a test?",
+      "options": {
+        "A": "`<=`",
+        "B": "`==`",
+        "C": "`>`",
+        "D": "`<`"
+      },
+      "correct": ["D"],
+      "mode": "any",
+      "explanation": "The opposite of `>=` is **`<`** — strictly smaller.\n\nBe careful: it is **not** `<=`. If `a >= b` is false, then `a < b`. The pairs are:\n- `==` ↔ `!=`\n- `<` ↔ `>=`\n- `>` ↔ `<=`"
+    },
+    {
+      "id": 28,
+      "points": 3,
+      "text": "What does this program leave in `t2`?\n```asm\nli  t0, 7\nli  t1, 7\nbne t0, t1, else_part\nli  t2, 1\nelse_part:\n    li t2, 0\n```",
+      "options": {
+        "A": "0",
+        "B": "7",
+        "C": "Nothing",
+        "D": "1"
+      },
+      "correct": ["A"],
+      "mode": "any",
+      "explanation": "Trace it:\n- `t0` = 7, `t1` = 7 → they are equal, so `bne` does **not** jump\n- `li t2, 1` runs → `t2` = 1\n- but execution **continues into** `else_part:` — a label does not stop the flow\n- `li t2, 0` runs → `t2` = **0**\n\nThe `1` is overwritten. This is the classic **fall-through** bug: a jump over the else part is missing."
+    },
+    {
+      "id": 29,
+      "points": 3,
+      "text": "The same program should leave `1` in `t2` when the two registers are equal. What is missing?\n```asm\nli  t0, 7\nli  t1, 7\nbne t0, t1, else_part\nli  t2, 1\nelse_part:\n    li t2, 0\n```",
+      "options": {
+        "A": "A label at the end",
+        "B": "A jump over the else part, after `li t2, 1`",
+        "C": "A second `bne`",
+        "D": "The `.data` section"
+      },
+      "correct": ["B"],
+      "mode": "any",
+      "explanation": "After the \"then\" part, you must **jump over the else part**, or both run:\n```asm\nbne t0, t1, else_part\nli  t2, 1\nj   end          # <-- this line was missing\nelse_part:\n    li t2, 0\nend:\n```\nEvery if/else in assembly has this shape: reversed branch, then block, **jump**, else block, end label."
+    },
+    {
+      "id": 30,
+      "points": 2,
+      "text": "What makes a loop, in assembly?",
+      "options": {
+        "A": "A jump backwards, to a label above",
+        "B": "Writing the code several times",
+        "C": "A branch that is never taken",
+        "D": "A special `loop` instruction"
+      },
+      "correct": ["A"],
+      "mode": "any",
+      "explanation": "There is no `loop` instruction. A loop is simply a **jump backwards**:\n\n```asm\nloop:\n    # body\n    j loop    # go back up\n```\nThe code between the label and the jump runs again and again. A branch decides when to leave."
+    },
+    {
+      "id": 31,
+      "points": 2,
+      "text": "A `while` loop becomes which four parts in assembly, in this order?",
+      "options": {
+        "A": "Test, update, jump, body",
+        "B": "Body, test, update, jump",
+        "C": "Test, body, update, jump",
+        "D": "Jump, test, body, update"
+      },
+      "correct": ["C"],
+      "mode": "any",
+      "explanation": "A `while` loop always has this shape:\n\n```asm\nloop:\n    bge t0, t1, done   # 1. test (reversed)\n    # ...              # 2. body\n    addi t0, t0, 1     # 3. update\n    j loop             # 4. jump back\ndone:\n```\n**Test, body, update, jump** — in that order."
+    },
+    {
+      "id": 32,
+      "points": 3,
+      "text": "Where does the test go in a loop?",
+      "options": {
+        "A": "Inside the body",
+        "B": "Nowhere; a loop has no test",
+        "C": "At the end, after the body",
+        "D": "At the start, right after the label"
+      },
+      "correct": ["D"],
+      "mode": "any",
+      "explanation": "In a `while` loop, the test comes **first**, right after the label:\n\n```asm\nloop:\n    bge t0, t1, done   # test before the body\n```\nThis way, the condition is checked **before every run** of the body — including the first one. If the condition is false from the start, the body never runs. That is exactly how `while` behaves."
+    },
+    {
+      "id": 33,
+      "points": 2,
+      "text": "Why is the loop test written with the opposite condition?",
+      "options": {
+        "A": "Because it is faster",
+        "B": "Because the label is above",
+        "C": "Because branches only work that way",
+        "D": "Because the branch must leave the loop when the condition becomes false"
+      },
+      "correct": ["D"],
+      "mode": "any",
+      "explanation": "`while t0 < t1` means: **stay** while true, **leave** when false.\n\nThe branch is the exit door — it must fire when the condition is **false**. So you write the opposite test:\n\n```asm\n# while (t0 < t1)\nbge t0, t1, done   # leave when t0 >= t1\n```"
+    },
+    {
+      "id": 34,
+      "points": 3,
+      "text": "This loop never ends. Why?\n```asm\nli t0, 0\nli t1, 5\nloop:\n    bge t0, t1, done\n    j loop\ndone:\n```",
+      "options": {
+        "A": "The label `done` is missing",
+        "B": "The test is wrong",
+        "C": "`t0` is never updated, so the test is never true",
+        "D": "`t1` should be 0"
+      },
+      "correct": ["C"],
+      "mode": "any",
+      "explanation": "The loop has a test and a jump — but **no update**.\n\n- `t0` stays 0 forever\n- `bge t0, t1, done` needs `t0 >= 5` to leave\n- that never happens → **infinite loop**\n\nThe fix is one line before the jump:\n```asm\naddi t0, t0, 1\n```\nEvery loop needs its update, or the exit condition can never become true."
+    },
+    {
+      "id": 35,
+      "points": 3,
+      "text": "How many times does the body run?\n```asm\nli t0, 0\nli t1, 3\nloop:\n    bge t0, t1, done\n    addi t0, t0, 1\n    j loop\ndone:\n```",
+      "options": {
+        "A": "2",
+        "B": "3",
+        "C": "4",
+        "D": "For ever"
+      },
+      "correct": ["B"],
+      "mode": "any",
+      "explanation": "Follow `t0` at each test:\n\n- `t0` = 0 → 0 < 3, body runs, `t0` = 1\n- `t0` = 1 → 1 < 3, body runs, `t0` = 2\n- `t0` = 2 → 2 < 3, body runs, `t0` = 3\n- `t0` = 3 → `bge` fires, leave\n\nThe body runs **3 times** — like `for i in range(3)`."
+    },
+    {
+      "id": 36,
+      "points": 3,
+      "text": "What happens with this loop?\n```asm\nli t0, 0\nli t1, 3\nloop:\n    bge t0, t1, done\n    j loop\n    addi t0, t0, 1\ndone:\n```",
+      "options": {
+        "A": "It runs 3 times",
+        "B": "It runs once",
+        "C": "It stops immediately",
+        "D": "It never ends, because the update is after the jump"
+      },
+      "correct": ["D"],
+      "mode": "any",
+      "explanation": "Look at the order: `j loop` comes **before** `addi`.\n\n- the jump goes back up immediately\n- the `addi` line is **never reached** — it is dead code\n- `t0` stays 0 → the exit test is never true → **infinite loop**\n\nThe **order** of the four parts matters: test, body, **update, then jump** — the update must run before going back up."
+    },
+    {
+      "id": 37,
+      "points": 2,
+      "text": "`for i in range(5):` — what does the counter do?",
+      "options": {
+        "A": "It starts at 0 and stops before 5",
+        "B": "It starts at 0 and stops at 5 included",
+        "C": "It counts backwards",
+        "D": "It goes from 1 to 5"
+      },
+      "correct": ["A"],
+      "mode": "any",
+      "explanation": "`range(5)` gives **0, 1, 2, 3, 4** — five values, and **5 is excluded**.\n\nIn assembly, that is:\n```asm\nli t0, 0            # i = 0\nloop:\n    bge t0, t1, done  # leave when i >= 5\n```\nStart at 0, leave at the limit."
+    },
+    {
+      "id": 38,
+      "points": 2,
+      "text": "What is an accumulator?",
+      "options": {
+        "A": "A register that is reset at each turn",
+        "B": "A register that keeps the running total across the turns",
+        "C": "A special RISC-V instruction",
+        "D": "Another name for the counter"
+      },
+      "correct": ["B"],
+      "mode": "any",
+      "explanation": "An **accumulator** is a register that **keeps the running total** from one turn of the loop to the next.\n\n- the **counter** counts the turns\n- the **accumulator** collects the result\n\nIf you reset it inside the loop, you lose everything at each turn."
+    },
+    {
+      "id": 39,
+      "points": 2,
+      "text": "Before a sum loop, what value should the accumulator start at?",
+      "options": {
+        "A": "The first number",
+        "B": "It does not matter",
+        "C": "1",
+        "D": "0"
+      },
+      "correct": ["D"],
+      "mode": "any",
+      "explanation": "For a **sum**, start at **0** — the neutral value for addition: `0 + x = x`.\n\n```asm\nli t2, 0    # total = 0\n```\nStarting at 1 would add an extra 1 to the result. (For a **product**, the neutral value is 1.)"
+    },
+    {
+      "id": 40,
+      "points": 2,
+      "text": "Inside a sum loop, which instruction adds the counter to the total?",
+      "options": {
+        "A": "`mv t2, t0`",
+        "B": "`addi t2, t2, 1`",
+        "C": "`add t2, t2, t0`",
+        "D": "`li t2, t0`"
+      },
+      "correct": ["C"],
+      "mode": "any",
+      "explanation": "`add t2, t2, t0` means `t2 = t2 + t0`: the total grows by the counter.\n\nThe wrong ones:\n- `mv t2, t0` **replaces** the total, it does not add\n- `addi t2, t2, 1` adds 1, not the counter\n- `li t2, t0` is not even valid — `li` takes a number, not a register"
+    },
+    {
+      "id": 41,
+      "points": 3,
+      "text": "What does this program print?\n```asm\nli t0, 3          # counter\nli t2, 0          # total\nloop:\n    beq  t0, zero, done\n    add  t2, t2, t0\n    addi t0, t0, -1\n    j loop\ndone:\n    li a0, 1\n    mv a1, t2\n    ecall\n```",
+      "options": {
+        "A": "3",
+        "B": "0, the loop never runs",
+        "C": "6",
+        "D": "Nothing, the loop never ends"
+      },
+      "correct": ["C"],
+      "mode": "any",
+      "explanation": "The counter goes **down** from 3 to 0, and the total accumulates:\n\n- `t0` = 3 → `t2` = 0 + 3 = 3\n- `t0` = 2 → `t2` = 3 + 2 = 5\n- `t0` = 1 → `t2` = 5 + 1 = 6\n- `t0` = 0 → `beq t0, zero` fires, leave\n\nThen service 1 prints `a1` = `t2` = **6**. It computed 3 + 2 + 1."
+    },
+    {
+      "id": 42,
+      "points": 3,
+      "text": "This loop should add 1 + 2 + 3 + 4 + 5, but it prints 10. Which line is wrong?\n```asm\nli  t0, 1           # counter\nli  t1, 5           # limit\nli  t2, 0           # total\nloop:\n    bge t0, t1, done\n    add t2, t2, t0\n    addi t0, t0, 1\n    j loop\ndone:\n```",
+      "options": {
+        "A": "`li t2, 0` — the total should start at 1",
+        "B": "`bge t0, t1, done` — it should be `bgt`, so 5 is counted too",
+        "C": "`add t2, t2, t0` — the registers are in the wrong order",
+        "D": "`j loop` — it should jump to `done`"
+      },
+      "correct": ["B"],
+      "mode": "any",
+      "explanation": "This is an **off-by-one** bug. `bge t0, t1, done` leaves as soon as `t0 >= 5` — so the turn where `t0` = 5 **never runs**:\n\n- 1 + 2 + 3 + 4 = **10** ← what it prints\n- 1 + 2 + 3 + 4 + 5 = 15 ← what we wanted\n\nTo include the limit, leave only when `t0 > t1`:\n```asm\nbgt t0, t1, done\n```\nAlways check whether your limit is **included or excluded**."
+    }
+  ]
+}

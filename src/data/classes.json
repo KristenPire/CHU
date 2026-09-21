@@ -38,5 +38,10 @@
     "id": "python_oop",
     "label": "Python",
     "fullName": "Python OOP"
+  },
+  {
+    "id": "asm",
+    "label": "ASM",
+    "fullName": "Assembly Programming (RISC-V)"
   }
 ]
