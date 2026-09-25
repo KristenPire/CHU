@@ -34,6 +34,56 @@ npm run dev
 
 ---
 
+## Local database
+
+The V1 stores grades in PostgreSQL instead of the JSON files of `src/data/`. The
+database runs in Docker so that every contributor — and the CI — uses the exact
+same version. Requires Docker (or Docker Desktop) running.
+
+```bash
+cp .env.example .env          # then edit the password if you want
+docker compose up -d db       # starts postgres:18-alpine
+docker compose ps             # wait for STATUS = healthy (a few seconds)
+```
+
+Connect with `psql` inside the container:
+
+```bash
+docker compose exec db psql -U "$POSTGRES_USER" -d "$POSTGRES_DB"
+```
+
+Stop it, keeping the data (named volume `pgdata`):
+
+```bash
+docker compose down
+```
+
+Reset it — **deletes every row**, useful to replay the migrations from an empty
+database:
+
+```bash
+docker compose down -v
+```
+
+`.env` holds the credentials and is gitignored; `.env.example` is the committed
+reference. `DATABASE_URL` is the only variable the application code reads. The
+port is published on `127.0.0.1` only, so the database is never reachable from
+the local network.
+
+If `docker compose up` fails with `address already in use`, another PostgreSQL
+already holds the port. Set `DB_PORT` to a free one in `.env` and update the
+port inside `DATABASE_URL` to match:
+
+```bash
+DB_PORT=5433
+DATABASE_URL=postgres://chu:local-dev-password@127.0.0.1:5433/chu_grades
+```
+
+See `docs/adr/0004-docker-compose-environments.md` for why the database runs in
+Docker rather than being installed on each machine.
+
+---
+
 ## Project Structure
 
 ```
