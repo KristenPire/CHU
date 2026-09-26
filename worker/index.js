@@ -17,9 +17,10 @@ const STUDENT_ID = /^[0-9]{4,10}$/;
 // Date at local midnight, and JSON.stringify would render it in UTC — east of
 // Greenwich a deadline would move to the day before.
 const DAYS = `
-    to_char(held_on,   'YYYY-MM-DD') as held_on,
-    to_char(starts_on, 'YYYY-MM-DD') as starts_on,
-    to_char(due_on,    'YYYY-MM-DD') as due_on
+    to_char(held_on,      'YYYY-MM-DD') as held_on,
+    to_char(starts_on,    'YYYY-MM-DD') as starts_on,
+    to_char(due_on,       'YYYY-MM-DD') as due_on,
+    to_char(published_at, 'YYYY-MM-DD') as published_on
 `;
 
 const SUMMARY_SQL = `
@@ -27,6 +28,12 @@ const SUMMARY_SQL = `
            assessment_num, assessment_title, kind, total_points, coeff, grade,
            group_num, repository_url, group_comments,
            report is not null as has_report,
+           -- Counted here rather than shipped: a card shows "18 correct, 2
+           -- wrong", which is two integers, not the exam paper and the answers.
+           case when jsonb_typeof(body -> 'questions') = 'array'
+                then jsonb_array_length(body -> 'questions') end as question_count,
+           case when wrong_answers is null then null
+                else (select count(*) from jsonb_object_keys(wrong_answers)) end as wrong_count,
            ${DAYS}
       from student_grades_v
      where student_id = $1
@@ -35,7 +42,7 @@ const SUMMARY_SQL = `
 
 const ASSESSMENT_SQL = `
     select assessment_id, course_code, course_title, assessment_num, assessment_title,
-           kind, total_points, coeff, grade, report, body,
+           kind, total_points, coeff, grade, report, body, wrong_answers,
            group_num, repository_url, group_comments,
            ${DAYS}
       from student_grades_v
@@ -117,6 +124,10 @@ async function studentSummary(studentId, connect) {
     courses.get(row.course_code).assessments.push({
       ...assessmentFrom(row),
       hasReport: row.has_report,
+      questionCount: row.question_count === null ? null : Number(row.question_count),
+      // null means no answers were recorded for this exam, which the review
+      // screen says differently from "none was wrong".
+      wrongCount: row.wrong_count === null ? null : Number(row.wrong_count),
     });
   }
 
@@ -140,6 +151,10 @@ async function assessmentDetail(studentId, assessmentId, connect) {
     ...assessmentFrom(row),
     report: row.report,
     body: row.body,
+    // null and {} mean different things: no answers were recorded, versus
+    // answers were recorded and none was wrong. The review screen says
+    // something different in each case.
+    wrongAnswers: row.wrong_answers,
   });
 }
 
@@ -163,6 +178,7 @@ function assessmentFrom(row) {
     heldOn: row.held_on,
     startsOn: row.starts_on,
     dueOn: row.due_on,
+    publishedOn: row.published_on,
     group:
       row.group_num === null
         ? null
