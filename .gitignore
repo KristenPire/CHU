@@ -12,6 +12,11 @@ dist
 dist-ssr
 *.local
 
+# Local environment (credentials) — .env.example is the committed reference
+.env
+.env.*
+!.env.example
+
 # Grading
 C++GroupGrading/
 document/
