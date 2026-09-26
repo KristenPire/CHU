@@ -30,6 +30,9 @@ describe("npm run import", () => {
       assessments: 0,
       students: 0,
       grades: 0,
+      groups: 0,
+      members: 0,
+      reports: 0,
       skipped: 0,
     });
 
@@ -63,5 +66,89 @@ describe("npm run import", () => {
     await query(connectionString, "update cohorts set archived_at = now() where entry_year = 2025");
     expect(await count(connectionString, "student_grades_v")).toBe(0);
     expect(await count(connectionString, "grades")).toBe(97);
+  }, 120_000);
+
+  // C++ is the course that exercises everything a project can carry: two
+  // project folders, correction reports in markdown, and the demo accounts that
+  // must never be imported. The map is passed here rather than committed to
+  // import-map.json, which carries a decision about which promotion sat what.
+  const PROJECT_COURSE = { cpp: 2024 };
+
+  it("imports projects as groups, memberships, reports and per-member grades", async () => {
+    const connectionString = await freshDatabase();
+
+    const first = await runImport({ connectionString, log: silent, importMap: PROJECT_COURSE });
+
+    expect(first.groups).toBeGreaterThan(0);
+    expect(first.members).toBeGreaterThan(0);
+    expect(first.reports).toBeGreaterThan(0);
+    // The demo accounts sit in a group of cpp/03 and must be left out of it.
+    expect(first.skipped).toBeGreaterThan(0);
+
+    const second = await runImport({ connectionString, log: silent, importMap: PROJECT_COURSE });
+    expect(second.groups).toBe(0);
+    expect(second.members).toBe(0);
+    expect(second.grades).toBe(0);
+    expect(second.reports).toBe(0);
+
+    const demo = (
+      await query(
+        connectionString,
+        "select count(*) from students where id in ('1234', '5678', '20230001')",
+      )
+    ).rows[0].count;
+    expect(Number(demo)).toBe(0);
+  }, 120_000);
+
+  it("reports a group whose markdown file is missing instead of dropping it", async () => {
+    const connectionString = await freshDatabase();
+
+    const lines = [];
+    await runImport({
+      connectionString,
+      log: (line) => lines.push(line),
+      importMap: PROJECT_COURSE,
+    });
+
+    // Two groups declare a markdown file that is not in the folder:
+    // cpp/03 renamed one on a single side, cpp/04 is simply missing one.
+    expect(lines.filter((l) => l.startsWith("missing report:"))).toHaveLength(2);
+  }, 120_000);
+
+  it("stores no group name, only a number", async () => {
+    const connectionString = await freshDatabase();
+    await runImport({ connectionString, log: silent, importMap: PROJECT_COURSE });
+
+    // The guarantee is structural: there is no column a name could sit in.
+    const columns = (
+      await query(
+        connectionString,
+        `select column_name from information_schema.columns
+          where table_name = 'groups' order by column_name`,
+      )
+    ).rows.map((r) => r.column_name);
+
+    expect(columns).toEqual(["assessment_id", "comments", "id", "num", "repository_url"]);
+  }, 120_000);
+
+  it("gives a project member their group's report and grade", async () => {
+    const connectionString = await freshDatabase();
+    await runImport({ connectionString, log: silent, importMap: PROJECT_COURSE });
+
+    const row = (
+      await query(
+        connectionString,
+        `select kind, group_num, grade, report, due_on, starts_on
+           from student_grades_v
+          where kind = 'project' and report is not null
+          limit 1`,
+      )
+    ).rows[0];
+
+    expect(row.kind).toBe("project");
+    expect(row.group_num).toBeGreaterThan(0);
+    expect(row.report).toMatch(/\S/);
+    // The dates the project cards render, which the schema did not keep before.
+    expect(row.due_on).toBeInstanceOf(Date);
   }, 120_000);
 });
