@@ -216,9 +216,9 @@ async function importGroups(client, dir, assessmentId, cohortId, counters, log) 
       await ensureStudent(client, studentId, cohortId, counters);
 
       const member = await client.query(
-        `insert into group_members (group_id, student_id) values ($1, $2)
+        `insert into group_members (group_id, student_id, assessment_id) values ($1, $2, $3)
          on conflict do nothing`,
-        [row.id, studentId],
+        [row.id, studentId, assessmentId],
       );
       counters.members += member.rowCount;
 
