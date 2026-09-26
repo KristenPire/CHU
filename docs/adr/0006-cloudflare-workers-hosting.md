@@ -140,6 +140,43 @@ an average saved per load. It is the removal of a worst case a student meets on
 a bad day. Measuring once would have hidden it: the first run alone suggested
 the bundle cost about a second, this file said so, and that reading was wrong.
 
+## Measured after the front end moved to the API — 2026-09-27
+
+The runs above were taken while the grades were still bundled. BDD-31 moved the
+front end onto the API, which took the data out of the build: the bundle went
+from 1.8 MB to 121 562 bytes served, and a student's own grades became a
+separate 4 KB response. The same Chinese network was measured again, and this
+time the round trip to Neon in Singapore was measured for the first time.
+
+| Measured | Bytes | Run 1 | Run 2 |
+| --- | --- | --- | --- |
+| `/api/students/:id` — Worker, Hyperdrive, Neon | 4 084 | 317 ms | 330 ms |
+| home page | 338 | 587 ms | 502 ms |
+| the site bundle | 121 562 | 921 ms | — |
+
+Two things changed, and they are worth separating.
+
+The bundle no longer stands apart. At 1.8 MB it sat an order of magnitude above
+every small response in all four runs; at 121 KB its single measurement, 921 ms,
+falls below the *best* of those four (1 860 ms), and all three figures here sit
+inside one 300–900 ms band. **This is one run and a half, not four.** The two
+outliers of the earlier campaign — 21 250 ms and 10 710 ms — landed on runs 2
+and 4, which is exactly what a short campaign misses. The honest claim is that
+the worst case did not appear at this size, not that it is gone.
+
+The database is not the slow part. The API call crosses the Pacific to Singapore
+and returns faster than a 338-byte page served from Cloudflare's own asset
+store. With two samples that ordering is inside the noise and no law should be
+read into it, but the question it settles is the one that opened this
+investigation: a blank page from China was attributed to the hosted database
+before anything was measured, and the failing request never touched it. It still
+does not. Hyperdrive holding a warm pooled connection is the plausible reason
+the Singapore hop costs so little, and it is a hypothesis here, not a finding.
+
+What remains unmeasured is the tail. Both campaigns show that the spread between
+runs, not the average, is what a student actually experiences, and two runs
+cannot describe a spread.
+
 ## Consequences
 
 - **Student data leaves our machines.** ADR-0004 rejected a hosted database for
