@@ -82,6 +82,27 @@ DATABASE_URL=postgres://chu:local-dev-password@127.0.0.1:5433/chu_grades
 See `docs/adr/0004-docker-compose-environments.md` for why the database runs in
 Docker rather than being installed on each machine.
 
+Once the container is healthy, build the schema and load the data:
+
+```bash
+npm run migrate                # applies src/db/migrations/*.sql in order
+npm run import                 # loads the courses listed in src/db/import-map.json
+npm run test:integration       # runs against a separate <database>_test
+```
+
+`migrate` and `import` are separate on purpose: the schema is versioned and
+applied once, the grades are data that get corrected and reloaded. Both are
+safe to run again — `migrate` skips what it already applied, `import` upserts
+and leaves the audit journal alone when nothing changed.
+
+`import-map.json` decides which course folders of `src/data/` are imported. It
+holds one entry today: the chain is validated on Python OOP for the 2025
+promotion before the rest of the catalogue is opened. Folders absent from it
+are reported and skipped.
+
+See `docs/database.md` for the schema and the rules the database enforces, and
+`docs/adr/0003-postgresql-access-and-migrations.md` for why there is no ORM.
+
 ---
 
 ## Contributing

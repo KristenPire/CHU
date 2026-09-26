@@ -8,6 +8,12 @@ import { defineConfig, globalIgnores } from 'eslint/config'
 export default defineConfig([
   globalIgnores(['dist']),
   {
+    // Server-side code: migration runner, import script, database access.
+    // It runs under Node, not in the browser, so it needs the Node globals.
+    files: ['src/db/**/*.js', 'tests/**/*.js'],
+    languageOptions: { globals: globals.node },
+  },
+  {
     files: ['**/*.{js,jsx}'],
     extends: [
       js.configs.recommended,
