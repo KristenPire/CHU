@@ -6,11 +6,14 @@ import reactRefresh from 'eslint-plugin-react-refresh'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
-  globalIgnores(['dist']),
+  // .wrangler holds the bundle wrangler builds to run the Worker locally. It is
+  // generated, it is gitignored, and linting it turns `npm run check` red for
+  // anyone who has run the API once.
+  globalIgnores(['dist', '.wrangler']),
   {
-    // Server-side code: migration runner, import script, database access.
-    // It runs under Node, not in the browser, so it needs the Node globals.
-    files: ['src/db/**/*.js', 'tests/**/*.js'],
+    // Server-side code: migration runner, import script, database access, and
+    // the Worker. It runs outside the browser, so it needs the Node globals.
+    files: ['src/db/**/*.js', 'tests/**/*.js', 'worker/**/*.js'],
     languageOptions: { globals: globals.node },
   },
   {

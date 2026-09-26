@@ -1,8 +1,13 @@
 /**
  * App root — minimal screen router.
  *
- * Three screens, no react-router needed.
+ * Four screens, no react-router needed.
  * AnimatePresence handles fade transitions between them.
+ *
+ * The student's results are fetched once, here, when they log in: every screen
+ * below reads from that one payload instead of from data bundled into the
+ * JavaScript. Only an exam body or a correction report is fetched later, by the
+ * screen that opens it.
  */
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -10,43 +15,42 @@ import { LoginScreen } from "./screens/LoginScreen";
 import { DashboardScreen } from "./screens/DashboardScreen";
 import { ExamDetailScreen } from "./screens/ExamDetailScreen";
 import { ProjectReportScreen } from "./screens/ProjectReportScreen";
+
 export default function App() {
   const [screen, setScreen] = useState("login");
-  const [studentId, setStudentId] = useState(null);
-  const [selectedExam, setSelectedExam] = useState(null);
-  const [selectedProject, setSelectedProject] = useState(null); // { projectId, groupName }
+  const [student, setStudent] = useState(null);
+  const [assessmentId, setAssessmentId] = useState(null);
+
+  const studentId = student?.studentId ?? null;
 
   return (
     <div className="bg-tm-bg text-tm-text font-mono min-h-screen text-[14px] overflow-hidden">
       <AnimatePresence mode="wait">
         {screen === "login" && (
           <motion.div key="login" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, scale: 0.97 }} transition={{ duration: 0.3 }}>
-            <LoginScreen onLogin={(id) => { setStudentId(id); setScreen("dashboard"); }} />
+            {/* The login screen loads the student, so the dashboard opens on
+                data that is already there rather than on a spinner. */}
+            <LoginScreen onLogin={(loaded) => { setStudent(loaded); setScreen("dashboard"); }} />
           </motion.div>
         )}
         {screen === "dashboard" && (
           <motion.div key="dashboard" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.25 }}>
             <DashboardScreen
-              studentId={studentId}
-              onSelectExam={(eid) => { setSelectedExam(eid); setScreen("detail"); }}
-              onSelectProject={(projectId, groupName) => { setSelectedProject({ projectId, groupName }); setScreen("report"); }}
-              onLogout={() => { setStudentId(null); setScreen("login"); }}
+              student={student}
+              onSelectExam={(id) => { setAssessmentId(id); setScreen("detail"); }}
+              onSelectProject={(id) => { setAssessmentId(id); setScreen("report"); }}
+              onLogout={() => { setStudent(null); setScreen("login"); }}
             />
           </motion.div>
         )}
         {screen === "detail" && (
           <motion.div key="detail" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.25 }}>
-            <ExamDetailScreen examId={selectedExam} studentId={studentId} onBack={() => setScreen("dashboard")} />
+            <ExamDetailScreen assessmentId={assessmentId} studentId={studentId} onBack={() => setScreen("dashboard")} />
           </motion.div>
         )}
-        {screen === "report" && selectedProject && (
+        {screen === "report" && (
           <motion.div key="report" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.25 }}>
-            <ProjectReportScreen
-              projectId={selectedProject.projectId}
-              groupName={selectedProject.groupName}
-              studentId={studentId}
-              onBack={() => setScreen("dashboard")}
-            />
+            <ProjectReportScreen assessmentId={assessmentId} studentId={studentId} onBack={() => setScreen("dashboard")} />
           </motion.div>
         )}
       </AnimatePresence>
