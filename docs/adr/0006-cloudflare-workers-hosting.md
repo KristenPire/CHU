@@ -117,22 +117,23 @@ nothing about the decision. Any measurement from China has to be taken on a
 domain we own.
 
 The site was then deployed on a domain we own, behind the same Worker, and
-measured three times from the same Chinese network:
+measured four times from the same Chinese network:
 
-| Measured | Run 1 | Run 2 | Run 3 | Spread |
-| --- | --- | --- | --- | --- |
-| connection + 2 bytes | 348 ms | 1 504 ms | 420 ms | ×4.3 |
-| home page, 730 bytes | 477 ms | 2 002 ms | 666 ms | ×4.2 |
-| the site bundle, 1.8 MB | 1 860 ms | 21 250 ms | 5 404 ms | **×11.4** |
+| Measured | Run 1 | Run 2 | Run 3 | Run 4 | Spread |
+| --- | --- | --- | --- | --- | --- |
+| connection + 2 bytes | 348 ms | 1 504 ms | 420 ms | 730 ms | ×4.3 |
+| home page, 730 bytes | 477 ms | 2 002 ms | 666 ms | 2 648 ms | ×5.5 |
+| the site bundle, 1.8 MB | 1 860 ms | 21 250 ms | 5 404 ms | 10 710 ms | **×11.4** |
 
 The whole journey works every time: login, course tabs, an exam paper, a project
 report. **The decision holds, and this is the measurement BDD-36 asked for.**
 
-What the three runs show together, and none shows alone, is that size and
-stability are the same question here. The small page stays under two seconds in
-every run. The bundle ranges from under two seconds to over twenty-one, with a
-middle run at five. The API endpoints, a few hundred bytes each, stayed fast
-even during the worst run.
+What the runs show together, and none shows alone, is that size and stability are
+the same question here. An earlier version of this file claimed the small page
+stayed under two seconds in every run; the fourth run took 2 648 ms and settled
+that. The claim that survives is comparative, not absolute: across the same four
+runs the small page spans ×5.5 and the bundle ×11.4, and the bundle stays an
+order of magnitude above it throughout — 1.9 to 21.3 seconds against 0.5 to 2.6.
 
 So the case for serving grades through the API rather than in the bundle is not
 an average saved per load. It is the removal of a worst case a student meets on
