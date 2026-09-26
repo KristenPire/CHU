@@ -105,6 +105,77 @@ See `docs/database.md` for the schema and the rules the database enforces, and
 
 ---
 
+## Production
+
+Production runs on Cloudflare Workers: one Worker serves the Vite build as
+static assets and answers `/api/*`. The database is hosted by Neon in Singapore
+and reached through a Hyperdrive binding. See
+`docs/adr/0006-cloudflare-workers-hosting.md` for why.
+
+`.env` holds two connection strings and they are not interchangeable:
+
+| Variable | Points at | Used by |
+| --- | --- | --- |
+| `DATABASE_URL` | the local Docker database | `dev:api`, `migrate`, `import`, integration tests |
+| `NEON_DATABASE_URL` | the production database | the commands below, explicitly |
+
+Nothing reads `NEON_DATABASE_URL` implicitly. Touching production is always a
+deliberate override on the command line:
+
+```bash
+DATABASE_URL="$NEON_DATABASE_URL" npm run migrate
+DATABASE_URL="$NEON_DATABASE_URL" npm run import
+```
+
+(A variable set in the shell wins over `.env`, so the override is enough.)
+
+### Running the API locally
+
+```bash
+docker compose up -d db        # the Worker talks to the local database
+npm run build                  # the Worker serves ./dist
+npm run dev:api                # http://localhost:8787
+```
+
+`dev:api` passes `DATABASE_URL` to the Hyperdrive binding as its local
+connection string, so local development never touches Neon.
+
+### Deploying
+
+```bash
+npx wrangler login             # once per machine
+npm run deploy                 # builds, then wrangler deploy
+```
+
+The Hyperdrive configuration is created once per account and its id goes into
+`wrangler.jsonc`:
+
+```bash
+npx wrangler hyperdrive create chu-grades-db --connection-string="$NEON_DATABASE_URL"
+```
+
+The id is a public identifier, not a secret: the credentials stay inside
+Hyperdrive and never reach the Worker code or the repository.
+
+### What the API exposes
+
+| Route | Returns |
+| --- | --- |
+| `GET /api/health` | database reachability |
+| `GET /api/students/:id` | one student's courses and grades, without exam bodies |
+| `GET /api/students/:id/assessments/:assessmentId` | one assessment with its body and report |
+
+Every read goes through the `student_grades_v` view, so an unpublished
+assessment or an archived promotion is invisible to the API by construction
+rather than by remembering to filter. Responses are `no-store`.
+
+These endpoints are **not authenticated**: anyone who knows a student number can
+read that student's grades. That is strictly better than the previous state,
+where the whole dataset shipped inside the public bundle, and strictly worse
+than a login. It is an intermediate state, not a destination.
+
+---
+
 ## Contributing
 
 ### Branches
