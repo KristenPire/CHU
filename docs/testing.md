@@ -14,8 +14,16 @@ than as an intention.
 | `npm run build` | The production Vite build. | Automatically on every push to `master` (Pages deployment). | **Yes** for `master`: a build failure means the site is not published. |
 | `npm run typecheck` | Not available yet. TypeScript type checking, added to `check` when the code is migrated to TypeScript. | — | — |
 | `npm run test:unit` | Not available yet. Unit tests of the pure business logic (`src/lib/`), starting with the final grade formula. | — | — |
-| `npm run test:integration` | Not available yet. Tests against a real PostgreSQL database — migrations, import script, API route handlers. Requires `docker compose up -d db`. | — | — |
+| `npm run test:integration` | The migrations, the import script, and the rules the database itself enforces: the audit trigger, the visibility view, the absence of any name column. Runs against a real PostgreSQL. | Locally after `docker compose up -d db`; on every pull request targeting `preprod`, against a `postgres:18-alpine` service container. | **Yes** — a red `integration` job blocks the merge. |
 | `npm run test:e2e` | Not available yet. Browser scenarios: a student reads their grades, a teacher edits one. | — | — |
+
+The integration tests are deliberately **not** part of `check`: they need a
+running database, and `check` must stay runnable on a laptop with nothing
+started and on a CI runner with no service container. They have their own CI
+job instead. They also run against their own database — the one in
+`DATABASE_URL` plus a `_test` suffix, created on demand — because they rebuild
+the schema on every run and must never be able to erase what a contributor is
+working on.
 
 `check` is the only name a contributor, the pre-push hook and the CI workflow
 ever use. A new check is added by editing that one script; neither the hook nor
@@ -27,7 +35,7 @@ check that cannot fail would make the gate look stronger than it is.
 
 A pull request targeting `preprod` cannot be merged unless:
 
-- the `check` job is green;
+- the `check` and `integration` jobs are green;
 - the change comes from a `feat/<slug>` branch, never from a direct push;
 - every commit message follows Conventional Commits, has a body explaining
   *why*, and ends with `Refs: BDD-<n>`;
@@ -56,9 +64,8 @@ The table above grows in this order, each step landing with the feature that
 needs it:
 
 1. `typecheck` — with the TypeScript migration.
-2. `test:unit` — with the grade computation moved into `src/lib/`.
-3. `test:integration` — with the SQL migrations and the import script, against
-   the PostgreSQL service of `docker-compose.yml`.
+2. `test:unit` — with the grade computation moved into `src/lib/`. Vitest is already installed; only the unit suite and its script are missing.
+3. ~~`test:integration`~~ — done, with the SQL migrations and the import script.
 4. `test:e2e` — with the student screens and the teacher area.
 
 Each step adds its command to `npm run check`, or to a separate CI job when it
