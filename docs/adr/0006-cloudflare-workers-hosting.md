@@ -117,23 +117,27 @@ nothing about the decision. Any measurement from China has to be taken on a
 domain we own.
 
 The site was then deployed on a domain we own, behind the same Worker, and
-measured again from the same Chinese network:
+measured twice from the same Chinese network, hours apart:
 
-| Measured | From China |
-| --- | --- |
-| connection + 2 bytes | 348 ms |
-| home page, 730 bytes | 477 ms |
-| the site bundle, 1.8 MB | 1 860 ms |
+| Measured | Good moment | Bad moment | Ratio |
+| --- | --- | --- | --- |
+| connection + 2 bytes | 348 ms | 1 504 ms | ×4.3 |
+| home page, 730 bytes | 477 ms | 2 002 ms | ×4.2 |
+| the site bundle, 1.8 MB | 1 860 ms | **21 250 ms** | **×11.4** |
 
-The whole journey works: login, course tabs, an exam paper, a project report.
-Latency is 348 ms and the bundle transfers at roughly 10 Mbit/s. **The decision
-holds, and this is the measurement BDD-36 asked for.**
+The whole journey works in both: login, course tabs, an exam paper, a project
+report. **The decision holds, and this is the measurement BDD-36 asked for.**
 
-One consequence worth recording, because it corrects an argument made earlier in
-this project: serving the grades from the API instead of the bundle would save
-about a second on a first load, from which the round trip to Neon would still
-have to be subtracted. That is worth having, and it is not the reason to do it.
-The reason is that the bundle hands every visitor the grades of 294 students.
+The two runs say more together than either does alone. When the network degrades,
+everything slows by about four — except the 1.8 MB transfer, which collapses by
+eleven. Small responses take the hit proportionally; a large one falls off a
+cliff. The API endpoints, a few hundred bytes each, stayed fast during the bad
+run.
+
+So the case for serving grades from the API rather than from the bundle is not
+an average saved per load. It is the removal of a 21-second worst case that a
+student meets on a bad day. Measuring once would have hidden this: the first run
+alone suggested the bundle cost about a second, and that reading was wrong.
 
 ## Consequences
 
