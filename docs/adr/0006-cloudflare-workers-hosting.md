@@ -117,27 +117,27 @@ nothing about the decision. Any measurement from China has to be taken on a
 domain we own.
 
 The site was then deployed on a domain we own, behind the same Worker, and
-measured twice from the same Chinese network, hours apart:
+measured three times from the same Chinese network:
 
-| Measured | Good moment | Bad moment | Ratio |
-| --- | --- | --- | --- |
-| connection + 2 bytes | 348 ms | 1 504 ms | ×4.3 |
-| home page, 730 bytes | 477 ms | 2 002 ms | ×4.2 |
-| the site bundle, 1.8 MB | 1 860 ms | **21 250 ms** | **×11.4** |
+| Measured | Run 1 | Run 2 | Run 3 | Spread |
+| --- | --- | --- | --- | --- |
+| connection + 2 bytes | 348 ms | 1 504 ms | 420 ms | ×4.3 |
+| home page, 730 bytes | 477 ms | 2 002 ms | 666 ms | ×4.2 |
+| the site bundle, 1.8 MB | 1 860 ms | 21 250 ms | 5 404 ms | **×11.4** |
 
-The whole journey works in both: login, course tabs, an exam paper, a project
+The whole journey works every time: login, course tabs, an exam paper, a project
 report. **The decision holds, and this is the measurement BDD-36 asked for.**
 
-The two runs say more together than either does alone. When the network degrades,
-everything slows by about four — except the 1.8 MB transfer, which collapses by
-eleven. Small responses take the hit proportionally; a large one falls off a
-cliff. The API endpoints, a few hundred bytes each, stayed fast during the bad
-run.
+What the three runs show together, and none shows alone, is that size and
+stability are the same question here. The small page stays under two seconds in
+every run. The bundle ranges from under two seconds to over twenty-one, with a
+middle run at five. The API endpoints, a few hundred bytes each, stayed fast
+even during the worst run.
 
-So the case for serving grades from the API rather than from the bundle is not
-an average saved per load. It is the removal of a 21-second worst case that a
-student meets on a bad day. Measuring once would have hidden this: the first run
-alone suggested the bundle cost about a second, and that reading was wrong.
+So the case for serving grades through the API rather than in the bundle is not
+an average saved per load. It is the removal of a worst case a student meets on
+a bad day. Measuring once would have hidden it: the first run alone suggested
+the bundle cost about a second, this file said so, and that reading was wrong.
 
 ## Consequences
 
