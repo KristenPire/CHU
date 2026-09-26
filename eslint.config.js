@@ -10,7 +10,7 @@ export default defineConfig([
   {
     // Server-side code: migration runner, import script, database access.
     // It runs under Node, not in the browser, so it needs the Node globals.
-    files: ['src/db/**/*.js'],
+    files: ['src/db/**/*.js', 'tests/**/*.js'],
     languageOptions: { globals: globals.node },
   },
   {
