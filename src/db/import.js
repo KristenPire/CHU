@@ -142,43 +142,92 @@ async function importCourse(client, folder, mapEntry, counters, log) {
   }
 }
 
-/** Registers a student without their name, and returns nothing. */
-async function ensureStudent(client, studentId, cohortId, counters) {
-  // A student already known keeps the cohort they were given — a repeater's
-  // cohort is corrected by hand and an import must not undo it.
-  const inserted = await client.query(
-    `insert into students (id, cohort_id) values ($1, $2)
-     on conflict (id) do nothing`,
-    [studentId, cohortId],
-  );
-  counters.students += inserted.rowCount;
+/**
+ * Writing row by row is what an import used to do, and it is fine against a
+ * database on the same machine: a round trip costs a fraction of a millisecond.
+ * Against a hosted database it is not. Loading the whole catalogue meant more
+ * than five thousand sequential statements, and at the ~500 ms a round trip to
+ * Singapore costs from here, that is over forty minutes — the first full import
+ * had to be killed.
+ *
+ * Everything below therefore writes in batches: one statement per few hundred
+ * rows instead of one per row. The same import drops to about a hundred
+ * statements, and its duration stops depending on where the database lives.
+ */
+const BATCH = 500;
+
+function* batches(rows, size = BATCH) {
+  for (let i = 0; i < rows.length; i += size) yield rows.slice(i, i + size);
+}
+
+/** `($1::int, $2::text, …), ($5::int, …)` for however many rows and columns. */
+function placeholders(rowCount, types) {
+  const lines = [];
+  for (let r = 0; r < rowCount; r += 1) {
+    const base = r * types.length;
+    lines.push(`(${types.map((t, c) => `$${base + c + 1}::${t}`).join(", ")})`);
+  }
+  return lines.join(", ");
+}
+
+/**
+ * Registers students without their names.
+ *
+ * A student already known keeps the cohort they were given — a repeater's
+ * cohort is corrected by hand and an import must not undo it.
+ */
+async function ensureStudents(client, studentIds, cohortId, counters) {
+  const ids = [...new Set(studentIds)];
+  for (const part of batches(ids)) {
+    const params = part.flatMap((id) => [id, cohortId]);
+    const inserted = await client.query(
+      `insert into students (id, cohort_id)
+       values ${placeholders(part.length, ["text", "int"])}
+       on conflict (id) do nothing`,
+      params,
+    );
+    counters.students += inserted.rowCount;
+  }
 }
 
 /**
  * The guard on the update is not an optimisation: without it, re-importing
  * rewrites every grade to its own value and the audit trigger records a change
  * where nothing changed.
+ *
+ * Returns the (assessment, student) pairs actually written, so the caller can
+ * tell whether a report reached anyone.
  */
-async function upsertGrade(client, assessmentId, studentId, grade, report, counters, wrong) {
-  const graded = await client.query(
-    `insert into grades (assessment_id, student_id, grade, report, wrong_answers)
-     values ($1, $2, $3, $4, $5)
-     on conflict (assessment_id, student_id) do update set
-         grade = excluded.grade, report = excluded.report,
-         wrong_answers = excluded.wrong_answers
-     where grades.grade         is distinct from excluded.grade
-        or grades.report        is distinct from excluded.report
-        or grades.wrong_answers is distinct from excluded.wrong_answers
-     returning (xmax = 0) as created`,
-    [assessmentId, studentId, grade ?? null, report ?? null, wrong ?? null],
-  );
-  if (graded.rows[0]?.created) counters.grades += 1;
-  return graded.rowCount > 0;
+async function upsertGrades(client, rows, counters) {
+  const written = new Set();
+  for (const part of batches(rows)) {
+    const params = part.flatMap((r) => [
+      r.assessmentId, r.studentId, r.grade ?? null, r.report ?? null, r.wrong ?? null,
+    ]);
+    const result = await client.query(
+      `insert into grades (assessment_id, student_id, grade, report, wrong_answers)
+       values ${placeholders(part.length, ["int", "text", "numeric", "text", "jsonb"])}
+       on conflict (assessment_id, student_id) do update set
+           grade = excluded.grade, report = excluded.report,
+           wrong_answers = excluded.wrong_answers
+       where grades.grade         is distinct from excluded.grade
+          or grades.report        is distinct from excluded.report
+          or grades.wrong_answers is distinct from excluded.wrong_answers
+       returning assessment_id, student_id, (xmax = 0) as created`,
+      params,
+    );
+    for (const row of result.rows) {
+      written.add(`${row.assessment_id}|${row.student_id}`);
+      if (row.created) counters.grades += 1;
+    }
+  }
+  return written;
 }
 
 async function importExamGrades(client, dir, assessmentId, cohortId, counters) {
   const students = await readJson(join(dir, "students.json"));
 
+  const rows = [];
   for (const [studentId, record] of Object.entries(students)) {
     if (DEMO_ACCOUNTS.has(studentId)) {
       counters.skipped += 1;
@@ -186,10 +235,17 @@ async function importExamGrades(client, dir, assessmentId, cohortId, counters) {
     }
     // record.name is read and deliberately dropped: no student name enters the
     // database. record.wrong is kept: it is what the review screen marks.
-    await ensureStudent(client, studentId, cohortId, counters);
-    const wrong = record.wrong === undefined ? null : JSON.stringify(record.wrong);
-    await upsertGrade(client, assessmentId, studentId, record.grade, null, counters, wrong);
+    rows.push({
+      assessmentId,
+      studentId,
+      grade: record.grade,
+      report: null,
+      wrong: record.wrong === undefined ? null : JSON.stringify(record.wrong),
+    });
   }
+
+  await ensureStudents(client, rows.map((r) => r.studentId), cohortId, counters);
+  await upsertGrades(client, rows, counters);
 }
 
 /**
@@ -204,51 +260,83 @@ async function importExamGrades(client, dir, assessmentId, cohortId, counters) {
 async function importGroups(client, dir, assessmentId, cohortId, counters, log) {
   const groups = await readJson(join(dir, "groups.json"));
 
+  // Read the reports first: a missing file is a fact about the data, and it has
+  // to be reported whether or not anything is written afterwards.
+  const reports = new Map();
+  for (const [index, group] of groups.entries()) {
+    if (!group.markdown) continue;
+    const report = await readFile(join(dir, "markdown", group.markdown), "utf8").catch(() => null);
+    // Say it rather than skip it: silence would let a student's correction
+    // disappear unnoticed.
+    if (report === null) log(`missing report: ${dir}/markdown/${group.markdown}`);
+    else reports.set(index + 1, report);
+  }
+
+  const inserted = [];
+  for (const part of batches(groups.map((group, index) => ({ group, num: index + 1 })))) {
+    const params = part.flatMap(({ group, num }) => [
+      assessmentId, num, group.repositoryLink ?? null, group.comments ?? null,
+    ]);
+    const result = await client.query(
+      `insert into groups (assessment_id, num, repository_url, comments)
+       values ${placeholders(part.length, ["int", "int", "text", "text"])}
+       on conflict (assessment_id, num) do update set
+           repository_url = excluded.repository_url, comments = excluded.comments
+       returning id, num, (xmax = 0) as created`,
+      params,
+    );
+    for (const row of result.rows) {
+      if (row.created) counters.groups += 1;
+      inserted.push(row);
+    }
+  }
+
+  const idOfNum = new Map(inserted.map((row) => [row.num, row.id]));
+  const members = [];
+  const grades = [];
+
   for (const [index, group] of groups.entries()) {
     const num = index + 1;
-
-    const row = (
-      await client.query(
-        `insert into groups (assessment_id, num, repository_url, comments)
-         values ($1, $2, $3, $4)
-         on conflict (assessment_id, num) do update set
-             repository_url = excluded.repository_url, comments = excluded.comments
-         returning id, (xmax = 0) as created`,
-        [assessmentId, num, group.repositoryLink ?? null, group.comments ?? null],
-      )
-    ).rows[0];
-    if (row.created) counters.groups += 1;
-
-    let report = null;
-    if (group.markdown) {
-      report = await readFile(join(dir, "markdown", group.markdown), "utf8").catch(() => null);
-      // Say it rather than skip it: a missing report is a mistake in the data,
-      // and silence would let a student's correction disappear unnoticed.
-      if (report === null) log(`missing report: ${dir}/markdown/${group.markdown}`);
-    }
-
-    let reportWritten = false;
     for (const studentId of Object.keys(group.members ?? {})) {
       if (DEMO_ACCOUNTS.has(studentId)) {
         counters.skipped += 1;
         continue;
       }
-      await ensureStudent(client, studentId, cohortId, counters);
-
-      const member = await client.query(
-        `insert into group_members (group_id, student_id, assessment_id) values ($1, $2, $3)
-         on conflict do nothing`,
-        [row.id, studentId, assessmentId],
-      );
-      counters.members += member.rowCount;
-
-      // Counted like every other counter: what the run changed, not what it
-      // read. A second run that writes nothing must report zero.
-      const wrote = await upsertGrade(client, assessmentId, studentId, group.grade, report, counters);
-      if (wrote && report !== null) reportWritten = true;
+      members.push({ groupId: idOfNum.get(num), studentId });
+      grades.push({
+        assessmentId,
+        studentId,
+        grade: group.grade,
+        report: reports.get(num) ?? null,
+        wrong: null,
+        num,
+      });
     }
-    if (reportWritten) counters.reports += 1;
   }
+
+  await ensureStudents(client, grades.map((r) => r.studentId), cohortId, counters);
+
+  for (const part of batches(members)) {
+    const params = part.flatMap((m) => [m.groupId, m.studentId, assessmentId]);
+    const result = await client.query(
+      `insert into group_members (group_id, student_id, assessment_id)
+       values ${placeholders(part.length, ["int", "text", "int"])}
+       on conflict do nothing`,
+      params,
+    );
+    counters.members += result.rowCount;
+  }
+
+  const written = await upsertGrades(client, grades, counters);
+
+  // Counted like every other counter: what the run changed, not what it read.
+  // A second run that writes nothing reports zero reports.
+  const groupsWithReport = new Set(
+    grades
+      .filter((r) => r.report !== null && written.has(`${r.assessmentId}|${r.studentId}`))
+      .map((r) => r.num),
+  );
+  counters.reports += groupsWithReport.size;
 }
 
 export async function runImport({ connectionString, log = console.log, importMap } = {}) {
