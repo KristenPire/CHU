@@ -3,6 +3,10 @@ name: CI
 on:
   pull_request:
     branches: [preprod]
+  # Also on preprod itself: two pull requests can each be green and still
+  # combine into a red preprod, and the badge needs a branch to report on.
+  push:
+    branches: [preprod]
 
 permissions:
   contents: read
