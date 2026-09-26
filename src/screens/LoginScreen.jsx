@@ -9,24 +9,38 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { scaleIn, shake, delayedFade, delayedScale } from "../theme";
 import { BlinkingCursor } from "../components";
-import { studentExists } from "../data";
+import { fetchStudent } from "../api/client";
 
 export function LoginScreen({ onLogin }) {
   const [studentId, setStudentId] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState(null);
+  const [busy, setBusy] = useState(false);
   const [shakeKey, setShakeKey] = useState(0);
   const inputRef = { current: null };
 
-  const submit = () => {
-    setError("");
-    if (!studentId.trim()) return;
-    if (!studentExists(studentId.trim())) {
-      setError(studentId.trim());
-      setStudentId("");
+  // Checking a number used to be a lookup in a table the browser already had.
+  // It is now a request, so it can be slow and it can fail — and an unknown
+  // number and an unreachable server must not read the same to a student.
+  const submit = async () => {
+    const id = studentId.trim();
+    setError(null);
+    if (!id || busy) return;
+
+    setBusy(true);
+    try {
+      const student = await fetchStudent(id);
+      onLogin(student);
+    } catch (failure) {
+      setError(
+        failure?.kind === "notFound"
+          ? { kind: "notFound", id }
+          : { kind: "unreachable" },
+      );
+      if (failure?.kind === "notFound") setStudentId("");
       setShakeKey((k) => k + 1);
-      return;
+    } finally {
+      setBusy(false);
     }
-    onLogin(studentId.trim());
   };
 
   const focus = () => inputRef.current?.focus();
@@ -42,11 +56,12 @@ export function LoginScreen({ onLogin }) {
           <IdPrompt
             studentId={studentId}
             error={error}
+            busy={busy}
             shakeKey={shakeKey}
             inputRef={inputRef}
             onSubmit={submit}
             onFocus={focus}
-            onChange={(val) => { setStudentId(val); setError(""); }}
+            onChange={(val) => { setStudentId(val); setError(null); }}
           />
         </div>
 
@@ -97,7 +112,7 @@ function SchoolHeader() {
   );
 }
 
-function IdPrompt({ studentId, error, shakeKey, inputRef, onSubmit, onFocus, onChange }) {
+function IdPrompt({ studentId, error, busy, shakeKey, inputRef, onSubmit, onFocus, onChange }) {
   return (
     <motion.div {...delayedFade(0.7)}>
       <div className="text-tm-text mb-3 text-[13px]">Enter your student ID:</div>
@@ -112,10 +127,10 @@ function IdPrompt({ studentId, error, shakeKey, inputRef, onSubmit, onFocus, onC
         onChange={onChange}
       />
 
-      <ErrorMessage error={error} />
+      <StatusLine error={error} busy={busy} />
 
       <div className="flex justify-end">
-        <SubmitButton onSubmit={onSubmit} />
+        <SubmitButton onSubmit={onSubmit} busy={busy} />
       </div>
     </motion.div>
   );
@@ -145,17 +160,31 @@ function TerminalInput({ studentId, error, shakeKey, inputRef, onSubmit, onFocus
   );
 }
 
-function ErrorMessage({ error }) {
+/**
+ * One line for the three things that can now happen: a request is in flight, a
+ * number is unknown, or the server did not answer. Telling the last two apart
+ * matters — one is the student's mistake, the other is not.
+ */
+function StatusLine({ error, busy }) {
   return (
-    <div className="h-5 mt-2 text-tm-red text-[12px]">
-      <AnimatePresence>
-        {error && (
-          <motion.span
-            initial={{ opacity: 0, x: -8 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0 }}
-          >
-            -bash: student '{error}': not found
+    <div className="h-5 mt-2 text-[12px]">
+      <AnimatePresence mode="wait">
+        {busy && (
+          <motion.span key="busy" className="text-tm-dim"
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+            checking…
+          </motion.span>
+        )}
+        {!busy && error?.kind === "notFound" && (
+          <motion.span key="notFound" className="text-tm-red"
+            initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0 }}>
+            -bash: student '{error.id}': not found
+          </motion.span>
+        )}
+        {!busy && error?.kind === "unreachable" && (
+          <motion.span key="unreachable" className="text-tm-yellow"
+            initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0 }}>
+            -bash: server unreachable — try again
           </motion.span>
         )}
       </AnimatePresence>
@@ -163,13 +192,14 @@ function ErrorMessage({ error }) {
   );
 }
 
-function SubmitButton({ onSubmit }) {
+function SubmitButton({ onSubmit, busy }) {
   return (
     <motion.button
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
+      whileHover={busy ? {} : { scale: 1.05 }}
+      whileTap={busy ? {} : { scale: 0.95 }}
       onClick={onSubmit}
-      className="bg-transparent text-tm-cyan border border-tm-border font-mono text-[11px] cursor-pointer px-3.5 py-1 tracking-wider"
+      disabled={busy}
+      className={`bg-transparent text-tm-cyan border border-tm-border font-mono text-[11px] px-3.5 py-1 tracking-wider ${busy ? "opacity-50 cursor-wait" : "cursor-pointer"}`}
     >
       [enter]
     </motion.button>
