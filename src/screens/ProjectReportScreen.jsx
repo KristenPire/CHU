@@ -3,6 +3,7 @@
  * Mirrors the structure of ExamDetailScreen.
  */
 
+import { motion } from "framer-motion";
 import { C, fadeSlide } from "../theme";
 import { AsciiBox, BlinkingCursor } from "../components";
 import { PROJECTS, PROJECT_GROUPS, PROJECT_REPORTS } from "../data";

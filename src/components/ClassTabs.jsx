@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { C } from "../theme";
 import { CLASSES, EXAMS, STUDENTS } from "../data";
 

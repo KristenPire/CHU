@@ -5,7 +5,7 @@
  * AnimatePresence handles fade transitions between them.
  */
 import { useState } from "react";
-import { AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { LoginScreen } from "./screens/LoginScreen";
 import { DashboardScreen } from "./screens/DashboardScreen";
 import { ExamDetailScreen } from "./screens/ExamDetailScreen";

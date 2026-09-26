@@ -6,7 +6,7 @@
  * Shake animation triggers on wrong ID.
  */
 import { useState } from "react";
-import { AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { scaleIn, shake, delayedFade, delayedScale } from "../theme";
 import { BlinkingCursor } from "../components";
 import { studentExists } from "../data";

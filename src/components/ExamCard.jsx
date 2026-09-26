@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { C, gradeColor, staggerItem } from "../theme";
 import { AsciiBox } from "./AsciiBox";
 import { ProgressBar } from "./ProgressBar";
