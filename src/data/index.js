@@ -146,20 +146,3 @@ export function getDefaultClassId(studentId) {
   }
   return result;
 }
-
-/** Weighted average: sum(grade × coeff%) / sum(coeff%) — includes graded projects */
-export function computeWeightedAverage(examResults, projectResults = []) {
-  let sumWeighted = 0, sumCoeff = 0;
-  for (const { exam, student } of examResults) {
-    const normalized = (student.grade / exam.totalPoints) * 100;
-    sumWeighted += normalized * exam.coeff;
-    sumCoeff += exam.coeff;
-  }
-  for (const { project, group } of projectResults) {
-    if (group.grade == null) continue;
-    const normalized = (group.grade / project.totalPoints) * 100;
-    sumWeighted += normalized * project.coeff;
-    sumCoeff += project.coeff;
-  }
-  return sumCoeff > 0 ? Math.round((sumWeighted / sumCoeff) * 100) / 100 : 0;
-}

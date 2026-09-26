@@ -19,9 +19,9 @@ import {
   getStudentExams,
   getStudentProjects,
   getDefaultClassId,
-  computeWeightedAverage,
   PROJECT_REPORTS,
 } from "../data";
+import { computeWeightedAverage } from "../lib/grades";
 
 export function DashboardScreen({ studentId, onSelectExam, onSelectProject, onLogout }) {
   const [classId, setClassId] = useState(() => getDefaultClassId(studentId));
