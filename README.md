@@ -144,10 +144,31 @@ connection string, so local development never touches Neon.
 
 ### Deploying
 
+**A push to `preprod` deploys.** The `deploy` job of `.github/workflows/ci.yml`
+runs after `check` and `integration`, applies the migrations to Neon, then
+publishes the Worker. It needs two repository secrets:
+
+| Secret | Contents |
+| --- | --- |
+| `CLOUDFLARE_API_TOKEN` | API token, `Workers Scripts: Edit`, restricted to the account named in `wrangler.jsonc` |
+| `NEON_DATABASE_URL` | the **direct** connection string, not the pooled one — `migrate.js` takes a session-level advisory lock |
+
+The schema is applied before the Worker is published, and a migration that fails
+publishes nothing. That protects against code newer than the schema, which is a
+failure we have already had. It does not protect against the opposite: a
+migration that removes what the live Worker still reads breaks production for the
+seconds between the two steps. **A destructive change takes two releases** — add
+the new shape, publish the code that stopped using the old one, drop it later.
+
+Deploying by hand still works and is the fallback when the CI is unavailable:
+
 ```bash
 npx wrangler login             # once per machine
 npm run deploy                 # builds, then wrangler deploy
 ```
+
+It runs the same script the CI runs, but it skips the migrations and the tests,
+and it publishes whatever is in the working tree. It is not the normal path.
 
 The Hyperdrive configuration is created once per account and its id goes into
 `wrangler.jsonc`:
