@@ -115,6 +115,55 @@ describe("npm run import", () => {
     expect(lines.filter((l) => l.startsWith("missing report:"))).toHaveLength(2);
   }, 120_000);
 
+  it("shows a student who sat two projects one row per grade, not two", async () => {
+    const connectionString = await freshDatabase();
+    await runImport({ connectionString, log: silent, importMap: PROJECT_COURSE });
+
+    // The view joins group membership. Joining on the student alone duplicated
+    // every row of anyone who sat more than one project.
+    const duplicated = (
+      await query(
+        connectionString,
+        `select count(*) from (
+           select student_id, assessment_id from student_grades_v
+            group by 1, 2 having count(*) > 1) t`,
+      )
+    ).rows[0].count;
+    expect(Number(duplicated)).toBe(0);
+
+    const [grades, visible] = await Promise.all([
+      count(connectionString, "grades"),
+      count(connectionString, "student_grades_v"),
+    ]);
+    expect(visible).toBe(grades);
+  }, 120_000);
+
+  it("refuses to seat a student in two groups of the same project", async () => {
+    const connectionString = await freshDatabase();
+    await runImport({ connectionString, log: silent, importMap: PROJECT_COURSE });
+
+    const [{ student_id, assessment_id }] = (
+      await query(connectionString, "select student_id, assessment_id from group_members limit 1")
+    ).rows;
+    const other = (
+      await query(
+        connectionString,
+        `select id from groups where assessment_id = $1
+          and id not in (select group_id from group_members where student_id = $2)
+          limit 1`,
+        [assessment_id, student_id],
+      )
+    ).rows[0];
+
+    await expect(
+      query(
+        connectionString,
+        "insert into group_members (group_id, student_id, assessment_id) values ($1, $2, $3)",
+        [other.id, student_id, assessment_id],
+      ),
+    ).rejects.toThrow(/group_members_one_group_per_assessment/);
+  }, 120_000);
+
   it("stores no group name, only a number", async () => {
     const connectionString = await freshDatabase();
     await runImport({ connectionString, log: silent, importMap: PROJECT_COURSE });
