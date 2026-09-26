@@ -17,6 +17,9 @@ dist-ssr
 .env.*
 !.env.example
 
+# Wrangler local state and build cache
+.wrangler
+
 # Grading
 C++GroupGrading/
 document/

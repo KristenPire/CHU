@@ -1,0 +1,34 @@
+// Production hosting — see docs/adr/0006-cloudflare-workers-hosting.md
+//
+// One Worker serves the Vite build as static assets and answers /api/*.
+// Assets are matched first and never invoke the Worker, so they cost nothing;
+// run_worker_first keeps /api/* out of the single-page-application fallback.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "chu-grades",
+  "main": "worker/index.js",
+  "compatibility_date": "2026-09-26",
+  // Required by the pg driver.
+  "compatibility_flags": ["nodejs_compat"],
+
+  "assets": {
+    "directory": "./dist",
+    // The app is a single page with no router: any unknown path serves index.html.
+    "not_found_handling": "single-page-application",
+    // Without this, the fallback above would answer /api/* with index.html.
+    "run_worker_first": ["/api/*"]
+  },
+
+  "hyperdrive": [
+    {
+      "binding": "HYPERDRIVE",
+      // Created by `npx wrangler hyperdrive create chu-grades-db --connection-string="$NEON_DATABASE_URL"`.
+      // The id is a public identifier, not a secret; the credentials stay in Hyperdrive.
+      "id": "10637075ba3a400180caa7268505a23b"
+    }
+  ],
+
+  "observability": {
+    "enabled": true
+  }
+}
