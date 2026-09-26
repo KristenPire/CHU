@@ -4,7 +4,7 @@
  */
 
 import { useState, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import { gradeColor, fadeSlide, stagger } from "../theme";
 import {
   CLASSES,

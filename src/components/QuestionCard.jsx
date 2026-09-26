@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import { C, staggerItem } from "../theme";
 import { AsciiBox } from "./AsciiBox";
 import { Tag } from "./Tag";

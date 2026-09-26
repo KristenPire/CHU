@@ -3,7 +3,6 @@
  * No scoring — grade comes from the teacher, "wrong" map is for display only.
  */
 
-import { motion } from "framer-motion";
 import { C, gradeColor, fadeSlide, stagger } from "../theme";
 import { EXAMS, STUDENTS, AsciiBox, BlinkingCursor, ProgressBar, QuestionCard } from "../components";
 
