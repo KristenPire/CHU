@@ -6,6 +6,11 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "chu-grades",
+  // Named explicitly because this machine can reach more than one Cloudflare
+  // account, and one of them belongs to an unrelated client. An account id is
+  // an identifier, not a secret; leaving it out once put a Worker of this
+  // project in the wrong account.
+  "account_id": "47e73a1a4155b5d9b3850ad8f10d22b6",
   "main": "worker/index.js",
   "compatibility_date": "2026-09-26",
   // Required by the pg driver.
