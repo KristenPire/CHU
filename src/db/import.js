@@ -38,15 +38,32 @@ function academicYear(entryYear, level) {
   return entryYear + Number(level.slice(1)) - 1;
 }
 
-async function importCourse(client, folder, entryYear, counters, log) {
+/**
+ * A map entry is the promotion's entry year, or an object when the folder is
+ * not named after its course code: src/data/algo holds "Data & Algorithms II",
+ * whose catalogue code is algo2. The folders are the reference import format and
+ * are never renamed to suit the database.
+ */
+function readEntry(folder, mapEntry) {
+  if (typeof mapEntry === "number") return { code: folder, entryYear: mapEntry };
+  if (mapEntry && typeof mapEntry.cohort === "number") {
+    return { code: mapEntry.course ?? folder, entryYear: mapEntry.cohort };
+  }
+  throw new Error(
+    `import-map.json entry for "${folder}" must be an entry year or { course, cohort }`,
+  );
+}
+
+async function importCourse(client, folder, mapEntry, counters, log) {
+  const { code, entryYear } = readEntry(folder, mapEntry);
   const courseDir = join(DATA_DIR, folder);
   if (!(await exists(courseDir))) {
     throw new Error(`import-map.json lists "${folder}" but src/data/${folder} does not exist`);
   }
 
-  const course = (await client.query("select id, level, semester from courses where code = $1", [folder])).rows[0];
+  const course = (await client.query("select id, level, semester from courses where code = $1", [code])).rows[0];
   if (!course) {
-    throw new Error(`no course with code "${folder}" in the catalogue; add it in a migration first`);
+    throw new Error(`no course with code "${code}" in the catalogue; add it in a migration first`);
   }
 
   const cohort = (
@@ -142,16 +159,18 @@ async function ensureStudent(client, studentId, cohortId, counters) {
  * rewrites every grade to its own value and the audit trigger records a change
  * where nothing changed.
  */
-async function upsertGrade(client, assessmentId, studentId, grade, report, counters) {
+async function upsertGrade(client, assessmentId, studentId, grade, report, counters, wrong) {
   const graded = await client.query(
-    `insert into grades (assessment_id, student_id, grade, report)
-     values ($1, $2, $3, $4)
+    `insert into grades (assessment_id, student_id, grade, report, wrong_answers)
+     values ($1, $2, $3, $4, $5)
      on conflict (assessment_id, student_id) do update set
-         grade = excluded.grade, report = excluded.report
-     where grades.grade  is distinct from excluded.grade
-        or grades.report is distinct from excluded.report
+         grade = excluded.grade, report = excluded.report,
+         wrong_answers = excluded.wrong_answers
+     where grades.grade         is distinct from excluded.grade
+        or grades.report        is distinct from excluded.report
+        or grades.wrong_answers is distinct from excluded.wrong_answers
      returning (xmax = 0) as created`,
-    [assessmentId, studentId, grade ?? null, report ?? null],
+    [assessmentId, studentId, grade ?? null, report ?? null, wrong ?? null],
   );
   if (graded.rows[0]?.created) counters.grades += 1;
   return graded.rowCount > 0;
@@ -166,9 +185,10 @@ async function importExamGrades(client, dir, assessmentId, cohortId, counters) {
       continue;
     }
     // record.name is read and deliberately dropped: no student name enters the
-    // database.
+    // database. record.wrong is kept: it is what the review screen marks.
     await ensureStudent(client, studentId, cohortId, counters);
-    await upsertGrade(client, assessmentId, studentId, record.grade, null, counters);
+    const wrong = record.wrong === undefined ? null : JSON.stringify(record.wrong);
+    await upsertGrade(client, assessmentId, studentId, record.grade, null, counters, wrong);
   }
 }
 
@@ -261,8 +281,8 @@ export async function runImport({ connectionString, log = console.log, importMap
     await client.query("set local app.actor = 'import'");
     await client.query("set local app.source = 'import'");
 
-    for (const [folder, entryYear] of Object.entries(map)) {
-      await importCourse(client, folder, entryYear, counters, log);
+    for (const [folder, mapEntry] of Object.entries(map)) {
+      await importCourse(client, folder, mapEntry, counters, log);
     }
     await client.query("commit");
   } catch (error) {
