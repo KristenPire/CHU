@@ -116,6 +116,25 @@ unusable in production and unusable even for a test: a negative result on it say
 nothing about the decision. Any measurement from China has to be taken on a
 domain we own.
 
+The site was then deployed on a domain we own, behind the same Worker, and
+measured again from the same Chinese network:
+
+| Measured | From China |
+| --- | --- |
+| connection + 2 bytes | 348 ms |
+| home page, 730 bytes | 477 ms |
+| the site bundle, 1.8 MB | 1 860 ms |
+
+The whole journey works: login, course tabs, an exam paper, a project report.
+Latency is 348 ms and the bundle transfers at roughly 10 Mbit/s. **The decision
+holds, and this is the measurement BDD-36 asked for.**
+
+One consequence worth recording, because it corrects an argument made earlier in
+this project: serving the grades from the API instead of the bundle would save
+about a second on a first load, from which the round trip to Neon would still
+have to be subtracted. That is worth having, and it is not the reason to do it.
+The reason is that the bundle hands every visitor the grades of 294 students.
+
 ## Consequences
 
 - **Student data leaves our machines.** ADR-0004 rejected a hosted database for
