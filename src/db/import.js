@@ -38,7 +38,7 @@ function academicYear(entryYear, level) {
   return entryYear + Number(level.slice(1)) - 1;
 }
 
-async function importCourse(client, folder, entryYear, counters) {
+async function importCourse(client, folder, entryYear, counters, log) {
   const courseDir = join(DATA_DIR, folder);
   if (!(await exists(courseDir))) {
     throw new Error(`import-map.json lists "${folder}" but src/data/${folder} does not exist`);
@@ -79,79 +79,171 @@ async function importCourse(client, folder, entryYear, counters) {
   for (const entry of entries) {
     const dir = join(courseDir, entry);
     const info = await readJson(join(dir, "info.json"));
+    const kind = info.type === "project" ? "project" : "exam";
 
-    if (info.type === "project") {
-      throw new Error(
-        `${folder}/${entry} is a project: group import is not implemented yet. ` +
-          `Remove "${folder}" from import-map.json until it is.`,
-      );
-    }
-
-    // Stored as written; an exam without a body.json simply has none.
+    // Stored as written; an assessment without a body.json simply has none.
     const body = await readFile(join(dir, "body.json"), "utf8").catch(() => null);
-    const students = await readJson(join(dir, "students.json"));
 
     const assessment = (
       await client.query(
-        `insert into assessments (class_id, num, kind, title, total_points, coeff, body, published_at)
-         values ($1, $2, 'exam', $3, $4, $5, $6, $7)
+        `insert into assessments
+             (class_id, num, kind, title, total_points, coeff, body,
+              published_at, held_on, starts_on, due_on)
+         values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
          on conflict (class_id, num) do update set
-             title = excluded.title, total_points = excluded.total_points,
-             coeff = excluded.coeff, body = excluded.body, published_at = excluded.published_at
+             kind = excluded.kind, title = excluded.title,
+             total_points = excluded.total_points, coeff = excluded.coeff,
+             body = excluded.body, published_at = excluded.published_at,
+             held_on = excluded.held_on, starts_on = excluded.starts_on,
+             due_on = excluded.due_on
          returning id, (xmax = 0) as created`,
         [
           klass.id,
           Number(entry),
+          kind,
           info.title,
           info.totalPoints,
           info.coeff,
           body,
-          info.publishedDate ?? info.date,
+          // A project carries no publication date of its own: it is on the site,
+          // so its deadline is the day its grades became readable. Leaving this
+          // null would hide it from student_grades_v entirely.
+          info.publishedDate ?? info.date ?? info.deadline ?? null,
+          info.date ?? null,
+          info.startDate ?? null,
+          info.deadline ?? null,
         ],
       )
     ).rows[0];
     if (assessment.created) counters.assessments += 1;
 
-    for (const [studentId, record] of Object.entries(students)) {
-      if (DEMO_ACCOUNTS.has(studentId)) {
-        counters.skipped += 1;
-        continue;
-      }
-
-      // record.name is read and deliberately dropped: no student name enters
-      // the database. A student already known keeps the cohort they were given
-      // — a repeater's cohort is corrected by hand and an import must not undo it.
-      const inserted = await client.query(
-        `insert into students (id, cohort_id) values ($1, $2)
-         on conflict (id) do nothing`,
-        [studentId, cohort.id],
-      );
-      counters.students += inserted.rowCount;
-
-      const graded = await client.query(
-        // The guard is not an optimisation: without it, re-importing rewrites
-        // every grade to its own value and the audit trigger records 97
-        // changes where nothing changed.
-        `insert into grades (assessment_id, student_id, grade)
-         values ($1, $2, $3)
-         on conflict (assessment_id, student_id) do update set grade = excluded.grade
-         where grades.grade is distinct from excluded.grade
-         returning (xmax = 0) as created`,
-        [assessment.id, studentId, record.grade ?? null],
-      );
-      if (graded.rows[0]?.created) counters.grades += 1;
+    if (kind === "project") {
+      await importGroups(client, dir, assessment.id, cohort.id, counters, log);
+    } else {
+      await importExamGrades(client, dir, assessment.id, cohort.id, counters);
     }
   }
 }
 
-export async function runImport({ connectionString, log = console.log } = {}) {
+/** Registers a student without their name, and returns nothing. */
+async function ensureStudent(client, studentId, cohortId, counters) {
+  // A student already known keeps the cohort they were given — a repeater's
+  // cohort is corrected by hand and an import must not undo it.
+  const inserted = await client.query(
+    `insert into students (id, cohort_id) values ($1, $2)
+     on conflict (id) do nothing`,
+    [studentId, cohortId],
+  );
+  counters.students += inserted.rowCount;
+}
+
+/**
+ * The guard on the update is not an optimisation: without it, re-importing
+ * rewrites every grade to its own value and the audit trigger records a change
+ * where nothing changed.
+ */
+async function upsertGrade(client, assessmentId, studentId, grade, report, counters) {
+  const graded = await client.query(
+    `insert into grades (assessment_id, student_id, grade, report)
+     values ($1, $2, $3, $4)
+     on conflict (assessment_id, student_id) do update set
+         grade = excluded.grade, report = excluded.report
+     where grades.grade  is distinct from excluded.grade
+        or grades.report is distinct from excluded.report
+     returning (xmax = 0) as created`,
+    [assessmentId, studentId, grade ?? null, report ?? null],
+  );
+  if (graded.rows[0]?.created) counters.grades += 1;
+  return graded.rowCount > 0;
+}
+
+async function importExamGrades(client, dir, assessmentId, cohortId, counters) {
+  const students = await readJson(join(dir, "students.json"));
+
+  for (const [studentId, record] of Object.entries(students)) {
+    if (DEMO_ACCOUNTS.has(studentId)) {
+      counters.skipped += 1;
+      continue;
+    }
+    // record.name is read and deliberately dropped: no student name enters the
+    // database.
+    await ensureStudent(client, studentId, cohortId, counters);
+    await upsertGrade(client, assessmentId, studentId, record.grade, null, counters);
+  }
+}
+
+/**
+ * A project is graded by group: every member of a group receives the group's
+ * grade and its correction report.
+ *
+ * groupName is read and deliberately dropped. In the data it is almost always a
+ * student's first name or nickname, and no student name enters the database. A
+ * group is identified by its position in groups.json, which is stable across
+ * re-imports as long as the file is appended to rather than reordered.
+ */
+async function importGroups(client, dir, assessmentId, cohortId, counters, log) {
+  const groups = await readJson(join(dir, "groups.json"));
+
+  for (const [index, group] of groups.entries()) {
+    const num = index + 1;
+
+    const row = (
+      await client.query(
+        `insert into groups (assessment_id, num, repository_url, comments)
+         values ($1, $2, $3, $4)
+         on conflict (assessment_id, num) do update set
+             repository_url = excluded.repository_url, comments = excluded.comments
+         returning id, (xmax = 0) as created`,
+        [assessmentId, num, group.repositoryLink ?? null, group.comments ?? null],
+      )
+    ).rows[0];
+    if (row.created) counters.groups += 1;
+
+    let report = null;
+    if (group.markdown) {
+      report = await readFile(join(dir, "markdown", group.markdown), "utf8").catch(() => null);
+      // Say it rather than skip it: a missing report is a mistake in the data,
+      // and silence would let a student's correction disappear unnoticed.
+      if (report === null) log(`missing report: ${dir}/markdown/${group.markdown}`);
+    }
+
+    let reportWritten = false;
+    for (const studentId of Object.keys(group.members ?? {})) {
+      if (DEMO_ACCOUNTS.has(studentId)) {
+        counters.skipped += 1;
+        continue;
+      }
+      await ensureStudent(client, studentId, cohortId, counters);
+
+      const member = await client.query(
+        `insert into group_members (group_id, student_id) values ($1, $2)
+         on conflict do nothing`,
+        [row.id, studentId],
+      );
+      counters.members += member.rowCount;
+
+      // Counted like every other counter: what the run changed, not what it
+      // read. A second run that writes nothing must report zero.
+      const wrote = await upsertGrade(client, assessmentId, studentId, group.grade, report, counters);
+      if (wrote && report !== null) reportWritten = true;
+    }
+    if (reportWritten) counters.reports += 1;
+  }
+}
+
+export async function runImport({ connectionString, log = console.log, importMap } = {}) {
   const url = connectionString ?? process.env.DATABASE_URL;
   if (!url) {
     throw new Error("DATABASE_URL is not set. Copy .env.example to .env, then run docker compose up -d db.");
   }
 
-  const map = await readJson(IMPORT_MAP);
-  const counters = { cohorts: 0, classes: 0, assessments: 0, students: 0, grades: 0, skipped: 0 };
+  // Tests pass their own map so that proving the importer works on a project
+  // does not require committing a decision about which promotion sat a course.
+  const map = importMap ?? (await readJson(IMPORT_MAP));
+  const counters = {
+    cohorts: 0, classes: 0, assessments: 0, students: 0, grades: 0,
+    groups: 0, members: 0, reports: 0, skipped: 0,
+  };
 
   const present = (await readdir(DATA_DIR, { withFileTypes: true }))
     .filter((e) => e.isDirectory())
@@ -170,7 +262,7 @@ export async function runImport({ connectionString, log = console.log } = {}) {
     await client.query("set local app.source = 'import'");
 
     for (const [folder, entryYear] of Object.entries(map)) {
-      await importCourse(client, folder, entryYear, counters);
+      await importCourse(client, folder, entryYear, counters, log);
     }
     await client.query("commit");
   } catch (error) {
@@ -183,7 +275,9 @@ export async function runImport({ connectionString, log = console.log } = {}) {
   log(
     `imported: ${counters.cohorts} cohort(s), ${counters.classes} class edition(s), ` +
       `${counters.assessments} assessment(s), ${counters.students} student(s), ` +
-      `${counters.grades} grade(s); ${counters.skipped} demo account(s) skipped`,
+      `${counters.grades} grade(s), ${counters.groups} group(s), ` +
+      `${counters.members} membership(s), ${counters.reports} report(s); ` +
+      `${counters.skipped} demo account(s) skipped`,
   );
   return counters;
 }
