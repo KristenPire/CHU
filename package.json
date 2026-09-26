@@ -9,11 +9,13 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "check": "npm run lint",
-    "prepare": "simple-git-hooks"
+    "prepare": "simple-git-hooks",
+    "migrate": "node --env-file-if-exists=.env src/db/migrate.js"
   },
   "dependencies": {
     "framer-motion": "^12.38.0",
     "highlight.js": "^11.11.1",
+    "pg": "^8.23.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4"
   },
