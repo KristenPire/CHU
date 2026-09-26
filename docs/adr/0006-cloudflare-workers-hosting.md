@@ -98,6 +98,24 @@ the front end switches to the API (BDD-31), and the JSON files leave the bundle.
 Until that second step lands, the grades remain publicly downloadable; the
 hosting move alone does not fix that.
 
+## Measured afterwards — 2026-09-26
+
+The decision above was taken on the strength of a Cloudflare-hosted site that had
+been reachable from China. It has since been measured from a Chinese network, and
+the result corrects one assumption rather than the decision.
+
+- A `*.workers.dev` URL does not load at all. Not slowly: a 44-byte JSON
+  response never arrives, so the whole shared domain is unreachable rather than
+  throttled.
+- The same 1.8 MB bundle served by GitHub Pages does load, slowly. Payload size
+  is therefore not the cause.
+- The site that worked ran for a year on its own domain, on Cloudflare.
+
+**A custom domain is a requirement, not a convenience.** `workers.dev` is
+unusable in production and unusable even for a test: a negative result on it says
+nothing about the decision. Any measurement from China has to be taken on a
+domain we own.
+
 ## Consequences
 
 - **Student data leaves our machines.** ADR-0004 rejected a hosted database for
