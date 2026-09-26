@@ -126,6 +126,12 @@ archiving either has to hide the grade.
 
 ## What is not there yet
 
+- **One course code no longer matches its folder.** `src/data/algo/` holds
+  Data & Algorithms II, whose catalogue code is `algo2` so that it reads next
+  to `algo1` and `algo3`. The import looks courses up by folder name, so adding
+  that folder to `import-map.json` will stop with `no course with code "algo"`
+  until the map can carry a course code alongside the promotion. It fails
+  loudly rather than importing into the wrong course.
 - **Group projects are not imported.** The tables exist, the import stops on a
   project folder rather than loading half of it.
 - **No `variant` column.** No assessment in `src/data/` has several subjects
