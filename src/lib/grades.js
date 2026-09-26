@@ -22,7 +22,7 @@ export function computeWeightedAverage(examResults, projectResults = []) {
   // Exams and projects arrive in two shapes but are the same thing here. They
   // are flattened first so the rules below are written once — the null guard
   // used to exist on one loop and not the other.
-  const items = [
+  return weightedAverage([
     ...examResults.map(({ exam, student }) => ({
       grade: student.grade,
       totalPoints: exam.totalPoints,
@@ -33,8 +33,17 @@ export function computeWeightedAverage(examResults, projectResults = []) {
       totalPoints: project.totalPoints,
       coeff: project.coeff,
     })),
-  ];
+  ]);
+}
 
+/**
+ * The same average over items that already carry grade, totalPoints and coeff.
+ *
+ * This is the shape the API returns, where an exam and a project are one kind of
+ * thing. computeWeightedAverage exists for the bundled JSON, which keeps them
+ * apart; both go through the arithmetic below so the two can never drift.
+ */
+export function weightedAverage(items) {
   let sumWeighted = 0;
   let sumCoeff = 0;
   for (const { grade, totalPoints, coeff } of items) {
