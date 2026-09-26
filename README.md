@@ -84,6 +84,82 @@ Docker rather than being installed on each machine.
 
 ---
 
+## Contributing
+
+### Branches
+
+| Branch | Role |
+| --- | --- |
+| `master` | Production. Built and published to GitHub Pages on `chu-epita.xyz`, read by students. Receives one pull request from `preprod` at the end of the V1, nothing else. |
+| `preprod` | Integration branch for the V1. Every feature merges here. |
+| `feat/<slug>` | One branch per feature, created from `preprod`, short English slug. |
+
+Direct pushes to `master` and `preprod` are refused: both require a pull
+request. See `docs/adr/0002-branching-strategy.md` for why.
+
+### Working on a feature
+
+```bash
+git checkout preprod && git pull
+git checkout -b feat/<slug>
+# … work, in small commits …
+npm run check          # same command the CI runs
+git push -u origin feat/<slug>
+```
+
+The push triggers a pre-push hook that runs `npm run check` and refuses the push
+if it fails. The hook is installed by `npm install` (`prepare` script); it is a
+convenience and can be bypassed with `--no-verify`, but the same check is
+required on the pull request, so bypassing it only defers the failure.
+
+Then open a pull request against `preprod`. It cannot be merged until the `check`
+job is green. `docs/testing.md` lists what is checked and what blocks a merge.
+
+### Checks
+
+```bash
+npm run check     # the single entry point — lint today, more later
+npm run lint      # ESLint alone
+npm run build     # production build, as the Pages deployment runs it
+```
+
+`check` is what the hook and the CI call, verbatim. New checks are added to that
+one script, so a contributor never has to read the workflow to know what will
+run.
+
+### Commits
+
+Conventional Commits, in English, one commit per logical step — a migration, a
+script, a test, a route, a screen — in the order the work is built. No squash,
+no interactive rebase, no amend on something already pushed.
+
+Each message has a body that says *why*: the context, and the alternative that
+was rejected when it is relevant. The footer links the commit to its task.
+
+```
+feat(db): add grades table with audit trigger
+
+Every grade change must be traceable (who/what/when) before opening the
+teacher area. A trigger on UPDATE copies the previous row into
+grade_audit; done in SQL rather than app code so imports are covered too.
+
+Refs: BDD-29
+```
+
+### Architecture decisions
+
+Any structural choice — framework, database, driver, hosting, authentication,
+test strategy — gets a file in `docs/adr/` following `docs/adr/TEMPLATE.md`, and
+that file is committed **before** the code it justifies.
+
+### What never enters the repository
+
+Student names, credentials, `.env`, and the teacher working folders
+(`document/`, `C++GroupGrading/`). The JSON files in `src/data/` are the import
+format of reference: write code that reads them, do not reshape them.
+
+---
+
 ## Project Structure
 
 ```
