@@ -1,5 +1,7 @@
 # Exam Results Viewer
 
+[![CI](https://github.com/KristenPire/CHU/actions/workflows/ci.yml/badge.svg?branch=preprod)](https://github.com/KristenPire/CHU/actions/workflows/ci.yml)
+
 Terminal-themed student exam results viewer built for the EPITA × Chang'an University collaboration.
 
 Three teachers share this site — each manages their own class (`net`, `os`, `fp`). Students log in with their ID, pick a class tab, and review their graded MCQs question by question.
