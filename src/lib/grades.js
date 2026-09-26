@@ -11,19 +11,37 @@
  * over the student's graded items, exams and projects alike.
  */
 
-/** Weighted average: sum(grade × coeff%) / sum(coeff%) — includes graded projects */
+/**
+ * Weighted average over the student's graded items, exams and projects alike.
+ *
+ * An item with no grade is not a zero: it leaves both the numerator and the
+ * denominator, so a student who has sat one exam out of a semester is judged on
+ * that exam and not on the ones nobody has marked yet.
+ */
 export function computeWeightedAverage(examResults, projectResults = []) {
-  let sumWeighted = 0, sumCoeff = 0;
-  for (const { exam, student } of examResults) {
-    const normalized = (student.grade / exam.totalPoints) * 100;
-    sumWeighted += normalized * exam.coeff;
-    sumCoeff += exam.coeff;
+  // Exams and projects arrive in two shapes but are the same thing here. They
+  // are flattened first so the rules below are written once — the null guard
+  // used to exist on one loop and not the other.
+  const items = [
+    ...examResults.map(({ exam, student }) => ({
+      grade: student.grade,
+      totalPoints: exam.totalPoints,
+      coeff: exam.coeff,
+    })),
+    ...projectResults.map(({ project, group }) => ({
+      grade: group.grade,
+      totalPoints: project.totalPoints,
+      coeff: project.coeff,
+    })),
+  ];
+
+  let sumWeighted = 0;
+  let sumCoeff = 0;
+  for (const { grade, totalPoints, coeff } of items) {
+    if (grade == null) continue;
+    sumWeighted += (grade / totalPoints) * 100 * coeff;
+    sumCoeff += coeff;
   }
-  for (const { project, group } of projectResults) {
-    if (group.grade == null) continue;
-    const normalized = (group.grade / project.totalPoints) * 100;
-    sumWeighted += normalized * project.coeff;
-    sumCoeff += project.coeff;
-  }
+
   return sumCoeff > 0 ? Math.round((sumWeighted / sumCoeff) * 100) / 100 : 0;
 }

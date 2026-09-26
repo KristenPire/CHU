@@ -38,6 +38,17 @@ describe("computeWeightedAverage", () => {
     expect(computeWeightedAverage([exam(80, 100, 20)], [project(null, 100, 80)])).toBe(80);
   });
 
+  it("ignores an exam that has no grade yet", () => {
+    // Regression: the exam loop had no null guard, and (null / 100) * 100 is 0
+    // in JavaScript. An exam nobody has marked counted as a zero while still
+    // adding its coefficient — this case returned 16 instead of 80.
+    expect(computeWeightedAverage([exam(80, 100, 20), exam(null, 100, 80)])).toBe(80);
+  });
+
+  it("returns 0 when every item is ungraded", () => {
+    expect(computeWeightedAverage([exam(null, 100, 20)], [project(null, 100, 80)])).toBe(0);
+  });
+
   it("returns 0 when nothing has been graded", () => {
     expect(computeWeightedAverage([])).toBe(0);
     expect(computeWeightedAverage([], [])).toBe(0);
